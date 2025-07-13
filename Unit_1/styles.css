@@ -1,0 +1,212 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: white;
+  position: relative;
+  /* top: -5%; */
+  background-color: lightslategray;
+}
+
+#mainBlock {
+    background-color: slategray;
+    padding: 3vh;
+    margin: 1vh;
+    aspect-ratio:4/3;
+    max-height: 100vh;
+    max-width: 120vh;
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    justify-content: center;
+
+    box-sizing: border-box;
+}
+
+/* #mainBlock div {
+    display: flex;
+} */
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+h1 {
+    font-size: 6vh;
+}
+h2 {
+    font-size: 5vh;
+}
+h3 {
+    font-size: 4vh;
+}
+h4 {
+    font-size: 3vh;
+}
+h5 {
+    font-size: 2vh;
+}
+h6 {
+    font-size: 1vh;
+}
+
+.gap {
+    height: 13%;
+}
+
+#midBlockBackground {
+    position:absolute;
+    background-color: white;
+    height: 81.5%;
+    width: 28.8%;
+    top: 15.5%;
+}
+
+
+/* /////////////////////////////////////////// */
+#leftBlock {
+    /* background-color: red; */
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#holdBlock {
+    background-color: white;
+    width: 100%;
+    height: 20%;
+    /* aspect-ratio: 1/1; */
+    display: flex;
+    flex-direction: column;
+    clip-path: polygon(
+    12% 100%,
+    0 85%,
+    0 0,
+    100% 0,
+    100% 100%
+  );
+}
+
+#holdText {
+    background-color: white;
+    color: black;
+}
+
+#holdArea {
+    background-color: black;
+    margin: 0 0 2% 2%;
+    flex-grow: 1;
+    display: grid;
+    place-items: center;
+    clip-path: polygon(
+    11% 100%,
+    0 79%,
+    0 0,
+    100% 0,
+    100% 100%
+  );
+}
+
+#statsBlock {
+    /* background-color: lawngreen; */
+    width: 100%;
+    aspect-ratio: 1/2;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: right;
+    align-items: flex-end;
+}
+
+
+
+
+/* /////////////////////////////////////////// */
+#midBlock {
+    /* background-color: white; */
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#gameArea {
+    /* background-color: black; */
+    margin: 0 .8% .8% .8%;
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box {
+    width: 10%;
+    aspect-ratio: 1/1;
+    background: black;
+    text-align: center;
+    /* padding: 10px; */
+    box-sizing: border-box;
+    border: .1px solid gray;
+}
+
+/* /////////////////////////////////////////// */
+#rightBlock {
+    /* background-color: blue; */
+    width: 20%;
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#nextBlock {
+    background-color: white;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+
+    clip-path: polygon(
+    85% 100%,
+    0 100%,
+    0 0,
+    100% 0,
+    100% 95%
+  );
+}
+
+#nextText {
+    background-color: white;
+    color: black
+}
+
+#nextArea {
+    background-color: black;
+    margin: 0 2% 2% 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    clip-path: polygon(
+    86% 100%,
+    0 100%,
+    0 0,
+    100% 0,
+    100% 95%
+  );
+}
+
+#nextArea div {
+    background-color: gray;
+    margin: 5%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
