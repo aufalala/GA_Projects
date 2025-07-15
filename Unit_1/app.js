@@ -3,11 +3,8 @@
 
 window.addEventListener("DOMContentLoaded", () => {
 
-
-
     const mainBlockDiv = document.getElementById("mainBlock");
     
-
 /////////////////TEXT RESIZE
     const titles = mainBlock.querySelectorAll("h3");
 
@@ -26,22 +23,42 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
-/////////////////GENERATE 230 BOXES, HIDE FIRST 30
-    for (let i = 0; i < 230; i++) {
-        const div = document.createElement("div");
-        div.classList.add("box");
-        div.id = `boxID${i+1}`;
-        // div.textContent = `${i + 1}`;
-        gameArea.appendChild(div);
-        // div.style.aspectRatio= "1/1";
-    }
-    const allBoxes = gameArea.querySelectorAll(".box");
-    for (let i = 0; i < 30; i++) {
-        allBoxes[i].style.background = "none";
-        allBoxes[i].style.border = "none";
-    }
+/////////////////GENERATE 240 BOXES
+    let boxColor = "black";
+    let boxBorder = ".1px solid gray";
 
-    /////////////////PIECES
+    function generateBoxes() {
+        for (let i = 0; i < 240; i++) {
+            const div = document.createElement("div");
+            div.classList.add("box");
+            div.id = `boxID${i+1}`;
+            div.style.background = boxColor;
+            div.style.border = boxBorder;
+            // div.textContent = `${i + 1}`;
+            gameArea.appendChild(div);
+        }
+        hideBoxes();
+    }
+    generateBoxes();
+
+/////////////////HIDE FIRST 30 BOXES
+    function hideBoxes() {
+        const allBoxes = gameArea.querySelectorAll(".box");
+        for (let i = 0; i < 30; i++) {
+            allBoxes[i].style.background = "none";
+            allBoxes[i].style.border = "none";
+            allBoxes[i].classList.add("top");
+        }
+/////////////////HIDE LAST 10 BOXES
+        for (let i = 230; i < 240; i++) {
+            allBoxes[i].style.background = "none";
+            allBoxes[i].style.border = "none";
+            allBoxes[i].classList.add("bottom");
+        }
+    }
+/////////////////DATA /////////////////DATA /////////////////DATA /////////////////DATA
+
+/////////////////PIECES DATA
     const pieces = {
         t: { 
             color: "blue",
@@ -94,8 +111,21 @@ window.addEventListener("DOMContentLoaded", () => {
             ], },
 
     }
-
     const pieceNames = Object.keys(pieces);
+    
+/////////////////PLAYER DATA
+    const player = {
+        piece: "",
+        color: "",
+        pos: 3,
+    }
+
+/////////////////GAME DATA
+    const game = {
+        dropRate: 200,
+    }
+
+
 
 
 /////////////////HOLDPIECE OBJECT
@@ -104,42 +134,26 @@ window.addEventListener("DOMContentLoaded", () => {
         color: "",
     };
 
-    // const next1P = {
-    //     piece: [],
-    //     color: "",
-    // };
-    // const next2P = {
-    //     piece: [],
-    //     color: "",
-    // };
-    // const next3P = {
-    //     piece: [],
-    //     color: "",
-    // };
-    // const next4P = {
-    //     piece: [],
-    //     color: "",
-    // };
-    // const next5P = {
-    //     piece: [],
-    //     color: "",
-    // };
+    function spawnHold() {
 
-/////////////////CREATE LINE UP ACCORDING TO LINE UP QTY
+    }
+
+
+/////////////////CREATE LINE UP LIST ACCORDING TO LINE UP QTY
 
     let lineUpQty = 5;
     const nextLineUp = [];
     
-    function createLineUp() {
+    function createLineUpList() {
         for (i=0; i<lineUpQty; i++) {
             nextLineUp.push({});
-            nextLineUp[i].piece;
+            nextLineUp[i].piece = "";
             nextLineUp[i].color = "";
         }
     }
-    createLineUp();
+    createLineUpList();
 
-/////////////////SPAWN LINE UP
+/////////////////GENERATE LINE UP
 
     function generateLineUp() {
         for (i=0; i<lineUpQty; i++) {
@@ -149,30 +163,34 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     generateLineUp();
 
+    function generateNewPiece() {
+        nextLineUp.push({})
+        nextLineUp[lineUpQty-1].piece = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].piece;
+        nextLineUp[lineUpQty-1].color = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].color;
+    }
+
+
+/////////////////////////////////////////
     function spawnLineUp() {
-
+        //draw into divs
     }
-
-
-/////////////////PLAYER DATA
-    const player = {
-        piece: pieces.t.piece,
-        color: pieces.t.color,
-    }
-
 
 
 /////////////////PIECE FROM NEXT
     function assignNextPiece() {
-        player.piece = next1P.piece;
-        player.color = next1P.color;
+        player.piece = nextLineUp[0].piece;
+        player.color = nextLineUp[0].color;
 
-        for (i=0; i<lineUpQty-1; i++) {
+        nextLineUp.shift();
 
-        }
+        console.log(nextLineUp);
+
+        generateNewPiece();
+
+        // for (i=0; i<lineUpQty-1; i++) {
+        // }
 
         // insert fea
-
         // if line up qty 0
     }
 
@@ -181,27 +199,176 @@ window.addEventListener("DOMContentLoaded", () => {
         if (holdP.color) {
             [player.piece, holdP.piece] = [holdP.piece, player.piece];
             [player.color, holdP.color] = [holdP.color, player.color];
+            player.pos = 3;
+            despawn();
+            spawn(player.pos);
         } else {
             holdP.piece = player.piece;
             holdP.color = player.color;
-            assignNextPiece();
+            respawn();
         }
     }
 
 /////////////////SPAWN FUNCTION
-    function spawn() {
+    function respawn() {
+        player.pos = 3;
+        despawn();
+        assignNextPiece();
+        spawn(player.pos);
+    }
+
+    function spawn(pos) {
         const allBoxes = gameArea.querySelectorAll(".box");
         player.piece.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
-                    allBoxes[(x+3)+(y*10)].classList.add("playPiece");
-                    allBoxes[(x+3)+(y*10)].style.background = player.color;
-                    allBoxes[(x+3)+(y*10)].style.border = `1px solid ${player.color}`;
+                    allBoxes[(x+pos)+(y*10)].classList.add("playPiece");
+                    allBoxes[(x+pos)+(y*10)].style.background = player.color;
+                    allBoxes[(x+pos)+(y*10)].style.border = `1px solid ${player.color}`;
                 }
             })
         });
 
         // insert spawn interval boost here to "flash" moveDown
     }
-    spawn();
+    // spawn(player.pos);
+
+    function despawn() {
+        const playPiece = gameArea.querySelectorAll(".playPiece");
+        
+            // console.log(playPiece);
+            playPiece.forEach((box) => {
+                box.classList.remove("playPiece");
+
+                if (box.classList.contains("top")) {
+                    box.style.background = "";
+                    box.style.border = "";
+                // }
+                    } else {
+                    box.style.background = boxColor;
+                    box.style.border = boxBorder;
+                }
+        })
+
+    }
+
+    function spawnGhost() {
+
+    }
+
+    function place() {
+        fill();
+        fillColor();
+        // assignNextPiece();
+        // respawn();
+    }
+
+    function fill() {
+        
+        const playPieceBox = gameArea.querySelectorAll(".playPiece");
+        playPieceBox.forEach((boxToFill) => {
+            
+            boxToFill.classList.add("filled");
+            console.log("filled");
+        });
+    }
+
+    function fillColor() {
+        const toFill = gameArea.querySelectorAll(".filled");
+        toFill.forEach((boxToFill) => {
+            boxToFill.style.background = "blue";
+            // console.log(player.color);
+            boxToFill.style.border = `1px solid blue`;
+            console.log("colored");
+        });
+    }
+
+/////////////////MOVE FUNCTIONS /////////////////MOVE FUNCTIONS /////////////////MOVE FUNCTIONS
+
+    function moveDown() {
+        // if below filled, place
+        const playPieceBox = gameArea.querySelectorAll(".playPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+        // console.log(playPieceBox);
+        // console.log(box.id);
+        let toFill = false;
+
+        playPieceBox.forEach((box) => {
+            if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
+                allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
+                
+                // fill();
+
+                // fillColor();
+                // place();
+                // return;     
+                toFill = true;        
+            }
+        });           
+
+        // if (toFill) {
+        //     place();
+        //     return;
+        // }
+        if (!toFill) {
+            player.pos += 10;
+            despawn();
+            spawn(player.pos);
+        } else {
+            place();
+            respawn();
+            fillColor();
+        }
+
+
+    }
+    function moveRight() {
+        // if right filled, dont move
+        const playPiece = gameArea.querySelectorAll(".playPiece")
+        let border = false;
+        playPiece.forEach((box) => {
+
+            if (parseInt(box.id.slice(5))%10 == 0) {
+                border = true;
+                return;
+            }
+        });
+        if (!border) {
+            player.pos += 1;
+            despawn();
+            spawn(player.pos);
+        }
+        
+    }
+    function moveLeft() {
+        // if left filled, dont move
+        
+        const playPiece = gameArea.querySelectorAll(".playPiece")
+        let border = false;
+        playPiece.forEach((box) => {
+
+            if ((parseInt(box.id.slice(5))-1)%10 == 0 ||
+                parseInt(box.id.slice(5) === 1)) {
+                border = true;
+                return;
+            }
+        });
+        if (!border) {
+            player.pos -= 1;
+            despawn();
+            spawn(player.pos);
+        }
+
+        
+    }
+    // moveDown();
+    setInterval(moveDown, game.dropRate);
+    
+    setInterval(moveLeft, game.dropRate);
+
+    
+    assignNextPiece();
+
+    
+
 })
