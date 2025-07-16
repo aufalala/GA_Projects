@@ -61,14 +61,14 @@ window.addEventListener("DOMContentLoaded", () => {
 /////////////////PIECES DATA
     const pieces = {
         t: { 
-            color: "blue",
+            color: "purple",
             piece:[
                 [0, 1, 0],
                 [1, 1, 1],
                 [0, 0, 0],
             ], },
         square: { 
-            color: "blue",
+            color: "yellow",
             piece:[
                 [1, 1],
                 [1, 1],
@@ -81,14 +81,14 @@ window.addEventListener("DOMContentLoaded", () => {
                 [0, 0, 0],
             ], },
         l: { 
-            color: "blue",
+            color: "orange",
             piece:[
                 [0, 0, 1],
                 [1, 1, 1],
                 [0, 0, 0],
             ], }, 
         i: { 
-            color: "blue",
+            color: "cyan",
             piece:[
                 [0, 0, 0, 0],
                 [1, 1, 1, 1],
@@ -96,14 +96,14 @@ window.addEventListener("DOMContentLoaded", () => {
                 [0, 0, 0, 0],
             ], },
         z: { 
-            color: "blue",
+            color: "red",
             piece:[
                 [1, 1, 0],
                 [0, 1, 1],
                 [0, 0, 0],
             ], },
         s: { 
-            color: "blue",
+            color: "green",
             piece:[
                 [0, 1, 1],
                 [1, 1, 0],
@@ -122,11 +122,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////GAME DATA
     const game = {
-        dropRate: 200,
+        dropRate: 300,
+        place: false,
     }
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////HOLDPIECE OBJECT
     const holdP = {
@@ -157,16 +158,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function generateLineUp() {
         for (i=0; i<lineUpQty; i++) {
-            nextLineUp[i].piece = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].piece;
-            nextLineUp[i].color = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].color;
+            nextLineUp[i] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
+            // nextLineUp[i].color = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].color;
         }
     }
     generateLineUp();
 
     function generateNewPiece() {
         nextLineUp.push({})
-        nextLineUp[lineUpQty-1].piece = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].piece;
-        nextLineUp[lineUpQty-1].color = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]].color;
+        nextLineUp[lineUpQty-1] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
     }
 
 
@@ -176,7 +176,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
 
-/////////////////PIECE FROM NEXT
+/////////////////ASSIGN PIECE FROM NEXT
     function assignNextPiece() {
         player.piece = nextLineUp[0].piece;
         player.color = nextLineUp[0].color;
@@ -209,25 +209,31 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-/////////////////SPAWN FUNCTION
+/////////////////SPAWN PLAYPIECE FUNCTION
     function respawn() {
-        player.pos = 3;
         despawn();
         assignNextPiece();
+        
+        player.pos = 3;
         spawn(player.pos);
     }
 
     function spawn(pos) {
+        despawnGhost();
         const allBoxes = gameArea.querySelectorAll(".box");
         player.piece.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
-                    allBoxes[(x+pos)+(y*10)].classList.add("playPiece");
+                    
+                    allBoxes[(x+pos)+(y*10)].classList.add("playPiece"); 
+                    allBoxes[(x+pos)+(y*10)].classList.add("ghostPiece");
                     allBoxes[(x+pos)+(y*10)].style.background = player.color;
                     allBoxes[(x+pos)+(y*10)].style.border = `1px solid ${player.color}`;
                 }
             })
         });
+
+        spawnGhost();
 
         // insert spawn interval boost here to "flash" moveDown
     }
@@ -236,52 +242,222 @@ window.addEventListener("DOMContentLoaded", () => {
     function despawn() {
         const playPiece = gameArea.querySelectorAll(".playPiece");
         
-            // console.log(playPiece);
             playPiece.forEach((box) => {
                 box.classList.remove("playPiece");
 
                 if (box.classList.contains("top")) {
                     box.style.background = "";
                     box.style.border = "";
-                // }
-                    } else {
+                } else {
                     box.style.background = boxColor;
                     box.style.border = boxBorder;
                 }
-        })
+        });
 
     }
+
+
+/////////////////////////////////////GHOST FUNCTIONS
+    function updateGhost() {
+        despawnGhost();
+        spawnGhost();
+
+    }
+
+    function despawnGhost() {
+        const ghostPiece = gameArea.querySelectorAll(".ghostPiece");
+        
+            ghostPiece.forEach((box) => {
+                box.classList.remove("ghostPiece");
+
+                if (box.classList.contains("top")) {
+                    // box.style.background = "";
+                    // box.style.border = "";
+                } else {
+                    // box.style.background = boxColor;
+                    // box.style.border = boxBorder;
+                    
+                    box.style.boxShadow = "";
+                }
+        });            
+    }
+
+    // function spawnGhost() {
+    //     const allBoxes = gameArea.querySelectorAll(".box");
+    //     let lowestFound = false;
+    //     let ghostPos = player.pos;
+    //     ///// IN FUTURE PUT LOWESTFOUND AND GHOST POS TO DATA
+    //                         console.log(ghostPos);
+        
+    //     while (!lowestFound) {
+    //         player.piece.forEach((row, y) => {
+    //             row.forEach((value, x) => {
+    //                 if (allBoxes[(x+ghostPos)+(y*10)].classList.contains("filled") ||
+    //                         allBoxes[(x+ghostPos)+(y*10)].classList.contains("bottom")) {
+    //                             // ghostPos += 10;
+    //                             console.log(ghostPos);
+    //                             console.log(allBoxes[(x+ghostPos)+(y*10)]);
+    //                             lowestFound = true;
+    //                             return;
+    //                         }
+    //                 // } 
+    //             });
+    //         });
+    //         ghostPos += 10;
+    //     }
+
+    //     if (lowestFound) {
+    //         player.piece.forEach((row, y) => {
+    //             row.forEach((value, x) => {
+    //                 if  (value !== 0) {
+    //                     allBoxes[(x+ghostPos)+(y*10)].classList.add("ghostPiece");
+    //                     allBoxes[(x+ghostPos)+(y*10)].style.background = "white";
+    //                     allBoxes[(x+ghostPos)+(y*10)].style.border = `1px solid white`;
+    //                 };
+    //             });
+    //         });
+    //     }
+    // }
 
     function spawnGhost() {
+        const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+        
+        console.log(ghostPieces);
+        let showGhost = false;
+        let count = 10;
 
+        while (!showGhost) {
+            ghostPieces.forEach((box) => {
+                if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
+                    allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
+                    
+                    
+
+                    count -= 10;
+                    console.log(count);
+
+                    player.piece.forEach((row, y) => {
+                        row.forEach((value, x) => {
+                            if (value !== 0) {
+                                
+                                allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghostPiece");            
+                                allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
+                                // allBoxes[(x+player.pos)+(y*10)+count].style.background = "white";
+                                // allBoxes[(x+player.pos)+(y*10)+count].style.border = `1px solid white`;
+                            }
+                        });
+                    });
+                    showGhost = true;
+                    return;      
+                }
+            });
+            count += 10;
+        }
+        // player.piece.forEach((row, y) => {
+        //     row.forEach((value, x) => {
+        //         if (value !== 0) {
+        //             allBoxes[(x+player.pos)+(y*10)].classList.add("ghostPiece");
+        //         }
+        //     })
+        // });
+
+        // const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
+        // ghostPieces.forEach((ghostPiece) => {
+        //     if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
+        //         allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
+                
+        //         // fill();
+        //         // fillColor();
+        //         // place();
+        //         // return;     
+        //         toFill = true;       
+        //     }
+        // });           
+
+        // if (!toFill) {
+        // } else {
+        // }
+        
     }
+    
 
+
+//////////////////////////////////////PLACE BLOCK
     function place() {
-        fill();
-        fillColor();
-        // assignNextPiece();
-        // respawn();
+        if (game.place){
+            fill();
+            // removePlayPieceBox();
+            game.place = false;
+            respawn();
+        }
     }
+
+    function checkBottom() {
+        const playPieceBox = gameArea.querySelectorAll(".playPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+
+        playPieceBox.forEach((box) => {
+            if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
+                allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
+                game.place = true;       
+            }
+        });
+    }
+
+
 
     function fill() {
-        
         const playPieceBox = gameArea.querySelectorAll(".playPiece");
         playPieceBox.forEach((boxToFill) => {
-            
             boxToFill.classList.add("filled");
-            console.log("filled");
+            boxToFill.style.background = `${player.color}`;
+            console.log(`filled added ${boxToFill.id}`);
+            boxToFill.classList.remove("playPiece");
+        });
+
+    }
+
+    // function removePlayPieceBox() {
+    //     const nodesPlayPieces = gameArea.querySelectorAll(".playPiece");
+    //     const playPieceIDArray = [];
+    //         nodesPlayPieces.forEach((box) => {
+                
+    //         playPieceIDArray.push(
+    //             parseInt(box.id.slice(5))
+    //             )
+            
+    //     });
+    //     console.log(playPieceIDArray);
+    //     // const allBoxes = gameArea.querySelectorAll(".");
+    //     nodesPlayPieces.forEach((box) => {
+            
+    //         box.classList.remove("playPiece");
+    //         console.log(`removed playpiece ${box.id}`)
+    //     });
+    // }
+
+    function fillColor(color) {
+        const toFill = gameArea.querySelectorAll(".toFill");
+        toFill.forEach((boxToFill) => {
+            boxToFill.style.background = color;
+            // console.log(player.color);
+            boxToFill.style.border = `1px solid ${color}`;
+            console.log("colored");
+            boxToFill.classList.add("filled")
+            boxToFill.classList.remove("toFill");
+            // respawn();
+
+            fillColor(color);
+            setTimeout(() => {
+                respawn();
+            }, 100);
         });
     }
 
-    function fillColor() {
-        const toFill = gameArea.querySelectorAll(".filled");
-        toFill.forEach((boxToFill) => {
-            boxToFill.style.background = "blue";
-            // console.log(player.color);
-            boxToFill.style.border = `1px solid blue`;
-            console.log("colored");
-        });
-    }
+/////////////////////////////////////////////////////////////////////////////////////
+
+
 
 /////////////////MOVE FUNCTIONS /////////////////MOVE FUNCTIONS /////////////////MOVE FUNCTIONS
 
@@ -298,30 +474,77 @@ window.addEventListener("DOMContentLoaded", () => {
                 allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
                 
                 // fill();
-
                 // fillColor();
                 // place();
                 // return;     
-                toFill = true;        
+                toFill = true;       
             }
         });           
 
-        // if (toFill) {
-        //     place();
-        //     return;
-        // }
         if (!toFill) {
             player.pos += 10;
             despawn();
             spawn(player.pos);
+            return;
         } else {
-            place();
-            respawn();
-            fillColor();
+            // place();
+            const colorToFill = player.color;
+            fill(colorToFill); //fill - fillColor - respawn
+            // return;
+            // respawn();
+            // fillColor(colorToFill));
         }
 
 
     }
+    function moveDown2() {
+        const playPiece = gameArea.querySelectorAll(".playPiece")
+        const allBoxes = gameArea.querySelectorAll(".box");
+        const playPieceIDArray = [];
+        let border = false;
+        playPiece.forEach((box) => {
+            playPieceIDArray.push(parseInt(box.id.slice(5)))
+        });
+
+        playPieceIDArray.some((id) => {
+            
+            allBoxes[id+10].classList.contains("bottom");
+            allBoxes[id+10].classList.contains("filled");
+            return;
+        });
+
+        if (!border) {
+            player.pos += 10;
+            despawn();
+            spawn(player.pos);
+        }
+    }
+    function moveDown3() {
+        const playPieceBox = gameArea.querySelectorAll(".playPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+        // let downBorder = false;
+
+        playPieceBox.forEach((box) => {
+            if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
+                allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
+                game.place = true;       
+            }
+        });           
+        if (!game.place) {
+            player.pos += 10;
+            despawn();
+            spawn(player.pos);
+            game.place = false; 
+            game.dropRate = 1000;
+            startDropInterval();
+            startPlaceInterval();
+            startCheckBottomInterval();
+            return;
+        } else {
+            // place();
+        }
+    }
+
     function moveRight() {
         // if right filled, dont move
         const playPiece = gameArea.querySelectorAll(".playPiece")
@@ -361,14 +584,60 @@ window.addEventListener("DOMContentLoaded", () => {
 
         
     }
-    // moveDown();
-    setInterval(moveDown, game.dropRate);
+    function rotateRight() {
+
+    }
+    function rotateLeft() {
+
+    }
+
+/////////////////////////////////////////////////////INTERVALS
+
+    let dropInterval;
+    let checkBottomInterval;
+    let placeInterval;
+
+    function startDropInterval() {
+        clearInterval(dropInterval);
+        dropInterval = setInterval(moveDown3, game.dropRate);
+    }
+
+    function startCheckBottomInterval() {
+        clearInterval(checkBottomInterval);
+        checkBottomInterval = setInterval(checkBottom, 10);
+    }
+
+    function startPlaceInterval() {
+        clearInterval(placeInterval);
+        placeInterval = setInterval(place, game.dropRate);
+    }
     
-    setInterval(moveLeft, game.dropRate);
 
     
+////////////////////////////////////////////////////KEYBINDS
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+            moveDown3();
+        }
+    })
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") {
+            moveRight();
+        }
+    })    
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+            moveLeft();
+        }
+    })
+
+
+    startCheckBottomInterval();
+    startDropInterval();
+    startPlaceInterval();
+
+
     assignNextPiece();
-
-    
-
 })
