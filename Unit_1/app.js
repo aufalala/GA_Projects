@@ -1,29 +1,28 @@
 
-// const gameArea = document.getElementById("gameArea");
-
 window.addEventListener("DOMContentLoaded", () => {
 
+
+
+/////////////////TEXT RESIZE /////////////////TEXT RESIZE /////////////////TEXT RESIZE
     const mainBlockDiv = document.getElementById("mainBlock");
-    
-/////////////////TEXT RESIZE
     const titles = mainBlock.querySelectorAll("h3");
-
     const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-        const {width} = entry.contentRect;
-        titles.forEach(title => {
-            title.style.fontSize = (width / 30) + "px";
-        });
-    }
+        for (let entry of entries) {
+            const {width} = entry.contentRect;
+            titles.forEach(title => {
+                title.style.fontSize = (width / 30) + "px";
+            });
+        }
     });
-
     resizeObserver.observe(mainBlockDiv);
 
 
 
 
-
-/////////////////GENERATE 240 BOXES
+//############### INITIALISE BOXES (PLAY AREA) //############### INITIALISE BOXES (PLAY AREA)
+//############### INITIALISE BOXES (PLAY AREA) //############### INITIALISE BOXES (PLAY AREA)
+    
+/////////////////GENERATE 240 BOXES /////////////////GENERATE 240 BOXES /////////////////GENERATE 240 BOXES
     let boxColor = "black";
     let boxBorder = ".1px solid gray";
 
@@ -41,7 +40,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     generateBoxes();
 
-/////////////////HIDE FIRST 30 BOXES
+/////////////////HIDE FIRST 30 BOXES /////////////////HIDE FIRST 30 BOXES /////////////////HIDE FIRST 30 BOXES
     function hideBoxes() {
         const allBoxes = gameArea.querySelectorAll(".box");
         for (let i = 0; i < 30; i++) {
@@ -49,98 +48,60 @@ window.addEventListener("DOMContentLoaded", () => {
             allBoxes[i].style.border = "none";
             allBoxes[i].classList.add("top");
         }
-/////////////////HIDE LAST 10 BOXES
+/////////////////HIDE LAST 10 BOXES /////////////////HIDE LAST 10 BOXES /////////////////HIDE LAST 10 BOXES
         for (let i = 230; i < 240; i++) {
             allBoxes[i].style.background = "none";
             allBoxes[i].style.border = "none";
             allBoxes[i].classList.add("bottom");
         }
     }
-/////////////////DATA /////////////////DATA /////////////////DATA /////////////////DATA
 
-/////////////////PIECES DATA
+//############### DATA //############### DATA //############### DATA //############### DATA
+//############### DATA //############### DATA //############### DATA //############### DATA
+    
+/////////////////PIECES DATA /////////////////PIECES DATA /////////////////PIECES DATA 
     const pieces = {
-        t: { 
-            color: "purple",
-            piece:[
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 0, 0],
-            ], },
-        square: { 
-            color: "yellow",
-            piece:[
-                [1, 1],
-                [1, 1],
-            ], },
-        j: { 
-            color: "blue",
-            piece:[
-                [1, 0, 0],
-                [1, 1, 1],
-                [0, 0, 0],
-            ], },
-        l: { 
-            color: "orange",
-            piece:[
-                [0, 0, 1],
-                [1, 1, 1],
-                [0, 0, 0],
-            ], }, 
-        i: { 
-            color: "cyan",
-            piece:[
-                [0, 0, 0, 0],
-                [1, 1, 1, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-            ], },
-        z: { 
-            color: "red",
-            piece:[
-                [1, 1, 0],
-                [0, 1, 1],
-                [0, 0, 0],
-            ], },
-        s: { 
-            color: "green",
-            piece:[
-                [0, 1, 1],
-                [1, 1, 0],
-                [0, 0, 0],
-            ], },
-
+        o: { color: "yellow",   piece:[ [1, 1], [1, 1], ],                                         },
+        t: { color: "purple",   piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],                        },
+        j: { color: "blue",     piece:[ [1, 0, 0], [1, 1, 1], [0, 0, 0], ],                        },
+        l: { color: "orange",   piece:[ [0, 0, 1], [1, 1, 1], [0, 0, 0], ],                        }, 
+        z: { color: "red",      piece:[ [1, 1, 0], [0, 1, 1], [0, 0, 0], ],                        },
+        s: { color: "green",    piece:[ [0, 1, 1], [1, 1, 0], [0, 0, 0], ],                        },
+        i: { color: "cyan",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
     }
     const pieceNames = Object.keys(pieces);
     
-/////////////////PLAYER DATA
+/////////////////PLAYER DATA /////////////////PLAYER DATA /////////////////PLAYER DATA
     const player = {
         piece: "",
         color: "",
         pos: 3,
     }
 
-/////////////////GAME DATA
-    const game = {
+/////////////////GAME DATA /////////////////GAME DATA /////////////////GAME DATA
+    const game = { 
         dropRate: 300,
         place: false,
     }
 
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-/////////////////HOLDPIECE OBJECT
+/////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA
     const holdP = {
-        piece: [],
+        piece: "",
         color: "",
     };
+
+
+//############### Functions //############### Functions //############### Functions 
+//############### Functions //############### Functions //############### Functions
+
+
 
     function spawnHold() {
 
     }
 
 
-/////////////////CREATE LINE UP LIST ACCORDING TO LINE UP QTY
+/////////////////CREATE LINE UP LIST ACCORDING TO LINE UP QTY /////////////////CREATE LINE UP LIST ACCORDING TO LINE UP QTY
 
     let lineUpQty = 5;
     const nextLineUp = [];
@@ -154,7 +115,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     createLineUpList();
 
-/////////////////GENERATE LINE UP
+/////////////////GENERATE LINE UP /////////////////GENERATE LINE UP /////////////////GENERATE LINE UP
 
     function generateLineUp() {
         for (i=0; i<lineUpQty; i++) {
@@ -176,7 +137,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
 
-/////////////////ASSIGN PIECE FROM NEXT
+/////////////////ASSIGN PIECE FROM NEXT /////////////////ASSIGN PIECE FROM NEXT /////////////////ASSIGN PIECE FROM NEXT
     function assignNextPiece() {
         player.piece = nextLineUp[0].piece;
         player.color = nextLineUp[0].color;
@@ -257,12 +218,14 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
 
-/////////////////////////////////////GHOST FUNCTIONS
-    function updateGhost() {
-        despawnGhost();
-        spawnGhost();
+//############### GHOST FUNCTIONS //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS 
+//############### GHOST FUNCTIONS //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS 
+    
+    // function updateGhost() {
+    //     despawnGhost();
+    //     spawnGhost();
 
-    }
+    // }
 
     function despawnGhost() {
         const ghostPiece = gameArea.querySelectorAll(".ghostPiece");
@@ -332,53 +295,26 @@ window.addEventListener("DOMContentLoaded", () => {
                 if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
                     allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
                     
-                    
-
-                    count -= 10;
-                    console.log(count);
-
-                    player.piece.forEach((row, y) => {
-                        row.forEach((value, x) => {
-                            if (value !== 0) {
-                                
-                                allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghostPiece");            
-                                allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
-                                // allBoxes[(x+player.pos)+(y*10)+count].style.background = "white";
-                                // allBoxes[(x+player.pos)+(y*10)+count].style.border = `1px solid white`;
-                            }
+                        count -= 10;
+                        console.log(count);
+    
+                        player.piece.forEach((row, y) => {
+                            row.forEach((value, x) => {
+                                if (value !== 0) {
+                                    
+                                    allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghostPiece");            
+                                    allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
+                                    // allBoxes[(x+player.pos)+(y*10)+count].style.background = "white";
+                                    // allBoxes[(x+player.pos)+(y*10)+count].style.border = `1px solid white`;
+                                }
+                            });
                         });
-                    });
-                    showGhost = true;
-                    return;      
+                        showGhost = true;
+                        return;      
                 }
             });
             count += 10;
-        }
-        // player.piece.forEach((row, y) => {
-        //     row.forEach((value, x) => {
-        //         if (value !== 0) {
-        //             allBoxes[(x+player.pos)+(y*10)].classList.add("ghostPiece");
-        //         }
-        //     })
-        // });
-
-        // const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
-        // ghostPieces.forEach((ghostPiece) => {
-        //     if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
-        //         allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
-                
-        //         // fill();
-        //         // fillColor();
-        //         // place();
-        //         // return;     
-        //         toFill = true;       
-        //     }
-        // });           
-
-        // if (!toFill) {
-        // } else {
-        // }
-        
+        }        
     }
     
 
@@ -405,8 +341,6 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-
-
     function fill() {
         const playPieceBox = gameArea.querySelectorAll(".playPiece");
         playPieceBox.forEach((boxToFill) => {
@@ -418,107 +352,76 @@ window.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    // function removePlayPieceBox() {
-    //     const nodesPlayPieces = gameArea.querySelectorAll(".playPiece");
-    //     const playPieceIDArray = [];
-    //         nodesPlayPieces.forEach((box) => {
-                
-    //         playPieceIDArray.push(
-    //             parseInt(box.id.slice(5))
-    //             )
-            
-    //     });
-    //     console.log(playPieceIDArray);
-    //     // const allBoxes = gameArea.querySelectorAll(".");
-    //     nodesPlayPieces.forEach((box) => {
-            
-    //         box.classList.remove("playPiece");
-    //         console.log(`removed playpiece ${box.id}`)
+    // function fillColor(color) {
+    //     const toFill = gameArea.querySelectorAll(".toFill");
+    //     toFill.forEach((boxToFill) => {
+    //         boxToFill.style.background = color;
+    //         // console.log(player.color);
+    //         boxToFill.style.border = `1px solid ${color}`;
+    //         console.log("colored");
+    //         boxToFill.classList.add("filled")
+    //         boxToFill.classList.remove("toFill");
+    //         // respawn();
+    //         fillColor(color);
+    //         setTimeout(() => {
+    //             respawn();
+    //         }, 100);
     //     });
     // }
 
-    function fillColor(color) {
-        const toFill = gameArea.querySelectorAll(".toFill");
-        toFill.forEach((boxToFill) => {
-            boxToFill.style.background = color;
-            // console.log(player.color);
-            boxToFill.style.border = `1px solid ${color}`;
-            console.log("colored");
-            boxToFill.classList.add("filled")
-            boxToFill.classList.remove("toFill");
-            // respawn();
 
-            fillColor(color);
-            setTimeout(() => {
-                respawn();
-            }, 100);
-        });
-    }
+//############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS 
+//############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS
 
-/////////////////////////////////////////////////////////////////////////////////////
+    // function moveDown() {
+    //     // if below filled, place
+    //     const playPieceBox = gameArea.querySelectorAll(".playPiece");
+    //     const allBoxes = gameArea.querySelectorAll(".box");
+    //     // console.log(playPieceBox);
+    //     // console.log(box.id);
+    //     let toFill = false;
 
+    //     playPieceBox.forEach((box) => {
+    //         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
+    //             allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
+    //                 toFill = true;       
+    //         }
+    //     });           
 
+    //     if (!toFill) {
+    //         player.pos += 10;
+    //         despawn();
+    //         spawn(player.pos);
+    //         return;
+    //     } else {
+    //         // place();
+    //         const colorToFill = player.color;
+    //         fill(colorToFill); //fill - fillColor - respawn
+    //     }
+    // }
+    // function moveDown2() {
+    //     const playPiece = gameArea.querySelectorAll(".playPiece")
+    //     const allBoxes = gameArea.querySelectorAll(".box");
+    //     const playPieceIDArray = [];
+    //     let border = false;
+    //     playPiece.forEach((box) => {
+    //         playPieceIDArray.push(parseInt(box.id.slice(5)))
+    //     });
 
-/////////////////MOVE FUNCTIONS /////////////////MOVE FUNCTIONS /////////////////MOVE FUNCTIONS
-
-    function moveDown() {
-        // if below filled, place
-        const playPieceBox = gameArea.querySelectorAll(".playPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
-        // console.log(playPieceBox);
-        // console.log(box.id);
-        let toFill = false;
-
-        playPieceBox.forEach((box) => {
-            if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
-                allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
-                
-                // fill();
-                // fillColor();
-                // place();
-                // return;     
-                toFill = true;       
-            }
-        });           
-
-        if (!toFill) {
-            player.pos += 10;
-            despawn();
-            spawn(player.pos);
-            return;
-        } else {
-            // place();
-            const colorToFill = player.color;
-            fill(colorToFill); //fill - fillColor - respawn
-            // return;
-            // respawn();
-            // fillColor(colorToFill));
-        }
-
-
-    }
-    function moveDown2() {
-        const playPiece = gameArea.querySelectorAll(".playPiece")
-        const allBoxes = gameArea.querySelectorAll(".box");
-        const playPieceIDArray = [];
-        let border = false;
-        playPiece.forEach((box) => {
-            playPieceIDArray.push(parseInt(box.id.slice(5)))
-        });
-
-        playPieceIDArray.some((id) => {
+    //     playPieceIDArray.some((id) => {
             
-            allBoxes[id+10].classList.contains("bottom");
-            allBoxes[id+10].classList.contains("filled");
-            return;
-        });
+    //         allBoxes[id+10].classList.contains("bottom");
+    //         allBoxes[id+10].classList.contains("filled");
+    //         return;
+    //     });
 
-        if (!border) {
-            player.pos += 10;
-            despawn();
-            spawn(player.pos);
-        }
-    }
+    //     if (!border) {
+    //         player.pos += 10;
+    //         despawn();
+    //         spawn(player.pos);
+    //     }
+    // }
+    
     function moveDown3() {
         const playPieceBox = gameArea.querySelectorAll(".playPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
@@ -613,8 +516,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     
 
-    
-////////////////////////////////////////////////////KEYBINDS
+//############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
+//############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
     document.addEventListener("keydown", (event) => {
         if (event.key === "ArrowDown") {
             moveDown3();
@@ -632,12 +535,35 @@ window.addEventListener("DOMContentLoaded", () => {
             moveLeft();
         }
     })
+    
 
+//############### INTERVALS //############### INTERVALS  //############### INTERVALS  //############### INTERVALS 
+//############### INTERVALS //############### INTERVALS  //############### INTERVALS  //############### INTERVALS 
 
+    let dropInterval;
+    let checkBottomInterval;
+    let placeInterval;
+
+    function startDropInterval() {
+        clearInterval(dropInterval);
+        dropInterval = setInterval(moveDown3, game.dropRate);
+    }
+
+    function startCheckBottomInterval() {
+        clearInterval(checkBottomInterval);
+        checkBottomInterval = setInterval(checkBottom, 10);
+    }
+
+    function startPlaceInterval() {
+        clearInterval(placeInterval);
+        placeInterval = setInterval(place, game.dropRate);
+    }
+
+    
     startCheckBottomInterval();
     startDropInterval();
     startPlaceInterval();
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     assignNextPiece();
 })
