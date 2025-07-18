@@ -180,6 +180,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function spawn(pos) {
+        despawn();
         despawnGhost();
         const allBoxes = gameArea.querySelectorAll(".box");
         player.piece.forEach((row, y) => {
@@ -220,12 +221,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS 
 //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS 
-    
-    // function updateGhost() {
-    //     despawnGhost();
-    //     spawnGhost();
-
-    // }
 
     function despawnGhost() {
         const ghostPiece = gameArea.querySelectorAll(".ghostPiece");
@@ -244,43 +239,6 @@ window.addEventListener("DOMContentLoaded", () => {
                 }
         });            
     }
-
-    // function spawnGhost() {
-    //     const allBoxes = gameArea.querySelectorAll(".box");
-    //     let lowestFound = false;
-    //     let ghostPos = player.pos;
-    //     ///// IN FUTURE PUT LOWESTFOUND AND GHOST POS TO DATA
-    //                         console.log(ghostPos);
-        
-    //     while (!lowestFound) {
-    //         player.piece.forEach((row, y) => {
-    //             row.forEach((value, x) => {
-    //                 if (allBoxes[(x+ghostPos)+(y*10)].classList.contains("filled") ||
-    //                         allBoxes[(x+ghostPos)+(y*10)].classList.contains("bottom")) {
-    //                             // ghostPos += 10;
-    //                             console.log(ghostPos);
-    //                             console.log(allBoxes[(x+ghostPos)+(y*10)]);
-    //                             lowestFound = true;
-    //                             return;
-    //                         }
-    //                 // } 
-    //             });
-    //         });
-    //         ghostPos += 10;
-    //     }
-
-    //     if (lowestFound) {
-    //         player.piece.forEach((row, y) => {
-    //             row.forEach((value, x) => {
-    //                 if  (value !== 0) {
-    //                     allBoxes[(x+ghostPos)+(y*10)].classList.add("ghostPiece");
-    //                     allBoxes[(x+ghostPos)+(y*10)].style.background = "white";
-    //                     allBoxes[(x+ghostPos)+(y*10)].style.border = `1px solid white`;
-    //                 };
-    //             });
-    //         });
-    //     }
-    // }
 
     function spawnGhost() {
         const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
@@ -317,13 +275,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }        
     }
     
-
-
 //////////////////////////////////////PLACE BLOCK
     function place() {
         if (game.place){
             fill();
-            // removePlayPieceBox();
             game.place = false;
             respawn();
         }
@@ -352,80 +307,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    // function fillColor(color) {
-    //     const toFill = gameArea.querySelectorAll(".toFill");
-    //     toFill.forEach((boxToFill) => {
-    //         boxToFill.style.background = color;
-    //         // console.log(player.color);
-    //         boxToFill.style.border = `1px solid ${color}`;
-    //         console.log("colored");
-    //         boxToFill.classList.add("filled")
-    //         boxToFill.classList.remove("toFill");
-    //         // respawn();
-    //         fillColor(color);
-    //         setTimeout(() => {
-    //             respawn();
-    //         }, 100);
-    //     });
-    // }
-
-
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS 
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS
-
-    // function moveDown() {
-    //     // if below filled, place
-    //     const playPieceBox = gameArea.querySelectorAll(".playPiece");
-    //     const allBoxes = gameArea.querySelectorAll(".box");
-    //     // console.log(playPieceBox);
-    //     // console.log(box.id);
-    //     let toFill = false;
-
-    //     playPieceBox.forEach((box) => {
-    //         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
-    //             allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
-    //                 toFill = true;       
-    //         }
-    //     });           
-
-    //     if (!toFill) {
-    //         player.pos += 10;
-    //         despawn();
-    //         spawn(player.pos);
-    //         return;
-    //     } else {
-    //         // place();
-    //         const colorToFill = player.color;
-    //         fill(colorToFill); //fill - fillColor - respawn
-    //     }
-    // }
-    // function moveDown2() {
-    //     const playPiece = gameArea.querySelectorAll(".playPiece")
-    //     const allBoxes = gameArea.querySelectorAll(".box");
-    //     const playPieceIDArray = [];
-    //     let border = false;
-    //     playPiece.forEach((box) => {
-    //         playPieceIDArray.push(parseInt(box.id.slice(5)))
-    //     });
-
-    //     playPieceIDArray.some((id) => {
-            
-    //         allBoxes[id+10].classList.contains("bottom");
-    //         allBoxes[id+10].classList.contains("filled");
-    //         return;
-    //     });
-
-    //     if (!border) {
-    //         player.pos += 10;
-    //         despawn();
-    //         spawn(player.pos);
-    //     }
-    // }
     
     function moveDown3() {
         const playPieceBox = gameArea.querySelectorAll(".playPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
-        // let downBorder = false;
 
         playPieceBox.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
@@ -437,56 +324,75 @@ window.addEventListener("DOMContentLoaded", () => {
             player.pos += 10;
             despawn();
             spawn(player.pos);
-            game.place = false; 
-            game.dropRate = 1000;
+            game.place = false;
             startDropInterval();
             startPlaceInterval();
             startCheckBottomInterval();
             return;
-        } else {
-            // place();
         }
     }
 
     function moveRight() {
-        // if right filled, dont move
-        const playPiece = gameArea.querySelectorAll(".playPiece")
-        let border = false;
+        const playPiece = gameArea.querySelectorAll(".playPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+        let blocked = false;
+        
+        //check if piece @ rightmost border
         playPiece.forEach((box) => {
 
             if (parseInt(box.id.slice(5))%10 == 0) {
-                border = true;
+                blocked = true;
                 return;
             }
         });
-        if (!border) {
+        //check if piece blocked by placed box left
+        playPiece.forEach((box) => {
+            if (
+                allBoxes[parseInt(box.id.slice(5))].classList.contains("bottom") ||
+                allBoxes[parseInt(box.id.slice(5))].classList.contains("filled")) {
+                blocked = true;       
+            }
+        });
+        if (!blocked) {
             player.pos += 1;
             despawn();
             spawn(player.pos);
+            game.place = false;
+            startDropInterval();
+            startCheckBottomInterval();
         }
         
     }
     function moveLeft() {
-        // if left filled, dont move
-        
-        const playPiece = gameArea.querySelectorAll(".playPiece")
-        let border = false;
+        let blocked = false;
+        const playPiece = gameArea.querySelectorAll(".playPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+        //check if piece @ leftmost border
         playPiece.forEach((box) => {
-
             if ((parseInt(box.id.slice(5))-1)%10 == 0 ||
                 parseInt(box.id.slice(5) === 1)) {
-                border = true;
+                blocked = true;
                 return;
             }
         });
-        if (!border) {
+        //check if piece blocked by placed box left
+        playPiece.forEach((box) => {
+            if (
+                allBoxes[parseInt(box.id.slice(5))-2].classList.contains("bottom") ||
+                allBoxes[parseInt(box.id.slice(5))-2].classList.contains("filled")) {
+                blocked = true;       
+            }
+        });
+        if (!blocked) {
             player.pos -= 1;
             despawn();
             spawn(player.pos);
+            game.place = false;
+            startDropInterval();
+            startCheckBottomInterval();
         }
-
-        
     }
+
     function rotateRight() {
 
     }
@@ -494,26 +400,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     }
 
-/////////////////////////////////////////////////////INTERVALS
-
-    let dropInterval;
-    let checkBottomInterval;
-    let placeInterval;
-
-    function startDropInterval() {
-        clearInterval(dropInterval);
-        dropInterval = setInterval(moveDown3, game.dropRate);
-    }
-
-    function startCheckBottomInterval() {
-        clearInterval(checkBottomInterval);
-        checkBottomInterval = setInterval(checkBottom, 10);
-    }
-
-    function startPlaceInterval() {
-        clearInterval(placeInterval);
-        placeInterval = setInterval(place, game.dropRate);
-    }
     
 
 //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
@@ -556,7 +442,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function startPlaceInterval() {
         clearInterval(placeInterval);
-        placeInterval = setInterval(place, game.dropRate);
+        placeInterval = setInterval(place, game.dropRate*2);
     }
 
     
