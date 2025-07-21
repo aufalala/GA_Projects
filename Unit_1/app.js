@@ -5,7 +5,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////TEXT RESIZE /////////////////TEXT RESIZE /////////////////TEXT RESIZE
     const mainBlockDiv = document.getElementById("mainBlock");
-    const titles = mainBlock.querySelectorAll("h3");
+    const titles = document.querySelectorAll("h3");
     const resizeObserver = new ResizeObserver(entries => {
         for (let entry of entries) {
             const {width} = entry.contentRect;
@@ -90,15 +90,18 @@ window.addEventListener("DOMContentLoaded", () => {
         color: "",
     };
 
+/////////////////GHOSTPIECE DATA /////////////////GHOSTPIECE DATA /////////////////GHOSTPIECE DATA 
+    const ghostPiece = {
+        pos: "",
+    };
+
 
 //############### Functions //############### Functions //############### Functions 
 //############### Functions //############### Functions //############### Functions
 
 
 
-    function spawnHold() {
 
-    }
 
 
 /////////////////CREATE LINE UP LIST ACCORDING TO LINE UP QTY /////////////////CREATE LINE UP LIST ACCORDING TO LINE UP QTY
@@ -136,6 +139,10 @@ window.addEventListener("DOMContentLoaded", () => {
         //draw into divs
     }
 
+    function spawnHold() {
+
+    }
+
 
 /////////////////ASSIGN PIECE FROM NEXT /////////////////ASSIGN PIECE FROM NEXT /////////////////ASSIGN PIECE FROM NEXT
     function assignNextPiece() {
@@ -147,15 +154,9 @@ window.addEventListener("DOMContentLoaded", () => {
         console.log(nextLineUp);
 
         generateNewPiece();
-
-        // for (i=0; i<lineUpQty-1; i++) {
-        // }
-
-        // insert fea
-        // if line up qty 0
     }
 
-/////////////////HOLD FUNCTION
+/////////////////HOLD FUNCTION /////////////////HOLD FUNCTION /////////////////HOLD FUNCTION /////////////////HOLD FUNCTION 
     function holdPiece() {
         if (holdP.color) {
             [player.piece, holdP.piece] = [holdP.piece, player.piece];
@@ -163,14 +164,20 @@ window.addEventListener("DOMContentLoaded", () => {
             player.pos = 3;
             despawn();
             spawn(player.pos);
+            startCheckBottomInterval();
+            startDropInterval();
+            startPlaceInterval();
         } else {
             holdP.piece = player.piece;
             holdP.color = player.color;
             respawn();
+            startCheckBottomInterval();
+            startDropInterval();
+            startPlaceInterval();
         }
     }
 
-/////////////////SPAWN PLAYPIECE FUNCTION
+/////////////////SPAWN PLAYPIECE FUNCTION /////////////////SPAWN PLAYPIECE FUNCTION /////////////////SPAWN PLAYPIECE FUNCTION 
     function respawn() {
         despawn();
         assignNextPiece();
@@ -199,12 +206,11 @@ window.addEventListener("DOMContentLoaded", () => {
 
         // insert spawn interval boost here to "flash" moveDown
     }
-    // spawn(player.pos);
 
     function despawn() {
-        const playPiece = gameArea.querySelectorAll(".playPiece");
+        const playPieces = gameArea.querySelectorAll(".playPiece");
         
-            playPiece.forEach((box) => {
+            playPieces.forEach((box) => {
                 box.classList.remove("playPiece");
 
                 if (box.classList.contains("top")) {
@@ -222,6 +228,7 @@ window.addEventListener("DOMContentLoaded", () => {
 //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS 
 //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS //############### GHOST FUNCTIONS 
 
+/////////////////DESPAWN GHOST /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST  
     function despawnGhost() {
         const ghostPiece = gameArea.querySelectorAll(".ghostPiece");
         
@@ -231,6 +238,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 if (box.classList.contains("top")) {
                     // box.style.background = "";
                     // box.style.border = "";
+                    box.style.boxShadow = "";
                 } else {
                     // box.style.background = boxColor;
                     // box.style.border = boxBorder;
@@ -240,13 +248,14 @@ window.addEventListener("DOMContentLoaded", () => {
         });            
     }
 
+/////////////////SPAWN GHOST /////////////////SPAWN GHOST /////////////////SPAWN GHOST  
     function spawnGhost() {
         const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
         
         console.log(ghostPieces);
         let showGhost = false;
-        let count = 10;
+        let count = 0;
 
         while (!showGhost) {
             ghostPieces.forEach((box) => {
@@ -254,6 +263,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
                     
                         count -= 10;
+                        ghostPiece.pos = count + player.pos - 10;
                         console.log(count);
     
                         player.piece.forEach((row, y) => {
@@ -275,15 +285,28 @@ window.addEventListener("DOMContentLoaded", () => {
         }        
     }
     
-//////////////////////////////////////PLACE BLOCK
+/////////////////PLACE BLOCK /////////////////PLACE BLOCK /////////////////PLACE BLOCK 
     function place() {
         if (game.place){
             fill();
+            const topBoxes = gameArea.querySelectorAll(".top");
+            const allBoxes = gameArea.querySelectorAll(".box");
+
+            topBoxes.forEach((box) => {
+                if (allBoxes[parseInt(box.id.slice(5))-1].classList.contains("top") &&
+                    allBoxes[parseInt(box.id.slice(5))-1].classList.contains("filled")) {
+                        console.log("GAME OVER");
+                        return;
+                }
+                return;
+            });
+
             game.place = false;
             respawn();
         }
     }
 
+/////////////////CHECK BOTTOM /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM 
     function checkBottom() {
         const playPieceBox = gameArea.querySelectorAll(".playPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
@@ -296,9 +319,10 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+/////////////////FILL /////////////////FILL /////////////////FILL /////////////////FILL 
     function fill() {
-        const playPieceBox = gameArea.querySelectorAll(".playPiece");
-        playPieceBox.forEach((boxToFill) => {
+        const playPieces = gameArea.querySelectorAll(".playPiece");
+        playPieces.forEach((boxToFill) => {
             boxToFill.classList.add("filled");
             boxToFill.style.background = `${player.color}`;
             console.log(`filled added ${boxToFill.id}`);
@@ -311,10 +335,10 @@ window.addEventListener("DOMContentLoaded", () => {
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS
     
     function moveDown3() {
-        const playPieceBox = gameArea.querySelectorAll(".playPiece");
+        const playPieces = gameArea.querySelectorAll(".playPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
 
-        playPieceBox.forEach((box) => {
+        playPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
                 game.place = true;       
@@ -345,7 +369,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 return;
             }
         });
-        //check if piece blocked by placed box left
+        //check if piece blocked by placed box right
         playPiece.forEach((box) => {
             if (
                 allBoxes[parseInt(box.id.slice(5))].classList.contains("bottom") ||
@@ -353,6 +377,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 blocked = true;       
             }
         });
+        //if not blocked, move right
         if (!blocked) {
             player.pos += 1;
             despawn();
@@ -363,6 +388,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         
     }
+
     function moveLeft() {
         let blocked = false;
         const playPiece = gameArea.querySelectorAll(".playPiece");
@@ -383,6 +409,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 blocked = true;       
             }
         });
+        //if not blocked, move left
         if (!blocked) {
             player.pos -= 1;
             despawn();
@@ -393,9 +420,99 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function rotateRight() {
-
+    function hardDrop() {
+        player.pos = ghostPiece.pos;
+        spawn(player.pos+10);
+        game.place = true;
+        place();
     }
+
+    function rotateRight() {
+        const playPiece = gameArea.querySelectorAll(".playPiece");
+        const allBoxes = gameArea.querySelectorAll(".box");
+
+        const oldMatrix = player.piece;
+        let blocked = false;
+
+        const newMatrix = oldMatrix[0].map((_, colIndex) => 
+            oldMatrix.map(row => row[colIndex])).map(row => row.reverse());
+
+        newMatrix.forEach((row, y) => {
+            row.forEach((value, x) => {
+                if (value !== 0 && blocked === false) {
+                    const newPos = (x+player.pos)+(y*10); 
+
+                    if (allBoxes[newPos].classList.contains("filled") ||         //prevent rotation taking up filled/bottom box
+                        allBoxes[newPos].classList.contains("bottom") ||
+
+                        ((parseInt(allBoxes[newPos].id.slice(5))-1)%10 == 0 ||   //prevent rotation clipping between left and right border
+                        parseInt(allBoxes[newPos].id.slice(5) === 1) && 
+                        (parseInt(allBoxes[newPos].id.slice(5))%10 == 0))  
+                    ) {
+                            blocked = true;
+                    }
+                }
+            });
+        });
+        
+        if (!blocked) {
+            player.piece = newMatrix;
+            spawn(player.pos);
+        }
+    }
+
+    //     function rotateRight() {
+    //     const allBoxes = gameArea.querySelectorAll(".box");
+
+    //     const oldMatrix = player.piece;
+    //     const rotated = oldMatrix[0].map((_, colIndex) => 
+    //         oldMatrix.map(row => row[colIndex])).map(row => row.reverse());
+
+    //     const kicks = [ 
+    //         { x: 0, y: 0 },   
+    //         { x: -1, y: 0 },  
+    //         { x: 1, y: 0 },   
+    //         { x: 0, y: -1 },  
+    //         { x: -1, y: -1 }, 
+    //         { x: 1, y: -1 },  
+    //     ];
+
+    //     for (let kick of kicks) {
+    //         let blocked = false;
+
+    //         for (let y = 0; y < rotated.length; y++) {
+    //             for (let x = 0; x < rotated[y].length; x++) {
+    //                 if (rotated[y][x] !== 0) {
+    //                     let newX = x + player.pos + kick.x;
+    //                     let newY = y + kick.y;
+    //                     let index = newX + newY * 10;
+
+    //                     if ( 
+    //                         allBoxes[index].classList.contains("filled") ||
+    //                         allBoxes[index].classList.contains("bottom") ||
+
+    //                             ((parseInt(allBoxes[index].id.slice(5))-1)%10 == 0 ||
+    //                             parseInt(allBoxes[index].id.slice(5) === 1) && 
+    //                             (parseInt(allBoxes[index].id.slice(5))%10 == 0)) 
+    //                     ) {
+    //                         blocked = true;
+    //                         // break;
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         if (!blocked) {
+    //             player.piece = rotated;
+    //             player.pos += kick.x;
+    //             spawn(player.pos);
+    //             startCheckBottomInterval();
+    //             startPlaceInterval();
+    //             return;
+    //         }
+    //     }
+    // }
+
     function rotateLeft() {
 
     }
@@ -404,24 +521,71 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
 //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowDown") {
-            moveDown3();
-        }
-    })
+    // document.addEventListener("keydown", (event) => {
+    //     if (event.key === "ArrowDown") {
+    //         moveDown3();
+    //     }
+    // })
 
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowRight") {
-            moveRight();
-        }
-    })    
+    // document.addEventListener("keydown", (event) => {
+    //     if (event.key === "ArrowRight") {
+    //         moveRight();
+    //     }
+    // })    
 
-    document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") {
-            moveLeft();
-        }
-    })
+    // document.addEventListener("keydown", (event) => {
+    //     if (event.key === "ArrowLeft") {
+    //         moveLeft();
+    //     }
+    // })
+
+    // document.addEventListener("keydown", (event) => {
+    //     if (event.key === "Space") {
+    //         hardDrop();
+    //     }
+    // })   
     
+    let keyIntervals = {};
+
+    document.addEventListener("keydown", (event) => {
+        if (keyIntervals[event.key]) return;
+        switch (event.key) {
+            case "ArrowDown":
+                moveDown3();
+                keyIntervals.ArrowDown = setInterval(moveDown3, 100);
+                break;
+            case "ArrowRight":
+                moveRight();
+                keyIntervals.ArrowRight = setInterval(moveRight, 100);
+                break;
+            case "ArrowLeft":
+                moveLeft();
+                keyIntervals.ArrowLeft = setInterval(moveLeft, 100);
+                break;
+
+            case " ":
+            case "Spacebar":
+            case "Space":
+                hardDrop();
+                break;
+
+            case "ArrowUp":
+                rotateRight();
+                break;
+
+            case "c":
+                holdPiece();
+                break;
+        }
+    });
+
+    document.addEventListener("keyup", (event) => {
+        if (keyIntervals[event.key]) {
+            clearInterval(keyIntervals[event.key]);
+            delete keyIntervals[event.key];
+        }
+    });
+
 
 //############### INTERVALS //############### INTERVALS  //############### INTERVALS  //############### INTERVALS 
 //############### INTERVALS //############### INTERVALS  //############### INTERVALS  //############### INTERVALS 
