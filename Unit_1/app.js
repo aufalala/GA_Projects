@@ -308,10 +308,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM 
     function checkBottom() {
-        const playPieceBox = gameArea.querySelectorAll(".playPiece");
+        const playPieces = gameArea.querySelectorAll(".playPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
 
-        playPieceBox.forEach((box) => {
+        playPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
                 game.place = true;       
@@ -521,29 +521,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
 //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS //############### KEYBINDS
-    // document.addEventListener("keydown", (event) => {
-    //     if (event.key === "ArrowDown") {
-    //         moveDown3();
-    //     }
-    // })
-
-    // document.addEventListener("keydown", (event) => {
-    //     if (event.key === "ArrowRight") {
-    //         moveRight();
-    //     }
-    // })    
-
-    // document.addEventListener("keydown", (event) => {
-    //     if (event.key === "ArrowLeft") {
-    //         moveLeft();
-    //     }
-    // })
-
-    // document.addEventListener("keydown", (event) => {
-    //     if (event.key === "Space") {
-    //         hardDrop();
-    //     }
-    // })   
+ 
     
     let keyIntervals = {};
 
