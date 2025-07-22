@@ -82,6 +82,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const game = { 
         dropRate: 300,
         place: false,
+        linesToClear: [],
     }
 
 /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA
@@ -253,7 +254,6 @@ window.addEventListener("DOMContentLoaded", () => {
         const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
         const allBoxes = gameArea.querySelectorAll(".box");
         
-        console.log(ghostPieces);
         let showGhost = false;
         let count = 0;
 
@@ -324,11 +324,61 @@ window.addEventListener("DOMContentLoaded", () => {
         const playPieces = gameArea.querySelectorAll(".playPiece");
         playPieces.forEach((boxToFill) => {
             boxToFill.classList.add("filled");
+            boxToFill.classList.add("checkLineClear");
             boxToFill.style.background = `${player.color}`;
             console.log(`filled added ${boxToFill.id}`);
             boxToFill.classList.remove("playPiece");
         });
+        checkLineCLear();
 
+    }
+
+    function checkLineCLear() {
+        const allBoxes = document.querySelectorAll(".box");
+        const checkPieces = document.querySelectorAll(".checkLineClear");
+        const linesToClear = []; //may need to move to global scope. maybe game data
+        const linesToCheck = [];
+
+        checkPieces.forEach((box) => {
+            const lineStart = Math.floor((parseInt(box.id.slice(5))-1)/10)*10;
+            console.log(lineStart);
+                if (!linesToCheck.includes(lineStart)) {
+                    linesToCheck.push(lineStart);
+                    
+            }
+        })
+        console.log(linesToCheck);
+
+        linesToCheck.forEach((line) => {
+            let gap = false;
+            for (i=0; i<10; i++) {
+                if (!allBoxes[line+i].classList.contains("filled")) {
+                    gap = true;
+                    break;
+                }
+            }
+        
+            if (!gap) {
+                linesToClear.push(line); //may need to move to global scope. maybe game data
+            } 
+
+        }) 
+
+
+        if (linesToClear) { //may need global scope game data
+            clearLines(); //remember to reset linesToClear    
+            console.log(linesToClear)
+            console.log("-------------")
+        }
+
+    }
+
+    function clearLines() {
+        
+        const checkPieces = document.querySelectorAll(".checkLineClear");
+        checkPieces.forEach((box) => {
+            box.classList.remove("checkLineClear");
+        });
     }
 
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS 
@@ -458,60 +508,72 @@ window.addEventListener("DOMContentLoaded", () => {
         if (!blocked) {
             player.piece = newMatrix;
             spawn(player.pos);
+            startDropInterval();
+            startCheckBottomInterval();
+            startPlaceInterval();
         }
     }
 
-    //     function rotateRight() {
-    //     const allBoxes = gameArea.querySelectorAll(".box");
+        function rotateRight2() {
+        const allBoxes = gameArea.querySelectorAll(".box");
 
-    //     const oldMatrix = player.piece;
-    //     const rotated = oldMatrix[0].map((_, colIndex) => 
-    //         oldMatrix.map(row => row[colIndex])).map(row => row.reverse());
+        const oldMatrix = player.piece;
+        const rotated = oldMatrix[0].map((_, colIndex) => 
+            oldMatrix.map(row => row[colIndex])).map(row => row.reverse());
 
-    //     const kicks = [ 
-    //         { x: 0, y: 0 },   
-    //         { x: -1, y: 0 },  
-    //         { x: 1, y: 0 },   
-    //         { x: 0, y: -1 },  
-    //         { x: -1, y: -1 }, 
-    //         { x: 1, y: -1 },  
-    //     ];
+        const kicks = [ 
+            { x: 0, y: 0 },   
+            { x: -1, y: 0 },  
+            { x: 1, y: 0 },   
+            { x: 0, y: -1 },  
+            { x: -1, y: -1 }, 
+            { x: 1, y: -1 },  
+        ];
 
-    //     for (let kick of kicks) {
-    //         let blocked = false;
+        for (let kick of kicks) {
+            let open = true;
 
-    //         for (let y = 0; y < rotated.length; y++) {
-    //             for (let x = 0; x < rotated[y].length; x++) {
-    //                 if (rotated[y][x] !== 0) {
-    //                     let newX = x + player.pos + kick.x;
-    //                     let newY = y + kick.y;
-    //                     let index = newX + newY * 10;
+            for (let y = 0; y < rotated.length; y++) {
+                for (let x = 0; x < rotated[y].length; x++) {
+                    if (rotated[y][x] !== 0) {
+                        let newX = x + player.pos + kick.x;
+                        let newY = y + kick.y;
+                        let index = newX + newY * 10;
+                        // console.log(index);
 
-    //                     if ( 
-    //                         allBoxes[index].classList.contains("filled") ||
-    //                         allBoxes[index].classList.contains("bottom") ||
+                        if ( 
+                            allBoxes[index].classList.contains("filled") ||
+                            allBoxes[index].classList.contains("bottom") ||
+                            index >= 230
+                                                        
+                            ||
 
-    //                             ((parseInt(allBoxes[index].id.slice(5))-1)%10 == 0 ||
-    //                             parseInt(allBoxes[index].id.slice(5) === 1) && 
-    //                             (parseInt(allBoxes[index].id.slice(5))%10 == 0)) 
-    //                     ) {
-    //                         blocked = true;
-    //                         // break;
-    //                     }
-    //                 }
-    //             }
-    //         }
+                                ((parseInt(allBoxes[index].id.slice(5))-1)%10 == 0 ||
+                                parseInt(allBoxes[index].id.slice(5) === 1) && 
+                                (parseInt(allBoxes[index].id.slice(5))%10 == 0)) 
+                        ) {
+                            open = false;
+                            break;
+                        }
+                    }
+                }
+                if (!open) {
+                    break;
+                }
+            }
 
-    //         if (!blocked) {
-    //             player.piece = rotated;
-    //             player.pos += kick.x;
-    //             spawn(player.pos);
-    //             startCheckBottomInterval();
-    //             startPlaceInterval();
-    //             return;
-    //         }
-    //     }
-    // }
+            if (open) {
+                player.piece = rotated;
+                player.pos += kick.x + (kick.y*10);
+                break;
+            }
+        }
+        spawn(player.pos);
+        game.place = false;
+        // startDropInterval();
+        startCheckBottomInterval();
+        startPlaceInterval();
+    }
 
     function rotateLeft() {
 
@@ -548,7 +610,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 break;
 
             case "ArrowUp":
-                rotateRight();
+                rotateRight2();
                 break;
 
             case "c":
@@ -579,7 +641,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function startCheckBottomInterval() {
         clearInterval(checkBottomInterval);
-        checkBottomInterval = setInterval(checkBottom, 10);
+        checkBottomInterval = setInterval(checkBottom, 100);
     }
 
     function startPlaceInterval() {
