@@ -11,41 +11,72 @@ main page
 
 do feats: rotate left, line up (div), hold (div), hold (div) antispam function, line clear 
 
-CODE FROM OFFICE ----------------------
 
-  function checkLineCLear() {
-    const allBoxes = document.querySelectorAll(".box");
-    const playPieces = document.querySelectorAll(".playPiece");
-    const linesToClear = []; //may need to move to global scope. maybe game data
-    const linesToCheck = [];
 
-    playPieces.forEach((box) => {
-      const lineStart = Math.floor((parseInt(box.id.slice(5))-1)/10)*10;
-      if (!linesToCheck.includes(lineStart)) {
-        linesToCheck.push(lineStart);
-      }
-    })
+---CODE FROM WORK---
 
-    linesToCheck.forEach((line) => {
-      let gap = false;
-      for (i=0; i<10; i++) {
-        if (!allboxes[i].classList.contains("filled")) {
-          gap = true;
-          break;
-        }
-      }
-      
-      if (!gap) {
-        linesToClear.push(line); //may need to move to global scope. maybe game data
-      } 
-    
-    
-      if (linesToClear) { //may need global scope game data
-        clearLines(); //remember to reset linesToClear
-      }
-    }) 
-  }
+SORT game.linesToClear DESCENDING FIRST
+ADD linesToMove to game data
+	linesToMove = {}
+ADD/MOVE bocColor and boxBorder to game data
+MOVE classList.remove checkPieces from clear to checkLineClear
 
-  function clearLines() {
-    
-  }
+
+function clearLines() {
+	const allBoxes = document.querySelectorAll(".box")
+	
+	linesToCLear.forEach((line) => {
+		for (i=line-10; i>20; i-= 10) {
+  			if (!game.linesToMove[i]) {
+	 			game.linesToMove[i] = {toMove: 0}; 
+			}
+   			game.linesToMove[i].toMove += 10;
+		}
+  		//clearing steps here
+		for (i=0; i>10; i++) {
+			const boxIndex = line + i;
+	 		allBoxes[boxIndex].classList.remove("filled");  //todo: add to game data
+			allBoxes[boxIndex].styles.background = boxColor; //todo: add to game data
+			allBoxes[boxIndex].styles.border = boxBorder; //todo: add to game data
+	  	}
+	});
+ 	linesToClear.length = 0;
+  	if (game.linesToMove) {
+		moveLines();
+	}
+  	//might need to check classes
+}
+
+function moveLines() {
+	const allBoxes = document.querySelectorAll(".box")
+ 
+ 	Object.key(game.linesToMove).forEach((line) => {
+  		
+		for (i=0; i>10; i++) {
+  			const boxIndex = line + i;
+	 		const newBoxIndex = boxIndex + game.linesToMove[line].toMove
+	 
+			const styles = window.getComputedStyle(allBoxes[boxIndex]);
+   			const backgroundColor = styles.backgroundColor;
+	  		const border = styles.border;
+	 		const wasFilled = allBoxes[boxIndex].classList.contains("filled");
+
+	 		//insert moveDespawn here
+			allBoxes[boxIndex].classList.remove.("filled");
+   			allBoxes[boxIndex].styles.background = boxColor; //todo: add to game data
+	  		allBoxes[boxIndex].styles.border = boxBorder; //todo: add to game data
+   			
+   			
+	  		// may not need the if loop
+			if (!wasFilled) {
+	  			allBoxes[newBoxIndex].styles.background = boxColor; //todo: add to game data
+	  			allBoxes[newBoxIndex].styles.border = boxBorder; //todo: add to game data
+		 	} else {
+				allBoxes[newBoxIndex].classList.add("filled");
+				allBoxes[newBoxIndex].styles.background = backgroundColor;
+	  			allBoxes[newBoxIndex].styles.border = border;
+   			}
+  		
+		}
+   	});
+}
