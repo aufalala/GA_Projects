@@ -42,7 +42,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////HIDE FIRST 30 BOXES /////////////////HIDE FIRST 30 BOXES /////////////////HIDE FIRST 30 BOXES
     function hideBoxes() {
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const allBoxes = document.querySelectorAll(".box");
         for (let i = 0; i < 30; i++) {
             allBoxes[i].style.background = "none";
             allBoxes[i].style.border = "none";
@@ -82,7 +82,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const game = { 
         dropRate: 300,
         place: false,
+        linesToCheck: [],
         linesToClear: [],
+        linesToMove: {},
+
     }
 
 /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA
@@ -190,7 +193,7 @@ window.addEventListener("DOMContentLoaded", () => {
     function spawn(pos) {
         despawn();
         despawnGhost();
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const allBoxes = document.querySelectorAll(".box");
         player.piece.forEach((row, y) => {
             row.forEach((value, x) => {
                 if (value !== 0) {
@@ -209,7 +212,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function despawn() {
-        const playPieces = gameArea.querySelectorAll(".playPiece");
+        const playPieces = document.querySelectorAll(".playPiece");
         
             playPieces.forEach((box) => {
                 box.classList.remove("playPiece");
@@ -231,7 +234,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST  
     function despawnGhost() {
-        const ghostPiece = gameArea.querySelectorAll(".ghostPiece");
+        const ghostPiece = document.querySelectorAll(".ghostPiece");
         
             ghostPiece.forEach((box) => {
                 box.classList.remove("ghostPiece");
@@ -251,8 +254,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////SPAWN GHOST /////////////////SPAWN GHOST /////////////////SPAWN GHOST  
     function spawnGhost() {
-        const ghostPieces = gameArea.querySelectorAll(".ghostPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const ghostPieces = document.querySelectorAll(".ghostPiece");
+        const allBoxes = document.querySelectorAll(".box");
         
         let showGhost = false;
         let count = 0;
@@ -264,7 +267,7 @@ window.addEventListener("DOMContentLoaded", () => {
                     
                         count -= 10;
                         ghostPiece.pos = count + player.pos - 10;
-                        console.log(count);
+                        // console.log(count);
     
                         player.piece.forEach((row, y) => {
                             row.forEach((value, x) => {
@@ -289,8 +292,8 @@ window.addEventListener("DOMContentLoaded", () => {
     function place() {
         if (game.place){
             fill();
-            const topBoxes = gameArea.querySelectorAll(".top");
-            const allBoxes = gameArea.querySelectorAll(".box");
+            const topBoxes = document.querySelectorAll(".top");
+            const allBoxes = document.querySelectorAll(".box");
 
             topBoxes.forEach((box) => {
                 if (allBoxes[parseInt(box.id.slice(5))-1].classList.contains("top") &&
@@ -308,8 +311,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM 
     function checkBottom() {
-        const playPieces = gameArea.querySelectorAll(".playPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const playPieces = document.querySelectorAll(".playPiece");
+        const allBoxes = document.querySelectorAll(".box");
 
         playPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
@@ -321,7 +324,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 /////////////////FILL /////////////////FILL /////////////////FILL /////////////////FILL 
     function fill() {
-        const playPieces = gameArea.querySelectorAll(".playPiece");
+        const playPieces = document.querySelectorAll(".playPiece");
         playPieces.forEach((boxToFill) => {
             boxToFill.classList.add("filled");
             boxToFill.classList.add("checkLineClear");
@@ -332,61 +335,124 @@ window.addEventListener("DOMContentLoaded", () => {
         checkLineCLear();
 
     }
-
+/////////////////CHECK LINE CLEAR /////////////////CHECK LINE CLEAR /////////////////CHECK LINE CLEAR
     function checkLineCLear() {
         const allBoxes = document.querySelectorAll(".box");
         const checkPieces = document.querySelectorAll(".checkLineClear");
-        const linesToClear = []; //may need to move to global scope. maybe game data
-        const linesToCheck = [];
 
+        //add (uniquely) each line start number to linesToCheck array after filled
         checkPieces.forEach((box) => {
-            const lineStart = Math.floor((parseInt(box.id.slice(5))-1)/10)*10;
+            const lineStart = Math.floor((parseInt(box.id.slice(5))-1)/10)*10; //formula gets line start number, e.g. 120, 130, 140
             console.log(lineStart);
-                if (!linesToCheck.includes(lineStart)) {
-                    linesToCheck.push(lineStart);
-                    
+            if (!game.linesToCheck.includes(lineStart)) {
+                game.linesToCheck.push(lineStart);
             }
+            box.classList.remove("checkLineClear"); //remove class
         })
-        console.log(linesToCheck);
+        console.log(game.linesToCheck);
 
-        linesToCheck.forEach((line) => {
+        //check each line in linesToCheck if fully filled, if so, push to lineToClear
+        game.linesToCheck.forEach((line) => {
             let gap = false;
             for (i=0; i<10; i++) {
                 if (!allBoxes[line+i].classList.contains("filled")) {
                     gap = true;
-                    break;
+                    
+                break;
                 }
             }
-        
             if (!gap) {
-                linesToClear.push(line); //may need to move to global scope. maybe game data
+                game.linesToClear.push(line);
             } 
+        })
+        game.linesToCheck.length = 0;
 
-        }) 
-
-
-        if (linesToClear) { //may need global scope game data
-            clearLines(); //remember to reset linesToClear    
-            console.log(linesToClear)
+        //if linesToClear truthy, proceed to clearLines()
+        if (game.linesToClear.length > 0) {
+            console.log(game.linesToClear)
             console.log("-------------")
-        }
+            clearLines(); //remember to reset linesToClear    
 
+        }
     }
 
+/////////////////CLEAR LINES /////////////////CLEAR LINES /////////////////CLEAR LINES /////////////////CLEAR LINES 
     function clearLines() {
+        const allBoxes = document.querySelectorAll(".box")
         
-        const checkPieces = document.querySelectorAll(".checkLineClear");
-        checkPieces.forEach((box) => {
-            box.classList.remove("checkLineClear");
+        game.linesToClear.forEach((line) => {
+            //add 1 row (10) for each line to clear below
+            for (i=line-10; i>20; i-= 10) {
+                if (!game.linesToMove[i]) {
+                    game.linesToMove[i] = {toMove: 0}; 
+                }
+                game.linesToMove[i].toMove += 10;
+            }
+            //clear the line
+            for (i=0; i<10; i++) {
+                const boxIndex = line + i;
+                allBoxes[boxIndex].classList.remove("filled");  //todo: add to game data
+                allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
+                allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
+            }
+        });
+        game.linesToClear.length = 0; //reset lineToClear
+        if (game.linesToMove) {
+            moveLines(); //move lines down to fill up cleared rows
+        }
+    }
+
+/////////////////MOVE LINES /////////////////MOVE LINES /////////////////MOVE LINES /////////////////MOVE LINES 
+
+
+//TODO: FIX THE BOTTOM 240 LINE BUG
+    function moveLines() {
+        const allBoxes = document.querySelectorAll(".box")
+        
+        const sorted = Object.entries(game.linesToMove).sort(([a], [b]) => Number(b) - Number(a));
+        console.log(sorted)
+        Object.entries(sorted).forEach(([line, value]) => {
+            console.log(value[0]+"/////////");
+            console.log(value[1].toMove)
+            const toMoveValue = value[1].toMove;
+            for (i=0; i<10; i++) {
+                const boxIndex = Number(value[0]) + i;
+                const newBoxIndex = boxIndex + toMoveValue;
+        
+                const styles = window.getComputedStyle(allBoxes[boxIndex]);
+                const backgroundColor = styles.backgroundColor;
+                const border = styles.border;
+                const wasFilled = allBoxes[boxIndex].classList.contains("filled");
+
+                //insert moveDespawn here
+                allBoxes[boxIndex].classList.remove("filled");
+                allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
+                allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
+                
+                
+                // may not need the if loop
+                if (!wasFilled) {
+                    allBoxes[newBoxIndex].style.backgroundColor = boxColor; //todo: add to game data
+                    allBoxes[newBoxIndex].style.border = boxBorder; //todo: add to game data
+                } else {
+                    allBoxes[newBoxIndex].classList.add("filled");
+                    allBoxes[newBoxIndex].style.backgroundColor = backgroundColor;
+                    allBoxes[newBoxIndex].style.border = border;
+                }
+            
+            }
         });
     }
+
+
+
 
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS 
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS
     
     function moveDown3() {
-        const playPieces = gameArea.querySelectorAll(".playPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const playPieces = document.querySelectorAll(".playPiece");
+        const allBoxes = document.querySelectorAll(".box");
 
         playPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
@@ -407,8 +473,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function moveRight() {
-        const playPiece = gameArea.querySelectorAll(".playPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const playPiece = document.querySelectorAll(".playPiece");
+        const allBoxes = document.querySelectorAll(".box");
         let blocked = false;
         
         //check if piece @ rightmost border
@@ -441,8 +507,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     function moveLeft() {
         let blocked = false;
-        const playPiece = gameArea.querySelectorAll(".playPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const playPiece = document.querySelectorAll(".playPiece");
+        const allBoxes = document.querySelectorAll(".box");
         //check if piece @ leftmost border
         playPiece.forEach((box) => {
             if ((parseInt(box.id.slice(5))-1)%10 == 0 ||
@@ -478,8 +544,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function rotateRight() {
-        const playPiece = gameArea.querySelectorAll(".playPiece");
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const playPiece = document.querySelectorAll(".playPiece");
+        const allBoxes = document.querySelectorAll(".box");
 
         const oldMatrix = player.piece;
         let blocked = false;
@@ -515,7 +581,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
         function rotateRight2() {
-        const allBoxes = gameArea.querySelectorAll(".box");
+        const allBoxes = document.querySelectorAll(".box");
 
         const oldMatrix = player.piece;
         const rotated = oldMatrix[0].map((_, colIndex) => 
