@@ -442,6 +442,8 @@ window.addEventListener("DOMContentLoaded", () => {
             
             }
         });
+        game.linesToMove = {};
+        console.log(game.linesToMove);
     }
 
 
