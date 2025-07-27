@@ -72,7 +72,7 @@ const game = {
     linesToCheck: [],
     linesToClear: [],
     linesToMove: {},
-
+    gameOver: false,
 }
 
 /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA
@@ -136,11 +136,7 @@ function spawnHold() {
 function assignNextPiece() {
     player.piece = nextLineUp[0].piece;
     player.color = nextLineUp[0].color;
-
     nextLineUp.shift();
-
-    console.log(nextLineUp);
-
     generateNewPiece();
 }
 
@@ -169,7 +165,6 @@ function holdPiece() {
 function respawn() {
     despawn();
     assignNextPiece();
-    
     player.pos = 3;
     spawn(player.pos);
 }
@@ -181,7 +176,6 @@ function spawn(pos) {
     player.piece.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                
                 allBoxes[(x+pos)+(y*10)].classList.add("playPiece"); 
                 allBoxes[(x+pos)+(y*10)].classList.add("ghostPiece");
                 allBoxes[(x+pos)+(y*10)].style.background = player.color;
@@ -197,17 +191,15 @@ function spawn(pos) {
 
 function despawn() {
     const playPieces = document.querySelectorAll(".playPiece");
-    
-        playPieces.forEach((box) => {
-            box.classList.remove("playPiece");
-
-            if (box.classList.contains("top")) {
-                box.style.background = "";
-                box.style.border = "";
-            } else {
-                box.style.background = boxColor;
-                box.style.border = boxBorder;
-            }
+    playPieces.forEach((box) => {
+        box.classList.remove("playPiece");
+        if (box.classList.contains("top")) {
+            box.style.background = "";
+            box.style.border = "";
+        } else {
+            box.style.background = boxColor;
+            box.style.border = boxBorder;
+        }
     });
 
 }
@@ -219,20 +211,9 @@ function despawn() {
 /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST  
 function despawnGhost() {
     const ghostPiece = document.querySelectorAll(".ghostPiece");
-    
-        ghostPiece.forEach((box) => {
-            box.classList.remove("ghostPiece");
-
-            if (box.classList.contains("top")) {
-                // box.style.background = "";
-                // box.style.border = "";
-                box.style.boxShadow = "";
-            } else {
-                // box.style.background = boxColor;
-                // box.style.border = boxBorder;
-                
-                box.style.boxShadow = "";
-            }
+    ghostPiece.forEach((box) => {
+        box.classList.remove("ghostPiece");
+        box.style.boxShadow = "";
     });            
 }
 
@@ -240,27 +221,19 @@ function despawnGhost() {
 function spawnGhost() {
     const ghostPieces = document.querySelectorAll(".ghostPiece");
     //const allBoxes = document.querySelectorAll(".box");
-    
     let showGhost = false;
     let count = 0;
-
     while (!showGhost) {
         ghostPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
-                
                     count -= 10;
                     ghostPiece.pos = count + player.pos - 10;
-                    // console.log(count);
-
                     player.piece.forEach((row, y) => {
                         row.forEach((value, x) => {
                             if (value !== 0) {
-                                
                                 allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghostPiece");            
                                 allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
-                                // allBoxes[(x+player.pos)+(y*10)+count].style.background = "white";
-                                // allBoxes[(x+player.pos)+(y*10)+count].style.border = `1px solid white`;
                             }
                         });
                     });
@@ -276,28 +249,41 @@ function spawnGhost() {
 function place() {
     if (game.place){
         fill();
-        const topBoxes = document.querySelectorAll(".top");
-        //const allBoxes = document.querySelectorAll(".box");
-
-        topBoxes.forEach((box) => {
-            if (allBoxes[parseInt(box.id.slice(5))-1].classList.contains("top") &&
-                allBoxes[parseInt(box.id.slice(5))-1].classList.contains("filled")) {
-                    console.log("GAME OVER");
-                    return;
-            }
-            return;
-        });
-
-        game.place = false;
-        respawn();
+        checkGameOver();
+        // const topBoxes = document.querySelectorAll(".top");
+        // //const allBoxes = document.querySelectorAll(".box");
+        // topBoxes.forEach((box) => {
+        //     if (allBoxes[parseInt(box.id.slice(5))-1].classList.contains("top") &&
+        //         allBoxes[parseInt(box.id.slice(5))-1].classList.contains("filled")) {
+        //         console.log("GAME OVER");
+        //         game.gameOver = true;
+        //         return;
+        //     }
+        // });
+        if (!game.gameOver) {
+            game.place = false;
+            respawn();
+        }
     }
+}
+
+function checkGameOver() {
+    const topBoxes = document.querySelectorAll(".top");
+    //const allBoxes = document.querySelectorAll(".box");
+    topBoxes.forEach((box) => {
+        if (allBoxes[parseInt(box.id.slice(5))-1].classList.contains("top") &&
+            allBoxes[parseInt(box.id.slice(5))-1].classList.contains("filled")) {
+            console.log("GAME OVER");
+            game.gameOver = true;
+            return;
+        }
+    });
 }
 
 /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM 
 function checkBottom() {
     const playPieces = document.querySelectorAll(".playPiece");
     //const allBoxes = document.querySelectorAll(".box");
-
     playPieces.forEach((box) => {
         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
             allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
@@ -317,7 +303,6 @@ function fill() {
         boxToFill.classList.remove("playPiece");
     });
     checkLineCLear();
-
 }
 /////////////////CHECK LINE CLEAR /////////////////CHECK LINE CLEAR /////////////////CHECK LINE CLEAR
 function checkLineCLear() {
@@ -341,8 +326,7 @@ function checkLineCLear() {
         for (i=0; i<10; i++) {
             if (!allBoxes[line+i].classList.contains("filled")) {
                 gap = true;
-                
-            break;
+                break;
             }
         }
         if (!gap) {
@@ -355,8 +339,7 @@ function checkLineCLear() {
     if (game.linesToClear.length > 0) {
         console.log(game.linesToClear)
         console.log("-------------")
-        clearLines(); //remember to reset linesToClear    
-
+        clearLines();    
     }
 }
 
@@ -375,7 +358,7 @@ function clearLines() {
         //clear the line
         for (i=0; i<10; i++) {
             const boxIndex = line + i;
-            allBoxes[boxIndex].classList.remove("filled");  //todo: add to game data
+            allBoxes[boxIndex].classList.remove("filled");  
             allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
             allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
         }
@@ -408,11 +391,10 @@ function moveLines() {
             const border = styles.border;
             const wasFilled = allBoxes[boxIndex].classList.contains("filled");
 
-            //insert moveDespawn here
+            //despawn rows to move
             allBoxes[boxIndex].classList.remove("filled");
             allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
             allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
-            
             
             // may not need the if loop
             if (!wasFilled) {
@@ -423,7 +405,6 @@ function moveLines() {
                 allBoxes[newBoxIndex].style.backgroundColor = backgroundColor;
                 allBoxes[newBoxIndex].style.border = border;
             }
-        
         }
     });
     game.linesToMove = {};
@@ -465,7 +446,6 @@ function moveRight() {
     
     //check if piece @ rightmost border
     playPiece.forEach((box) => {
-
         if (parseInt(box.id.slice(5))%10 == 0) {
             blocked = true;
             return;
@@ -488,7 +468,6 @@ function moveRight() {
         startDropInterval();
         startCheckBottomInterval();
     }
-    
 }
 
 function moveLeft() {
@@ -596,13 +575,11 @@ function rotateRight() {
                     if ( 
                         allBoxes[index].classList.contains("filled") ||
                         allBoxes[index].classList.contains("bottom") ||
-                        index >= 230
-                                                    
+                        index >= 230                            
                         ||
-
-                            ((parseInt(allBoxes[index].id.slice(5))-1)%10 == 0 ||
-                            parseInt(allBoxes[index].id.slice(5) === 1) && 
-                            (parseInt(allBoxes[index].id.slice(5))%10 == 0)) 
+                        ((parseInt(allBoxes[index].id.slice(5))-1)%10 == 0 ||
+                        parseInt(allBoxes[index].id.slice(5) === 1) && 
+                        (parseInt(allBoxes[index].id.slice(5))%10 == 0)) 
                     ) {
                         open = false;
                         break;
