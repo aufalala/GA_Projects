@@ -696,15 +696,34 @@ startPlaceInterval();
 
 
 /////////////////TEXT RESIZE /////////////////TEXT RESIZE /////////////////TEXT RESIZE
+
 const mainBlockDiv = document.getElementById("mainBlock");
-const titles = document.querySelectorAll("h3");
 const resizeObserver = new ResizeObserver(entries => {
-    for (let entry of entries) {
-        const {width} = entry.contentRect;
-        titles.forEach(title => {
-            title.style.fontSize = (width / 30) + "px";
-        });
-    }
+    const h1 = document.querySelectorAll("h1");
+    const h2 = document.querySelectorAll("h2");
+    const h3 = document.querySelectorAll("h3");
+    const h4 = document.querySelectorAll("h4");
+    const p = document.querySelectorAll("p");
+    const statSmall = document.querySelectorAll(".statSmall");
+    const width = entries[0].contentRect.width;
+    h1.forEach(el => {
+        el.style.fontSize = (width / 10) + "px";
+    });
+    h2.forEach(el => {
+        el.style.fontSize = (width / 20) + "px";
+    });
+    h3.forEach(el => {
+        el.style.fontSize = (width / 30) + "px";
+    });
+    h4.forEach(el => {
+        el.style.fontSize = (width / 40) + "px";
+    });
+    p.forEach(el => {
+        el.style.fontSize = (width / 50) + "px";
+    });
+    statSmall.forEach(el => {
+        el.style.fontSize = (width / 50) + "px";
+    });
 });
 resizeObserver.observe(mainBlockDiv);
 

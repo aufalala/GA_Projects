@@ -1,6 +1,10 @@
-html, body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
@@ -25,35 +29,11 @@ html, body {
     position: relative;
     display: flex;
     justify-content: center;
-
     box-sizing: border-box;
 }
 
 /* #mainBlock div {
     display: flex;
-} */
-
-h1, h2, h3, h4, h5, h6 {
-    margin: 0;
-}
-/* 
-h1 {
-    font-size: 6vh;
-}
-h2 {
-    font-size: 5vh;
-}
-h3 {
-    font-size: 2rem;
-}
-h4 {
-    font-size: 3vh;
-}
-h5 {
-    font-size: 2vh;
-}
-h6 {
-    font-size: 1vh;
 } */
 
 .gap {
