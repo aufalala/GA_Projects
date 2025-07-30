@@ -9,6 +9,7 @@ let boxBorder = ".1px solid gray";
 let allBoxes;
 
 function generateBoxes() {
+    const gameArea = document.getElementById("game-area")
     for (let i = 0; i < 240; i++) {
         const div = document.createElement("div");
         div.classList.add("box");
@@ -176,8 +177,8 @@ function spawn(pos) {
     player.piece.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value !== 0) {
-                allBoxes[(x+pos)+(y*10)].classList.add("playPiece"); 
-                allBoxes[(x+pos)+(y*10)].classList.add("ghostPiece");
+                allBoxes[(x+pos)+(y*10)].classList.add("play-piece"); 
+                allBoxes[(x+pos)+(y*10)].classList.add("ghost-piece");
                 allBoxes[(x+pos)+(y*10)].style.background = player.color;
                 allBoxes[(x+pos)+(y*10)].style.border = `1px solid ${player.color}`;
             }
@@ -190,9 +191,9 @@ function spawn(pos) {
 }
 
 function despawn() {
-    const playPieces = document.querySelectorAll(".playPiece");
+    const playPieces = document.querySelectorAll(".play-piece");
     playPieces.forEach((box) => {
-        box.classList.remove("playPiece");
+        box.classList.remove("play-piece");
         if (box.classList.contains("top")) {
             box.style.background = "";
             box.style.border = "";
@@ -210,16 +211,16 @@ function despawn() {
 
 /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST /////////////////DESPAWN GHOST  
 function despawnGhost() {
-    const ghostPiece = document.querySelectorAll(".ghostPiece");
+    const ghostPiece = document.querySelectorAll(".ghost-piece");
     ghostPiece.forEach((box) => {
-        box.classList.remove("ghostPiece");
+        box.classList.remove("ghost-piece");
         box.style.boxShadow = "";
     });            
 }
 
 /////////////////SPAWN GHOST /////////////////SPAWN GHOST /////////////////SPAWN GHOST  
 function spawnGhost() {
-    const ghostPieces = document.querySelectorAll(".ghostPiece");
+    const ghostPieces = document.querySelectorAll(".ghost-piece");
     //const allBoxes = document.querySelectorAll(".box");
     let showGhost = false;
     let count = 0;
@@ -232,7 +233,7 @@ function spawnGhost() {
                     player.piece.forEach((row, y) => {
                         row.forEach((value, x) => {
                             if (value !== 0) {
-                                allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghostPiece");            
+                                allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghost-piece");            
                                 allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
                             }
                         });
@@ -282,7 +283,7 @@ function checkGameOver() {
 
 /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM /////////////////CHECK BOTTOM 
 function checkBottom() {
-    const playPieces = document.querySelectorAll(".playPiece");
+    const playPieces = document.querySelectorAll(".play-piece");
     //const allBoxes = document.querySelectorAll(".box");
     playPieces.forEach((box) => {
         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
@@ -294,20 +295,20 @@ function checkBottom() {
 
 /////////////////FILL /////////////////FILL /////////////////FILL /////////////////FILL 
 function fill() {
-    const playPieces = document.querySelectorAll(".playPiece");
+    const playPieces = document.querySelectorAll(".play-piece");
     playPieces.forEach((boxToFill) => {
         boxToFill.classList.add("filled");
-        boxToFill.classList.add("checkLineClear");
+        boxToFill.classList.add("check-line-clear");
         boxToFill.style.background = `${player.color}`;
         console.log(`filled added ${boxToFill.id}`);
-        boxToFill.classList.remove("playPiece");
+        boxToFill.classList.remove("play-piece");
     });
     checkLineCLear();
 }
 /////////////////CHECK LINE CLEAR /////////////////CHECK LINE CLEAR /////////////////CHECK LINE CLEAR
 function checkLineCLear() {
     //const allBoxes = document.querySelectorAll(".box");
-    const checkPieces = document.querySelectorAll(".checkLineClear");
+    const checkPieces = document.querySelectorAll(".check-line-clear");
 
     //add (uniquely) each line start number to linesToCheck array after filled
     checkPieces.forEach((box) => {
@@ -316,7 +317,7 @@ function checkLineCLear() {
         if (!game.linesToCheck.includes(lineStart)) {
             game.linesToCheck.push(lineStart);
         }
-        box.classList.remove("checkLineClear"); //remove class
+        box.classList.remove("check-line-clear"); //remove class
     })
     console.log(game.linesToCheck);
 
@@ -418,7 +419,7 @@ function moveLines() {
 //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS //############### MOVE FUNCTIONS
 
 function moveDown3() {
-    const playPieces = document.querySelectorAll(".playPiece");
+    const playPieces = document.querySelectorAll(".play-piece");
     //const allBoxes = document.querySelectorAll(".box");
 
     playPieces.forEach((box) => {
@@ -440,7 +441,7 @@ function moveDown3() {
 }
 
 function moveRight() {
-    const playPiece = document.querySelectorAll(".playPiece");
+    const playPiece = document.querySelectorAll(".play-piece");
     //const allBoxes = document.querySelectorAll(".box");
     let blocked = false;
     
@@ -472,7 +473,7 @@ function moveRight() {
 
 function moveLeft() {
     let blocked = false;
-    const playPiece = document.querySelectorAll(".playPiece");
+    const playPiece = document.querySelectorAll(".play-piece");
     //const allBoxes = document.querySelectorAll(".box");
     //check if piece @ leftmost border
     playPiece.forEach((box) => {
@@ -509,7 +510,7 @@ function hardDrop() {
 }
 
 function rotateRight() {
-    const playPiece = document.querySelectorAll(".playPiece");
+    const playPiece = document.querySelectorAll(".play-piece");
     //const allBoxes = document.querySelectorAll(".box");
 
     const oldMatrix = player.piece;
@@ -697,14 +698,14 @@ startPlaceInterval();
 
 /////////////////TEXT RESIZE /////////////////TEXT RESIZE /////////////////TEXT RESIZE
 
-const mainBlockDiv = document.getElementById("mainBlock");
+const mainBlockDiv = document.getElementById("main-block");
 const resizeObserver = new ResizeObserver(entries => {
     const h1 = document.querySelectorAll("h1");
     const h2 = document.querySelectorAll("h2");
     const h3 = document.querySelectorAll("h3");
     const h4 = document.querySelectorAll("h4");
     const p = document.querySelectorAll("p");
-    const statSmall = document.querySelectorAll(".statSmall");
+    const statSmall = document.querySelectorAll(".stat-small");
     const width = entries[0].contentRect.width;
     h1.forEach(el => {
         el.style.fontSize = (width / 10) + "px";
