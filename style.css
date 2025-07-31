@@ -223,7 +223,9 @@ button {
     margin: 0 2% 2% 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
     flex-grow: 1;
+    gap: 3%;  
     clip-path: polygon(
     86% 100%,
     0 100%,
@@ -233,10 +235,19 @@ button {
   );
 }
 
-#next-area div {
+.line-up-indi {
+  display: grid;
+  margin: 5%;
+/*   width: 50%; */
+  align-contents: center;
+/*   height: 10%; */
+}
+
+
+/* #next-area div {
     background-color: gray;
     margin: 5%;
     height: 100%;
     display: grid;
     place-items: center;
-}
+} */
