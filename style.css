@@ -238,9 +238,6 @@ button {
 .line-up-indi {
   display: grid;
   margin: 5%;
-/*   width: 50%; */
-  align-contents: center;
-/*   height: 10%; */
 }
 
 
