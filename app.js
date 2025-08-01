@@ -1,7 +1,19 @@
+//0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 HOME PAGE
+
+/////////////////BUTTONS /////////////////BUTTONS /////////////////BUTTONS
+const homeButtons = document.querySelectorAll(".home-buttons");
+// homeButtons.addEventListener()
 
 
-//############### INITIALISE BOXES (PLAY AREA) //############### INITIALISE BOXES (PLAY AREA)
-//############### INITIALISE BOXES (PLAY AREA) //############### INITIALISE BOXES (PLAY AREA)
+
+
+
+
+//0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 PLAY PAGE 
+//0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 PLAY PAGE
+
+//############### INITIALISE BOXES //############### INITIALISE BOXES
+//############### INITIALISE BOXES //############### INITIALISE BOXES
 
 /////////////////GENERATE 240 BOXES /////////////////GENERATE 240 BOXES /////////////////GENERATE 240 BOXES
 let boxColor = "black";
