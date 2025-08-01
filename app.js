@@ -173,7 +173,52 @@ function spawnLineUp() {
 
 
 function spawnHold() {
+    const holdArea = document.getElementById("hold-area"); //maybe can cache outside?
+    holdArea.innerHTML = "";  
+    if (holdP.color) {
+      const div = document.createElement("div");
+      div.classList.add("hold-indi")
+      const pieceSize = holdP.piece.length;
+      switch (pieceSize) {
+        case 4:
+          div.style.gridTemplateColumns = "repeat(4, 1fr)";
+          div.style.width = "60%";
+          break;
+        case 3:
+          div.style.gridTemplateColumns = "repeat(3, 1fr)";
+          div.style.width = "45%";
+          break;
+        case 2:
+          div.style.gridTemplateColumns = "repeat(2, 1fr)";
+          div.style.width = "27%";
+          break;
+      }
+      holdP.piece.forEach((row) => {
+            if (row.includes(1)) {
+                row.forEach((value) => {
+                    const box = document.createElement("div");
+                    box.classList.add("hold-piece");
+                    box.style.width = "100%";
+                    box.style.aspectRatio = "1/1";
+                    
+                    if (value === 1) {
+                        box.classList.add("hold-piece-filled");
+                        box.style.background = holdP.color;
+                        box.style.border = holdP.color;
+                    }
+                    div.appendChild(box)
+                });
+            }
+        });
+        holdArea.appendChild(div);
+      
+    }
+  
+  
+    
 
+        
+        
 }
 
 
@@ -204,6 +249,7 @@ function holdPiece() {
         startDropInterval();
         startPlaceInterval();
     }
+    spawnHold();
 }
 
 /////////////////SPAWN PLAYPIECE FUNCTION /////////////////SPAWN PLAYPIECE FUNCTION /////////////////SPAWN PLAYPIECE FUNCTION 

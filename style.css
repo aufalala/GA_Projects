@@ -126,6 +126,11 @@ button {
   );
 }
 
+.hold-indi {
+  display: grid;
+  margin: 5%;
+}
+
 #stats-block {
     /* background-color: lawngreen; */
     width: 100%;
