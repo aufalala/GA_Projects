@@ -127,21 +127,110 @@ function generateLineUp() {
     for (i=0; i<lineUpQty; i++) {
         nextLineUp[i] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
     }
+    spawnLineUp();
 }
 
 function generateNewPiece() {
     nextLineUp.push({})
     nextLineUp[lineUpQty-1] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
+    spawnLineUp();
 }
 
 
 /////////////////////////////////////////
 function spawnLineUp() {
-    //draw into divs
+    const nextArea = document.getElementById("next-area"); //maybe can cache outside?
+    nextArea.innerHTML = "";  
+  
+    nextLineUp.forEach((nextPiece, index) => {
+        const div = document.createElement("div");
+        div.classList.add("line-up-indi");
+        const pieceSize = nextPiece.piece.length;
+        switch (pieceSize) {
+            case 4:
+                div.style.gridTemplateColumns = "repeat(4, 1fr)";
+                div.style.width = "60%";
+                break;
+            case 3:
+                div.style.gridTemplateColumns = "repeat(3, 1fr)";
+                div.style.width = "45%";
+                break;
+            case 2:
+                div.style.gridTemplateColumns = "repeat(2, 1fr)";
+                div.style.width = "27%";
+                break;
+        }
+
+        
+        nextLineUp[index].piece.forEach((row) => {
+            if (row.includes(1)) {
+                row.forEach((value) => {
+                    const box = document.createElement("div");
+                    box.classList.add("line-up-piece");
+                    box.style.width = "100%";
+                    box.style.aspectRatio = "1/1";
+                    
+                    if (value === 1) {
+                        box.classList.add("line-up-piece-filled");
+                        box.style.background = nextPiece.color;
+                        box.style.border = nextPiece.color;
+                    }
+                    div.appendChild(box)
+                });
+            }
+        });
+        nextArea.appendChild(div);
+    });
 }
 
-function spawnHold() {
 
+function spawnHold() {
+    const holdArea = document.getElementById("hold-area"); //maybe can cache outside?
+    holdArea.innerHTML = "";  
+    if (holdP.color) {
+      const div = document.createElement("div");
+      div.classList.add("hold-indi")
+      const pieceSize = holdP.piece.length;
+      switch (pieceSize) {
+        case 4:
+          div.style.gridTemplateColumns = "repeat(4, 1fr)";
+          div.style.width = "60%";
+          break;
+        case 3:
+          div.style.gridTemplateColumns = "repeat(3, 1fr)";
+          div.style.width = "45%";
+          break;
+        case 2:
+          div.style.gridTemplateColumns = "repeat(2, 1fr)";
+          div.style.width = "27%";
+          break;
+      }
+      holdP.piece.forEach((row) => {
+            if (row.includes(1)) {
+                row.forEach((value) => {
+                    const box = document.createElement("div");
+                    box.classList.add("hold-piece");
+                    box.style.width = "100%";
+                    box.style.aspectRatio = "1/1";
+                    
+                    if (value === 1) {
+                        box.classList.add("hold-piece-filled");
+                        box.style.background = holdP.color;
+                        box.style.border = holdP.color;
+                    }
+                    div.appendChild(box)
+                });
+            }
+        });
+        holdArea.appendChild(div);
+      
+    }
+  
+  
+    
+
+        
+        
 }
 
 
@@ -172,6 +261,7 @@ function holdPiece() {
         startDropInterval();
         startPlaceInterval();
     }
+    spawnHold();
 }
 
 /////////////////SPAWN PLAYPIECE FUNCTION /////////////////SPAWN PLAYPIECE FUNCTION /////////////////SPAWN PLAYPIECE FUNCTION 
@@ -701,6 +791,8 @@ hideBoxes();
 createLineUpList();
 generateLineUp();
 assignNextPiece();
+
+spawnLineUp();
 
 startCheckBottomInterval();
 startDropInterval();

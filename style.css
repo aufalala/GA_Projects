@@ -153,6 +153,11 @@ html, body {
   );
 }
 
+.hold-indi {
+  display: grid;
+  margin: 5%;
+}
+
 #stats-block {
     /* background-color: lawngreen; */
     width: 100%;
@@ -250,7 +255,9 @@ html, body {
     margin: 0 2% 2% 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
     flex-grow: 1;
+    gap: 3%;  
     clip-path: polygon(
     86% 100%,
     0 100%,
@@ -260,10 +267,16 @@ html, body {
   );
 }
 
-#next-area div {
+.line-up-indi {
+  display: grid;
+  margin: 5%;
+}
+
+
+/* #next-area div {
     background-color: gray;
     margin: 5%;
     height: 100%;
     display: grid;
     place-items: center;
-}
+} */
