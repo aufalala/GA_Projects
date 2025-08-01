@@ -12,6 +12,58 @@ const homeButtons = document.querySelectorAll(".home-buttons");
 //0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 PLAY PAGE 
 //0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0-0 PLAY PAGE
 
+//############### DATA //############### DATA //############### DATA //############### DATA
+//############### DATA //############### DATA //############### DATA //############### DATA
+
+/////////////////PIECES DATA /////////////////PIECES DATA /////////////////PIECES DATA 
+const pieces = {
+    o: { pieceName: "o", color: "yellow",   piece:[ [1, 1], [1, 1], ],                                         },
+    t: { pieceName: "t", color: "purple",   piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],                        },
+    j: { pieceName: "j", color: "blue",     piece:[ [1, 0, 0], [1, 1, 1], [0, 0, 0], ],                        },
+    l: { pieceName: "l", color: "orange",   piece:[ [0, 0, 1], [1, 1, 1], [0, 0, 0], ],                        }, 
+    z: { pieceName: "z", color: "red",      piece:[ [1, 1, 0], [0, 1, 1], [0, 0, 0], ],                        },
+    s: { pieceName: "s", color: "green",    piece:[ [0, 1, 1], [1, 1, 0], [0, 0, 0], ],                        },
+    i: { pieceName: "i", color: "cyan",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
+}
+const pieceNames = Object.keys(pieces);
+
+/////////////////PLAYER DATA /////////////////PLAYER DATA /////////////////PLAYER DATA
+const player = {
+    pieceName: "",
+    piece: "",
+    color: "",
+    pos: 3,
+}
+
+/////////////////GAME DATA /////////////////GAME DATA /////////////////GAME DATA
+const game = { 
+    dropRate: 50,
+    place: false,
+    linesToCheck: [],
+    linesToClear: [],
+    linesToMove: {},
+    gameOver: false,
+}
+
+/////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA
+const holdP = {
+    pieceName: "",
+    piece: "",
+    color: "",
+};
+
+/////////////////GHOSTPIECE DATA /////////////////GHOSTPIECE DATA /////////////////GHOSTPIECE DATA 
+const ghostPiece = {
+    pos: "",
+};
+
+
+
+
+
+
+
+
 //############### INITIALISE BOXES //############### INITIALISE BOXES
 //############### INITIALISE BOXES //############### INITIALISE BOXES
 
@@ -56,49 +108,6 @@ function hideBoxes() {
     }
 }
 
-//############### DATA //############### DATA //############### DATA //############### DATA
-//############### DATA //############### DATA //############### DATA //############### DATA
-
-/////////////////PIECES DATA /////////////////PIECES DATA /////////////////PIECES DATA 
-const pieces = {
-    o: { color: "yellow",   piece:[ [1, 1], [1, 1], ],                                         },
-    t: { color: "purple",   piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],                        },
-    j: { color: "blue",     piece:[ [1, 0, 0], [1, 1, 1], [0, 0, 0], ],                        },
-    l: { color: "orange",   piece:[ [0, 0, 1], [1, 1, 1], [0, 0, 0], ],                        }, 
-    z: { color: "red",      piece:[ [1, 1, 0], [0, 1, 1], [0, 0, 0], ],                        },
-    s: { color: "green",    piece:[ [0, 1, 1], [1, 1, 0], [0, 0, 0], ],                        },
-    i: { color: "cyan",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
-}
-const pieceNames = Object.keys(pieces);
-
-/////////////////PLAYER DATA /////////////////PLAYER DATA /////////////////PLAYER DATA
-const player = {
-    piece: "",
-    color: "",
-    pos: 3,
-}
-
-/////////////////GAME DATA /////////////////GAME DATA /////////////////GAME DATA
-const game = { 
-    dropRate: 300,
-    place: false,
-    linesToCheck: [],
-    linesToClear: [],
-    linesToMove: {},
-    gameOver: false,
-}
-
-/////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA /////////////////HOLDPIECE DATA
-const holdP = {
-    piece: "",
-    color: "",
-};
-
-/////////////////GHOSTPIECE DATA /////////////////GHOSTPIECE DATA /////////////////GHOSTPIECE DATA 
-const ghostPiece = {
-    pos: "",
-};
-
 
 //############### Functions //############### Functions //############### Functions 
 //############### Functions //############### Functions //############### Functions
@@ -116,6 +125,7 @@ const nextLineUp = [];
 function createLineUpList() {
     for (i=0; i<lineUpQty; i++) {
         nextLineUp.push({});
+        nextLineUp[i].pieceName = "";
         nextLineUp[i].piece = "";
         nextLineUp[i].color = "";
     }
@@ -235,27 +245,35 @@ function spawnHold() {
 
 
 /////////////////ASSIGN PIECE FROM NEXT /////////////////ASSIGN PIECE FROM NEXT /////////////////ASSIGN PIECE FROM NEXT
-function assignNextPiece() {
+function assignNextPiece() {    
+    player.pieceName = nextLineUp[0].pieceName;
     player.piece = nextLineUp[0].piece;
     player.color = nextLineUp[0].color;
     nextLineUp.shift();
     generateNewPiece();
+    // setTimeout(moveDown3, 10);
 }
 
 /////////////////HOLD FUNCTION /////////////////HOLD FUNCTION /////////////////HOLD FUNCTION /////////////////HOLD FUNCTION 
 function holdPiece() {
     if (holdP.color) {
-        [player.piece, holdP.piece] = [holdP.piece, player.piece];
+        // [player.piece, holdP.piece] = [holdP.piece, player.piece];
+        // [player.color, holdP.color] = [holdP.color, player.color];
+        [player.pieceName, holdP.pieceName] = [holdP.pieceName, player.pieceName];
         [player.color, holdP.color] = [holdP.color, player.color];
+        player.piece = pieces[player.pieceName].piece;
+        holdP.piece = pieces[holdP.pieceName].piece;
         player.pos = 3;
         despawn();
         spawn(player.pos);
+        // setTimeout(moveDown3, 10);
         startCheckBottomInterval();
         startDropInterval();
         startPlaceInterval();
     } else {
-        holdP.piece = player.piece;
-        holdP.color = player.color;
+        holdP.pieceName = player.pieceName;
+        holdP.piece = pieces[holdP.pieceName].piece;
+        holdP.color = pieces[holdP.pieceName].color;
         respawn();
         startCheckBottomInterval();
         startDropInterval();
@@ -331,7 +349,7 @@ function spawnGhost() {
             if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
                     count -= 10;
-                    ghostPiece.pos = count + player.pos - 10;
+                    ghostPiece.pos = count + player.pos;
                     player.piece.forEach((row, y) => {
                         row.forEach((value, x) => {
                             if (value !== 0) {
@@ -606,7 +624,7 @@ function moveLeft() {
 
 function hardDrop() {
     player.pos = ghostPiece.pos;
-    spawn(player.pos+10);
+    spawn(player.pos);
     game.place = true;
     place();
 }
@@ -720,35 +738,37 @@ function rotateLeft() {
 let keyIntervals = {};
 
 document.addEventListener("keydown", (event) => {
-    if (keyIntervals[event.key]) return;
-    switch (event.key) {
-        case "ArrowDown":
-            moveDown3();
-            keyIntervals.ArrowDown = setInterval(moveDown3, 100);
-            break;
-        case "ArrowRight":
-            moveRight();
-            keyIntervals.ArrowRight = setInterval(moveRight, 100);
-            break;
-        case "ArrowLeft":
-            moveLeft();
-            keyIntervals.ArrowLeft = setInterval(moveLeft, 100);
-            break;
+    if (!game.gameOver) {
+        if (keyIntervals[event.key]) return;
+        switch (event.key) {
+            case "ArrowDown":
+                moveDown3();
+                keyIntervals.ArrowDown = setInterval(moveDown3, 100);
+                break;
+            case "ArrowRight":
+                moveRight();
+                keyIntervals.ArrowRight = setInterval(moveRight, 100);
+                break;
+            case "ArrowLeft":
+                moveLeft();
+                keyIntervals.ArrowLeft = setInterval(moveLeft, 100);
+                break;
 
-        case " ":
-        case "Spacebar":
-        case "Space":
-            hardDrop();
-            break;
+            case " ":
+            case "Spacebar":
+            case "Space":
+                hardDrop();
+                break;
 
-        case "ArrowUp":
-            rotateRight2();
-            break;
+            case "ArrowUp":
+                rotateRight2();
+                break;
 
-        case "c":
-        case "C":
-            holdPiece();
-            break;
+            case "c":
+            case "C":
+                holdPiece();
+                break;
+        }
     }
 });
 
@@ -779,7 +799,7 @@ function startCheckBottomInterval() {
 
 function startPlaceInterval() {
     clearInterval(placeInterval);
-    placeInterval = setInterval(place, game.dropRate*2);
+    placeInterval = setInterval(place, 300);
 }
 
 
