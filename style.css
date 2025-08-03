@@ -15,7 +15,7 @@ html, body {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: white;
   position: relative;
-  background-color: lightslategray;
+  background-color: rgb(48, 49, 51);
 }
 .body-main-show {
     display: flex;
@@ -170,7 +170,7 @@ html, body {
 
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 #main-block {
-    background-color: slategray;
+    /* background-color: slategray; */
     padding: 3vh;
     margin: 2vh;
     aspect-ratio:4/3;

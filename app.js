@@ -30,6 +30,8 @@ const game = {
     linesToClear: [],
     linesToMove: {},
     gameOver: false,
+    linesCleared: 0,
+    piecesPlaced: 0,
 }
 
 //hold piece
@@ -61,14 +63,13 @@ let placeInterval;
 // HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 // HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 
-///////////////// CACHE
+///////////////////////////////////////// CACHE /////////////////////////////////////////
 
 const body = document.querySelector("body");
 
-const homePage = document.querySelector("#home-page");
 
-const mainBlock = document.querySelector("#main-block");
-const playPage = document.querySelector("#play-page");
+///////////////// HOME PAGE
+const homePage = document.querySelector("#home-page");
 
 const homeButtons = document.querySelectorAll(".home-buttons");
 const playButton = document.querySelector("#play-button");
@@ -79,7 +80,26 @@ const playChildButtons = document.querySelectorAll(".play-child-buttons");
 const fortyButton = document.querySelector("#forty-button");
 const marathonButton = document.querySelector("#marathon-button");
 
-const playMode = document.querySelector("#play-mode");
+// const playMode = document.querySelector("#play-mode");
+
+///////////////// PLAY PAGE
+const mainBlock = document.querySelector("#main-block");
+const playPage = document.querySelector("#play-page");
+
+
+const stat1Big = document.getElementById('stat-1-big');
+const stat1Small = document.getElementById('stat-1-small');
+
+const stat2Big = document.getElementById('stat-2-big');
+
+const stat3Big = document.getElementById('stat-3-big');
+const stat3Small = document.getElementById('stat-3-small');
+
+
+let timerRunning = false;
+let startTime;
+let updateTime;
+let elapsed;
 
 
 // homePage.classList.remove("hide");
@@ -185,21 +205,31 @@ function tutorialClickHandler() {
 
 function initGame(mode) {
 
-body.classList.add("body-main-show");
     setTimeout(() => {
-
-        
         generateBoxes();
         cacheAllBoxes();
         hideBoxes();
         createLineUpList();
         generateLineUp();
         spawnLineUp();
-        
+
+        body.classList.add("body-main-show");
         mainBlock.classList.add("show-main")
-            
+        
+
+        
+        if (mode === "forty") {
+            modeForty()
+        } else if (mode ==="marathon") {
+            modeMarathon()
+        }
+        //insert message countdown here
+
+        
         setTimeout(() => {
             respawn();
+            startTimer();
+
             startCheckBottomInterval();
             startDropInterval();
             startPlaceInterval();
@@ -207,6 +237,55 @@ body.classList.add("body-main-show");
 
     }, 1000);
 }
+
+function modeForty() {
+
+}
+
+function modeMarathon() {
+
+}
+
+
+///////////////////////////////////////// TIMER /////////////////////////////////////////
+function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function formatMilliseconds(ms) {
+    return Math.floor(ms % 1000).toString().padStart(3, '0');
+}
+
+function startTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    startTime = performance.now();
+
+    function update() {
+        elapsed = performance.now() - startTime;
+
+        stat1Big.textContent = formatTime(elapsed);
+        stat1Small.textContent = `.${formatMilliseconds(elapsed)}`;    
+        stat3Small.textContent = ` (${(game.piecesPlaced/elapsed*1000).toFixed(2)}/s)`;
+
+        updateTime = requestAnimationFrame(update);
+    }
+
+    updateTime = requestAnimationFrame(update);
+}
+
+function stopTimer() {
+    if (!timerRunning) return;
+    cancelAnimationFrame(updateTime);
+    timerRunning = false;
+}
+
+
+
+
 
 ///////////////////////////////////////// INITIALISE BOXES /////////////////////////////////////////
 
@@ -309,6 +388,9 @@ function spawnLineUp() {
         nextArea.appendChild(div);
     });
 }
+
+///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
+
 ///////////////// ASSIGN NEXT PIECE FROM LINEUP
 function assignNextPiece() {    
     player.pieceName = nextLineUp[0].pieceName;
@@ -489,6 +571,8 @@ function fill() {
         boxToFill.style.background = `${player.color}`;
         boxToFill.classList.remove("play-piece");
     });
+    game.piecesPlaced++;
+    stat3Big.textContent = game.piecesPlaced;
     checkLineCLear();
 }
 
@@ -505,6 +589,10 @@ function checkGameOver() {
             return;
         }
     });
+    if (game.gameOver) {
+        gameEnd();
+    }
+
 }
 ///////////////// CHECK LINE CLEAR
 function checkLineCLear() {
@@ -556,6 +644,19 @@ function checkBottom() {
 ///////////////// CLEAR LINES
 function clearLines() { // from checkLineClear()
     game.linesToClear.forEach((line) => {
+        game.linesCleared++;
+        stat2Big.textContent = game.linesCleared;
+        if (game.mode === "marathon") {
+            if (game.linesCleared%10 === 0 && game.linesCleared < 120) {
+                game.dropRate -= 25;
+            }
+        }
+        if (game.mode === "forty") {
+            if (game.linesCleared > 40) {
+                //insert game win here
+            }
+        }
+
         //add 1 row (10) for each line to clear below
         for (i=line-10; i>20; i-= 10) {
             if (!game.linesToMove[i]) {
@@ -607,6 +708,15 @@ function moveLines() {
     });
     game.linesToMove = {};
 }
+
+///////////////////////////////////////// PLAYER ACTIONS /////////////////////////////////////////
+function gameEnd() {
+    stopTimer();
+    clearInterval(dropInterval);
+    clearInterval(checkBottomInterval);
+    clearInterval(placeInterval);
+}
+
 
 ///////////////////////////////////////// PLAYER ACTIONS /////////////////////////////////////////
 
