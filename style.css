@@ -8,17 +8,167 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden;
-  display: flex;
-  /* flex-direction: column; */
+  /* display: flex;
+  flex-direction: column; */
   align-items: center;
   justify-content: center;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   color: white;
   position: relative;
-  /* top: -5%; */
   background-color: lightslategray;
 }
+.body-main-show {
+    display: flex;
+    flex-direction: column;
+}
 
+
+
+/* ////////////////////////////////////////////////////////////////////////////////////// */
+#home-page {
+    /* background-color: orange; */
+    width: 100%;
+    height: 100%;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center; */
+    overflow: hidden;
+    z-index: 1;
+    transition: opacity 0.5s ease;
+}
+.home-page {
+    opacity: 0;
+}
+
+#game-title {
+    /* margin-bottom: 5%; */
+    position: relative;
+    top: 3%;
+    left: 3%;
+}
+
+#button-divs {
+    /* margin-top: 5%; */
+    position: relative;
+    top: 10%;
+    left: 0%;
+    display: flex;
+    flex-direction: column;   
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.home-buttons {
+    cursor: pointer;
+    background: linear-gradient(45deg,aqua, white);
+    background-size: 200%;
+    background-position: 100% 0;
+    border: 1px solid white;
+    box-shadow: 10px 5px 10px #999, inset 3px 5px 3px #fff;
+    width: 100%;
+    /* height: 200%; */
+    margin: 1%;
+    margin-left: 20%;
+    padding: 2%;
+    text-align: left;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out;
+    filter: brightness(.90);
+}
+.home-buttons:hover {
+    transform: translateX(-4%);
+    filter: brightness(1);
+}
+
+
+#play-child-buttons-divs {
+    /* margin-top: 5%; */
+    position: relative;
+    top: 10%;
+    left: 0%;
+    display: flex;
+    flex-direction: column;   
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.play-child-buttons {
+    cursor: pointer;
+    background: linear-gradient(45deg,aqua, white);
+    background-size: 200%;
+    background-position: 100% 0;
+    border: 1px solid white;
+    box-shadow: 10px 5px 10px #999, inset 3px 5px 3px #fff;
+    width: 100%;
+    /* height: 200%; */
+    margin: 1%;
+    margin-left: 20%;
+    padding: 2%;
+    text-align: left;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out;
+    filter: brightness(.90);
+}
+.play-child-buttons:hover {
+    transform: translateX(-4%);
+    filter: brightness(1);
+}
+
+/* #overlay {
+    background: black;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+.overlay {
+    opacity: 0;
+}
+
+#play-mode {
+    background: gray;
+    position: fixed;
+    z-index: 3;
+    width: 50%;
+    height: 50%;
+    aspect-ratio: 4/3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.2s ease-in-out;
+}
+.play-mode {
+    opacity: 0;
+} */
+
+.show {
+    opacity: 1;
+}
+.hide {
+    display: none;
+}
+
+.button-show {
+    opacity: 1;
+    transform: translateX(0);
+}
+.button-hide {
+    transform: translateX(100%);
+    display: none;
+}
+
+
+.stun {
+    pointer-events: none;
+}
+
+
+
+/* ////////////////////////////////////////////////////////////////////////////////////// */
 #main-block {
     background-color: slategray;
     padding: 3vh;
@@ -32,93 +182,28 @@ html, body {
     display: flex;
     justify-content: center;
     box-sizing: border-box;
+    transition: opacity 2s ease;
+}
+.main-block {
+    opacity: 0;
 }
 
-/* #main-block div {
+.show-main {
+    opacity: 1;
+}
+
+#play-page {
+    width: 100%;
+    height: 100%;
     display: flex;
-} */
+    justify-content: center;
+}
+
 
 .gap {
     height: 12.8%;
 }
 
-/* #boxID31 {
-    background-color: white;
-} */
-
-/* 
-#midBlockBackground {
-    position: absolute;
-    background-color: white;
-    height: 75.5%;
-    width: 28.8%;
-    top: 14.45%;
-    z-index: 0;
-} */
-
-
-/* ////////////////////////////////////////////////////////////////////////////////////// */
-#home-page {
-    /* background-color: orange; */
-    width: 100%;
-    height: 100%;
-    display: none;
-    /* display: flex; */
-    flex-direction: column;
-    text-align: left;
-    padding-left: 3%;
-    /* align-items: center; */
-    justify-content: center;
-    overflow: hidden;
-}
-
-#game-title {
-    margin-bottom: 10%;
-}
-
-.home-buttons {
-    cursor: pointer;
-    background: linear-gradient(45deg,aqua, white);
-    background-size: 200%;
-    background-position: 100% 0;
-    border: 1px solid white;
-    box-shadow: 10px 5px 10px #999, inset 3px 5px 3px #fff;
-    width: 100%;
-    margin: 1%;
-    margin-left: 20%;
-    padding: 3%;
-    text-align: left;
-    transition: transform 0.5s ease, filter 0.5s ease-in-out;
-    filter: brightness(.90);
-}
-
-.home-buttons:hover {
-    transform: translateX(-4%);
-    filter: brightness(1);
-}
-
-#play-mode {
-    display: none;
-    background: gray;
-    width: 50%;
-    height: 50%;
-    aspect-ratio: 4/3;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-}
-
-
-/* ////////////////////////////////////////////////////////////////////////////////////// */
-#play-page {
-    width: 100%;
-    height: 100%;
-    /* display: none; */
-    display: flex;
-    justify-content: center;
-}
 
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 #left-block {

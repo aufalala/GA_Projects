@@ -1,29 +1,7 @@
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 
-///////////////// BUTTONS
-const homeButtons = document.querySelectorAll(".home-buttons");
-const playButton = document.querySelector("#play-button");
-const settingsButton = document.querySelector("#settings-button");
-const tutButton = document.querySelector("#tutorial-button");
+///////////////////////////////////////// DATA / STATUSES /////////////////////////////////////////
 
-playButton.addEventListener("click", playClickHandler)
-settingsButton.addEventListener("click", settingsClickHandler)
-tutButton.addEventListener("click", tutorialClickHandler)
-
-function playClickHandler() {
-}
-
-function settingsClickHandler() {
-}
-
-function tutorialClickHandler() {
-}
-
-// PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
-// PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
-
-///////////////////////////////////////// DATA /////////////////////////////////////////
+//pieces
 const pieces = {
     o: { pieceName: "o", color: "yellow",   piece:[ [1, 1], [1, 1], ],                                         },
     t: { pieceName: "t", color: "purple",   piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],                        },
@@ -34,12 +12,16 @@ const pieces = {
     i: { pieceName: "i", color: "cyan",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
 }
 const pieceNames = Object.keys(pieces);
+
+//player
 const player = {
     pieceName: "",
     piece: "",
     color: "",
     pos: 3,
 }
+
+//game
 const game = { 
     mode: "",
     dropRate: 300,
@@ -49,19 +31,184 @@ const game = {
     linesToMove: {},
     gameOver: false,
 }
+
+//hold piece
 const holdP = {
     pieceName: "",
     piece: "",
     color: "",
 };
+
+//ghost piece
 const ghostPiece = {
     pos: "",
 };
 
-///////////////////////////////////////// INITIALISE BOXES /////////////////////////////////////////
+//initialise boxes
 let boxColor = "black";
 let boxBorder = ".1px solid gray";
 let allBoxes;
+
+//lineup
+let lineUpQty = 5;
+const nextLineUp = [];
+
+//intervals
+let dropInterval;
+let checkBottomInterval;
+let placeInterval;
+
+// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
+// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
+
+///////////////// CACHE
+
+const body = document.querySelector("body");
+
+const homePage = document.querySelector("#home-page");
+
+const mainBlock = document.querySelector("#main-block");
+const playPage = document.querySelector("#play-page");
+
+const homeButtons = document.querySelectorAll(".home-buttons");
+const playButton = document.querySelector("#play-button");
+const settingsButton = document.querySelector("#settings-button");
+const tutButton = document.querySelector("#tutorial-button");
+
+const playChildButtons = document.querySelectorAll(".play-child-buttons");
+const fortyButton = document.querySelector("#forty-button");
+const marathonButton = document.querySelector("#marathon-button");
+
+const playMode = document.querySelector("#play-mode");
+
+
+// homePage.classList.remove("hide");
+setTimeout(() => {
+    homePage.classList.add("show");
+}, 100);
+
+///////////////// INITIAL SHOW BUTTONS
+setTimeout(() => {
+homeButtons.forEach((button) => {
+    button.classList.remove("button-hide");
+});
+}, 500);
+
+setTimeout(() => {
+// requestAnimationFrame(() => {
+    homeButtons.forEach((button) => {
+        button.classList.add("button-show");
+    });
+// });
+}, 1000);
+
+///////////////// BUTTON CLICK HANDLER
+playButton.addEventListener("click", playClickHandler)
+settingsButton.addEventListener("click", settingsClickHandler)
+tutButton.addEventListener("click", tutorialClickHandler)
+
+fortyButton.addEventListener("click", fortyClickHandler)
+marathonButton.addEventListener("click", marathonClickHandler)
+
+function playClickHandler() {
+    //hide home buttons
+    homeButtons.forEach((button) => {
+        button.classList.remove("button-show");
+        setTimeout(() => {
+            button.classList.add("button-hide");   
+        }, 200)
+    });
+
+    //show play child buttons
+    setTimeout(() => {
+        playChildButtons.forEach((button) => {
+            button.classList.remove("button-hide");
+        });
+        requestAnimationFrame(() => {
+            playChildButtons.forEach((button) => {
+                button.classList.add("button-show");
+            }); 
+        });
+    }, 200)
+}
+
+function fortyClickHandler() {
+    //hide play child buttons
+    playChildButtons.forEach((button) => {
+        button.classList.remove("button-show");
+        setTimeout(() => {
+            button.classList.add("button-hide");  
+        }, 200)
+    });
+
+    //hide homePage
+    setTimeout(() => {
+        homePage.classList.remove("show");
+        setTimeout(() => {
+            homePage.classList.add("hide");    
+        }, 200)
+    }, 200)
+
+    game.mode = "forty"
+
+    initGame(game.mode);
+}
+
+function marathonClickHandler() {
+    //hide play child buttons
+    playChildButtons.forEach((button) => {
+        button.classList.remove("button-show");
+        setTimeout(() => {
+            button.classList.add("button-hide")    
+        }, 200)
+    });
+
+    game.mode = "marathon"
+    initGame(game.mode);
+}
+
+function settingsClickHandler() {
+    // playMode.classList.remove("hide");
+    // requestAnimationFrame(() => {
+    //     playMode.classList.add("show");
+    // });
+    // homePage.classList.add("stun")
+}
+
+function tutorialClickHandler() {
+}
+
+// PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
+// PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
+
+///////////////////////////////////////// INITIALISE GAME LOAD /////////////////////////////////////////
+
+function initGame(mode) {
+
+body.classList.add("body-main-show");
+    setTimeout(() => {
+
+        
+        generateBoxes();
+        cacheAllBoxes();
+        hideBoxes();
+        createLineUpList();
+        generateLineUp();
+        spawnLineUp();
+        
+        mainBlock.classList.add("show-main")
+            
+        setTimeout(() => {
+            respawn();
+            startCheckBottomInterval();
+            startDropInterval();
+            startPlaceInterval();
+        }, 1000)
+
+    }, 1000);
+}
+
+///////////////////////////////////////// INITIALISE BOXES /////////////////////////////////////////
 
 ///////////////// GENERATE 240 BOXES (play grid)
 function generateBoxes() {
@@ -95,8 +242,6 @@ function hideBoxes() {
 }
 
 ///////////////////////////////////////// LINEUP /////////////////////////////////////////
-let lineUpQty = 5;
-const nextLineUp = [];
 
 ///////////////// CREATE LINE UP LIST ACCORDING TO LINE UP QTY
 function createLineUpList() {
@@ -712,10 +857,6 @@ document.addEventListener("keyup", (event) => {
 
 ///////////////////////////////////////// INTERVALS /////////////////////////////////////////
 
-let dropInterval;
-let checkBottomInterval;
-let placeInterval;
-
 function startDropInterval() {
     clearInterval(dropInterval);
     dropInterval = setInterval(moveDown3, game.dropRate);
@@ -728,33 +869,17 @@ function startCheckBottomInterval() {
 
 function startPlaceInterval() {
     clearInterval(placeInterval);
-    placeInterval = setInterval(place, 300);
+    placeInterval = setInterval(place, 500);
 }
 
 ///////////////////////////////////////// INITIAL FUNCTION CALLS /////////////////////////////////////////
 
-//TO MOVE TO INIT
-
-generateBoxes();
-cacheAllBoxes();
-hideBoxes();
-createLineUpList();
-generateLineUp();
-spawnLineUp();
-
-
-//GAME START
-assignNextPiece();
-startCheckBottomInterval();
-startDropInterval();
-startPlaceInterval();
 
 
 // CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
 
 ///////////////////////////////////////// TEXT AUTO RESIZE /////////////////////////////////////////
 
-const mainBlockDiv = document.getElementById("main-block");
 const resizeObserver = new ResizeObserver(entries => {
     const h1 = document.querySelectorAll("h1");
     const h2 = document.querySelectorAll("h2");
@@ -782,6 +907,6 @@ const resizeObserver = new ResizeObserver(entries => {
         el.style.fontSize = (width / 50) + "px";
     });
 });
-resizeObserver.observe(mainBlockDiv);
+resizeObserver.observe(mainBlock);
 
 
