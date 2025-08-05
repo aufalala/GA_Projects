@@ -79,19 +79,23 @@ const tutButton = document.querySelector("#tutorial-button");
 const playChildButtons = document.querySelectorAll(".play-child-buttons");
 const fortyButton = document.querySelector("#forty-button");
 const marathonButton = document.querySelector("#marathon-button");
+const playChildBackButton = document.querySelector("#play-child-back");
 
 // const playMode = document.querySelector("#play-mode");
 
 ///////////////// PLAY PAGE
 const mainBlock = document.querySelector("#main-block");
 const playPage = document.querySelector("#play-page");
+const endScreen = document.querySelector("#end-screen");
 
+//white ui
+const whitePartsDiv = document.querySelectorAll(".white-parts-div");
+const whitePartsText = document.querySelectorAll(".white-parts-text");
 
+//stats
 const stat1Big = document.getElementById('stat-1-big');
 const stat1Small = document.getElementById('stat-1-small');
-
 const stat2Big = document.getElementById('stat-2-big');
-
 const stat3Big = document.getElementById('stat-3-big');
 const stat3Small = document.getElementById('stat-3-small');
 
@@ -105,21 +109,19 @@ let elapsed;
 // homePage.classList.remove("hide");
 setTimeout(() => {
     homePage.classList.add("show");
-}, 100);
+}, 700);
 
 ///////////////// INITIAL SHOW BUTTONS
-setTimeout(() => {
-homeButtons.forEach((button) => {
-    button.classList.remove("button-hide");
-});
-}, 500);
+// setTimeout(() => {
+//     homeButtons.forEach((button) => {
+//         button.classList.remove("button-hide");
+//     });
+// }, 500);
 
 setTimeout(() => {
-// requestAnimationFrame(() => {
     homeButtons.forEach((button) => {
         button.classList.add("button-show");
     });
-// });
 }, 1000);
 
 ///////////////// BUTTON CLICK HANDLER
@@ -129,6 +131,7 @@ tutButton.addEventListener("click", tutorialClickHandler)
 
 fortyButton.addEventListener("click", fortyClickHandler)
 marathonButton.addEventListener("click", marathonClickHandler)
+playChildBackButton.addEventListener("click", playChildBackHandler)
 
 function playClickHandler() {
     //hide home buttons
@@ -139,8 +142,9 @@ function playClickHandler() {
         }, 200)
     });
 
-    //show play child buttons
     setTimeout(() => {
+            
+        //show play child buttons
         playChildButtons.forEach((button) => {
             button.classList.remove("button-hide");
         });
@@ -149,6 +153,15 @@ function playClickHandler() {
                 button.classList.add("button-show");
             }); 
         });
+
+        //show play child back
+        // setTimeout(() => {
+            playChildBackButton.classList.remove("hide");
+            requestAnimationFrame(() => {
+                playChildBackButton.classList.add("show");
+            });
+        // }, 500)
+
     }, 200)
 }
 
@@ -162,12 +175,12 @@ function fortyClickHandler() {
     });
 
     //hide homePage
+    // setTimeout(() => {
+    homePage.classList.remove("show");
     setTimeout(() => {
-        homePage.classList.remove("show");
-        setTimeout(() => {
-            homePage.classList.add("hide");    
-        }, 200)
+        homePage.classList.add("hide");    
     }, 200)
+    // }, 200)
 
     game.mode = "forty"
 
@@ -183,8 +196,43 @@ function marathonClickHandler() {
         }, 200)
     });
 
+    //hide homePage
+    homePage.classList.remove("show");
+    setTimeout(() => {
+        homePage.classList.add("hide");    
+    }, 200)
+
     game.mode = "marathon"
     initGame(game.mode);
+}
+
+function playChildBackHandler() {
+    //hide play child buttons
+    playChildButtons.forEach((button) => {
+        button.classList.remove("button-show");
+        setTimeout(() => {
+            button.classList.add("button-hide");  
+        }, 200)
+    });
+    
+    playChildBackButton.classList.remove("show");
+    setTimeout(() => {
+        playChildBackButton.classList.add("hide");
+    }, 500);
+
+
+    //show home buttons
+    setTimeout(() => {
+        homeButtons.forEach((button) => {
+            button.classList.remove("button-hide");
+        });
+    }, 200);
+    setTimeout(() => {
+        homeButtons.forEach((button) => {
+            button.classList.add("button-show");
+        });
+    }, 500);
+
 }
 
 function settingsClickHandler() {
@@ -590,7 +638,7 @@ function checkGameOver() {
         }
     });
     if (game.gameOver) {
-        gameEnd();
+        gameLose();
     }
 
 }
@@ -652,8 +700,8 @@ function clearLines() { // from checkLineClear()
             }
         }
         if (game.mode === "forty") {
-            if (game.linesCleared > 40) {
-                //insert game win here
+            if (game.linesCleared >= 40) {
+                gameWin(); 
             }
         }
 
@@ -709,14 +757,38 @@ function moveLines() {
     game.linesToMove = {};
 }
 
-///////////////////////////////////////// PLAYER ACTIONS /////////////////////////////////////////
+///////////////////////////////////////// GAME END /////////////////////////////////////////
 function gameEnd() {
     stopTimer();
     clearInterval(dropInterval);
     clearInterval(checkBottomInterval);
     clearInterval(placeInterval);
+
+    setTimeout(() => {
+        endScreen.classList.remove("hide")
+        requestAnimationFrame(() => {
+            endScreen.classList.add("show-end-screen");
+        })
+        
+    });
 }
 
+function gameLose() {
+    playPage.classList.add("play-page-fall");
+    whitePartsDiv.forEach((part) => {
+        part.classList.add("white-parts-div-red");
+    })
+    whitePartsText.forEach((part) => {
+        part.classList.add("white-parts-text-red");
+    })
+    gameEnd();
+}
+
+function gameWin() {
+    playPage.classList.add("play-page-scale");
+    gameEnd();
+
+}
 
 ///////////////////////////////////////// PLAYER ACTIONS /////////////////////////////////////////
 
@@ -981,10 +1053,6 @@ function startPlaceInterval() {
     clearInterval(placeInterval);
     placeInterval = setInterval(place, 500);
 }
-
-///////////////////////////////////////// INITIAL FUNCTION CALLS /////////////////////////////////////////
-
-
 
 // CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
 
