@@ -15,16 +15,15 @@
 
     <div id="overlay" class="overlay hide"></div> -->
 
+    <!-- /////////////////////////////////////////// HOME PAGE-->
     <div id="home-page" class="home-page">
-
         <h2 id="game-title">WHERE DO I PUT THIS?!?!</h2>
-        
+
         <div id="button-divs" class="button-divs">
             <div id="play-button" class="home-buttons "><h3>PLAY</h3></div>
             <div id="settings-button" class="home-buttons "><h3>SETTINGS</h3></div>
             <div id="tutorial-button" class="home-buttons "><h3>HOW TO PLAY</h3></div>
         </div>
-        
         <div id="play-child-buttons-divs" class="play-child-buttons-divs">
             <div id="forty-button" class="play-child-buttons button-hide"><h3>40 LINE CLEAR</h3></div>
             <div id="marathon-button" class="play-child-buttons button-hide"><h3>MARATHON</h3></div>
@@ -32,98 +31,67 @@
         <div id="play-child-back" class="play-child-back hide">
             <h3>BACK</h3>
         </div>
-    
+
     </div>
-
-
-        
+    
+    
+    <!-- /////////////////////////////////////////// PLAY PAGE-->
     <div id="main-block" class="main-block">
         <div id="play-page" class="play-page show">
             <!-- /////////////////////////////////////////// HOLD AREA-->
             <div id="left-block">
-
-                <div class="gap">
-                </div>
-                
+                <div class="gap"></div>
                 <div id="hold-block" class="white-parts-div">
                     <h3 id="hold-text" class="white-parts-div">HOLD</h3>
-                    <div id="hold-area">
-                        
-                    </div>
+                    <div id="hold-area"></div>
                 </div>
 
                 <div id="stats-block" class="white-parts-text">
-
                     <section id="stat-3">
                         <h4 id="stat-3-text">PIECES</h4>
                         <h2 id="stat-3-stat"><span id="stat-3-big">0</span><span id="stat-3-small" class="stat-small"> (0.00/s)</span></h2>
-
                     </section>
-                    
                     <section id="stat-2">
                         <h4 id="stat-2-text">LINES</h4>
                         <h2 id="stat-2-stat"><span id="stat-2-big">0</span>
-
                     </section>
-                    
                     <section id="stat-1">
                         <h4 id="stat-1-text">TIME</h4>
                         <h2 id="stat-1-stat"><span id="stat-1-big">0:00</span><span id="stat-1-small" class="stat-small">.000</span></h2>
-
                     </section>
                 </div>
-
             </div>
 
             <!-- /////////////////////////////////////////// GAME AREA-->
             <div id="mid-block">
-                
                 <div id="game-area">
-                
                     <div id="mid-block-background" class="white-parts-div"></div>    
                 </div>
-                
             </div>
 
             <!-- /////////////////////////////////////////// NEXT AREA-->
             <div id="right-block">
-                
                 <div class="gap"></div>
-
                 <div id="next-block" class="white-parts-div">
                     <h3 id="next-text" class="white-parts-div">NEXT</h3>
-                    <div id="next-area">
-                    </div>
+                    <div id="next-area"></div>
                 </div>
-
             </div>
-
-
-
         </div>
 
         
-        <!-- /////////////////////////////////////////// DEATH SCREEN-->
-
+        <!-- /////////////////////////////////////////// END SCREEN-->
         <div id="end-screen" class="end-screen hide">
-            <h2 id="end-result" class="end-line"><span id="game-result"> win/lose</span></h2>
+            <h2 id="end-result" class="end-line"><span id="game-result-message"></span></h2>
             <br>
-            <h3 id="end-time" class="end-line">total time: <span id="game-result-time">XX</span></h3>
-            <h3 id="end-lines" class="end-line">you cleared <span id="game-result-time">X</span> lines</h3>
+            <h3 id="end-time" class="end-line">total time: <span id="game-result-time"></span></h3>
+            <h3 id="end-lines" class="end-line">you cleared <span id="game-result-line"></span> lines</h3>
             <div id="end-screen-buttons-div">
                 <div id="end-return" class="end-screen-buttons">RETURN TO HOME</div>
                 <div id="end-another" class="end-screen-buttons">ANOTHER ROUND</div>
             </div>
-
         </div>
-
-
-
-
-
-
     </div>
-
     
 </body>
 </html>

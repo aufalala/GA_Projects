@@ -36,6 +36,13 @@ const game = {
     piecesPlaced: 0,
 }
 
+//end screen
+const end = {
+    message: "",
+    lines: 0,
+    time: "",
+}
+
 //hold piece
 const holdP = {
     pieceName: "",
@@ -76,12 +83,12 @@ const body = document.querySelector("body");
 
 ///////////////// HOME PAGE
 const homePage = document.getElementById("home-page");
-
+//home buttons
 const homeButtons = document.querySelectorAll(".home-buttons");
 const playButton = document.getElementById("play-button");
 const settingsButton = document.getElementById("settings-button");
 const tutButton = document.getElementById("tutorial-button");
-
+//play child buttons
 const playChildButtons = document.querySelectorAll(".play-child-buttons");
 const fortyButton = document.getElementById("forty-button");
 const marathonButton = document.getElementById("marathon-button");
@@ -103,6 +110,9 @@ const stat3Big = document.getElementById("stat-3-big");
 const stat3Small = document.getElementById("stat-3-small");
 //end screen
 const endScreen = document.getElementById("end-screen");
+const endMessage = document.getElementById("game-result-message");
+const endTime = document.getElementById("game-result-time");
+const endLines = document.getElementById("game-result-line");
 //end buttons
 const endReturn = document.getElementById("end-return")
 const endAnother = document.getElementById("end-another")
@@ -111,7 +121,7 @@ const endAnother = document.getElementById("end-another")
 // HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 // HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 
-//initial show page and button
+//initial show page and button ----------------------- MOVE THIS SOMEWHERE
 setTimeout(() => {
     homePage.classList.add("show");
 }, 700);
@@ -132,11 +142,15 @@ fortyButton.addEventListener("click", fortyClickHandler)
 marathonButton.addEventListener("click", marathonClickHandler)
 playChildBackButton.addEventListener("click", playChildBackHandler)
 
+
+///////////////// PLAY PAGE
 endReturn.addEventListener("click", endReturnHandler)
 endAnother.addEventListener("click", endAnotherHandler)
 
-///////////////////////////////////////// CLICK HANDLERS FUNCTIONS /////////////////////////////////////////
+///////////////////////////////////////// CLICK HANDLER FUNCTIONS /////////////////////////////////////////
 
+
+///////////////// HOME PAGE
 function playClickHandler() {
     //hide home buttons
     homeButtons.forEach((button) => {
@@ -161,104 +175,84 @@ function playClickHandler() {
         setTimeout(() => {
             playChildBackButton.classList.add("show");
         }, 500);
-
     }, 200);
 }
-
 function fortyClickHandler() {
     game.mode = "forty";
     hideNavToInitGame();
 }
-
 function marathonClickHandler() {
     game.mode = "marathon";
     hideNavToInitGame();
 }
-
-
 function playChildBackHandler() {
     hidePlayChildButtons();
     showHomeButtons();
 }
-
-
-function settingsClickHandler() {
+function settingsClickHandler() { //------------------------------------------------
     // playMode.classList.remove("hide");
     // requestAnimationFrame(() => {
     //     playMode.classList.add("show");
     // });
     // homePage.classList.add("stun")
 }
-
-function tutorialClickHandler() {
+function tutorialClickHandler() { //------------------------------------------------
 }
 
-
-
+///////////////// PLAY PAGE
 function endReturnHandler() {
-    
     endScreen.classList.add("hide-end-screen-zoom-out")
     setTimeout(() => {
+        //hide end screen
         endScreen.classList.add("hide");
         endScreen.classList.remove("hide-end-screen-zoom-out")
         endScreen.classList.remove("show-end-screen");
         
-
+        //hide mainblock
         setTimeout(() => {            
             body.classList.remove("body-main-show");
             mainBlock.classList.remove("show-main");
 
+            //show homepage and buttons
             homePage.classList.remove("hide");
             requestAnimationFrame(() => {
                 homePage.classList.add("show");    
-            })
+            });
+            showHomeButtons();
 
-            showHomeButtons();    
         }, 500);
-    
-    
-    
-    
     }, 500);
 
-    resetGameBoard();
-
-
+    resetGameBoardUI();
 }
 function endAnotherHandler() {
-
-
     endScreen.classList.add("hide-end-screen-zoom-in")
     setTimeout(() => {
+        //hide end screen
         endScreen.classList.add("hide");
         endScreen.classList.remove("hide-end-screen-zoom-in")
         endScreen.classList.remove("show-end-screen");
     }, 2000);
-    
 
-    resetGameBoard();
-
-
+    resetGameBoardUI();
     initGame();
-
 }
 
 
-///////////////////////////////////////// NAV PAGES/BUTTONS VISIBILITY /////////////////////////////////////////
+///////////////////////////////////////// NAV (PAGES/BUTTONS) VISIBILITY /////////////////////////////////////////
 
 function hideNavToInitGame() {
     hidePlayChildButtons();
     hideHomePage();
     initGame();
 }
-
 function hidePlayChildButtons() {
     //hide play child buttons
     playChildButtons.forEach((button) => {
         button.classList.remove("button-show");
         setTimeout(() => {
             button.classList.add("button-hide")    
-        }, 200)
+        }, 200);
     });
     //hide play child back button
     playChildBackButton.classList.remove("show");
@@ -266,7 +260,6 @@ function hidePlayChildButtons() {
         playChildBackButton.classList.add("hide");
     }, 400);
 }
-
 function hideHomePage() {
     //hide homePage
     homePage.classList.remove("show");
@@ -274,8 +267,6 @@ function hideHomePage() {
         homePage.classList.add("hide");    
     }, 200);
 }
-
-
 function showHomeButtons() {
     //show home buttons
     setTimeout(() => {
@@ -302,7 +293,6 @@ function resetGameData() {
     player.color = "";
     player.pos = 3;
 
-    // mode: "",
     game.dropRate = game.initialDropRate;
     game.holdAntiSpam = false;
     game.place = false;
@@ -312,6 +302,10 @@ function resetGameData() {
     game.gameOver = false;
     game.linesCleared = 0;
     game.piecesPlaced = 0;
+
+    end.message = "";
+    end.lines = 0;
+    end.time = "";
 
     holdP.pieceName = "";
     holdP.piece = "";
@@ -327,8 +321,7 @@ function resetGameData() {
     updateTime = "";
     elapsed = "";
 }
-
-function resetGameBoard() {
+function resetGameBoardUI() {
     playPage.classList.remove("play-page-fall");
     setTimeout(() => {
         playPage.classList.add("show");
@@ -343,10 +336,8 @@ function resetGameBoard() {
     
     playPage.classList.remove("play-page-scale");
 }
-
 function initGame() {
-
-    // applySettings();
+    // applySettings(); ------------------------------------------
 
     setTimeout(() => {
         generateBoxes();
@@ -355,6 +346,7 @@ function initGame() {
         createLineUpList();
         generateLineUp();
         spawnLineUp();
+        spawnHold();
         resetStats();
 
         body.classList.add("body-main-show");
@@ -366,13 +358,12 @@ function initGame() {
         } else if (game.mode === "marathon") {
             gameModeMessage = "LET'S SEE HOW FAR YOU CAN GO";
         }
-        //insert message countdown here
+        //insert message and countdown here ---------------------------------------------
 
-        
+        //round start
         setTimeout(() => {
             respawn();
             startTimer();
-
             startCheckBottomInterval();
             startDropInterval();
             startPlaceInterval();
@@ -381,13 +372,6 @@ function initGame() {
     }, 1000);
 }
 
-function modeForty() {
-}
-
-function modeMarathon() {
-}
-
-
 ///////////////////////////////////////// TIMER /////////////////////////////////////////
 function formatTime(ms) {
     const totalSeconds = Math.floor(ms / 1000);
@@ -395,11 +379,9 @@ function formatTime(ms) {
     const seconds = totalSeconds % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
-
 function formatMilliseconds(ms) {
     return Math.floor(ms % 1000).toString().padStart(3, '0');
 }
-
 function startTimer() {
     if (timerRunning) return;
     timerRunning = true;
@@ -414,19 +396,13 @@ function startTimer() {
 
         updateTime = requestAnimationFrame(update);
     }
-
     updateTime = requestAnimationFrame(update);
 }
-
 function stopTimer() {
     if (!timerRunning) return;
     cancelAnimationFrame(updateTime);
     timerRunning = false;
 }
-
-
-
-
 
 ///////////////////////////////////////// INITIALISE BOXES /////////////////////////////////////////
 
@@ -486,8 +462,6 @@ function generateNewPiece() {
     nextLineUp[lineUpQty-1] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
     spawnLineUp();
 }
-
-
 ///////////////// DISPLAY LINEUP
 function spawnLineUp() {
     const nextArea = document.getElementById("next-area");
@@ -531,8 +505,7 @@ function spawnLineUp() {
     });
 }
 
-///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
-
+///////////////////////////////////////// STATS TEXT RESET /////////////////////////////////////////
 function resetStats() {
     stat3Big.textContent = game.piecesPlaced;
     stat2Big.textContent = game.linesCleared;
@@ -541,8 +514,6 @@ function resetStats() {
     stat3Small.textContent = " (0.00/s)";
 
 }
-
-
 
 ///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
 
@@ -658,7 +629,7 @@ function spawn(pos) {
                 allBoxes[(x+pos)+(y*10)].style.background = player.color;
                 allBoxes[(x+pos)+(y*10)].style.border = `1px solid ${player.color}`;
             }
-        })
+        });
     });
     spawnGhost();
 }
@@ -758,7 +729,7 @@ function checkLineCLear() {
             game.linesToCheck.push(lineStart);
         }
         box.classList.remove("check-line-clear"); //remove class
-    })
+    });
 
     //check each line in linesToCheck if fully filled, if so, push to lineToClear
     game.linesToCheck.forEach((line) => {
@@ -772,7 +743,7 @@ function checkLineCLear() {
         if (!gap) {
             game.linesToClear.push(line);
         } 
-    })
+    });
     game.linesToCheck.length = 0;
 
     //if linesToClear truthy, proceed to clearLines()
@@ -808,7 +779,6 @@ function clearLines() { // from checkLineClear()
                 gameWin(); 
             }
         }
-
         //add 1 row (10) for each line to clear below
         for (i=line-10; i>20; i-= 10) {
             if (!game.linesToMove[i]) {
@@ -864,13 +834,19 @@ function moveLines() {
 ///////////////////////////////////////// GAME END /////////////////////////////////////////
 function freezeTime() {
     stopTimer();
+    end.time = stat1Big.textContent+stat1Small.textContent;
+    end.lines = stat2Big.textContent;
+
     clearInterval(dropInterval);
     clearInterval(checkBottomInterval);
     clearInterval(placeInterval);
 }
 
 function gameEnd() {
-    resetGameData();
+    endMessage.textContent = end.message
+    endLines.textContent = end.lines
+    endTime.textContent = end.time
+
     setTimeout(() => {
         endScreen.classList.remove("hide")
         requestAnimationFrame(() => {
@@ -878,32 +854,33 @@ function gameEnd() {
         })
     }, 500);
 
-       
+    resetGameData();       
 }
 
 function gameLose() {
     freezeTime();
+    end.message = "GAME OVER!"
     playPage.classList.add("play-page-fall");
     setTimeout(() => {
         playPage.classList.remove("show");
     }, 500);
     whitePartsDiv.forEach((part) => {
         part.classList.add("white-parts-div-red");
-    })
+    });
     whitePartsText.forEach((part) => {
         part.classList.add("white-parts-text-red");
-    })
+    });
     gameEnd();
 }
 
 function gameWin() {
     freezeTime();
+    end.message = "You did it?! Wow. Grape.";
     playPage.classList.add("play-page-scale");
     setTimeout(() => {
         playPage.classList.remove("show");
     }, 500);
     gameEnd();
-
 }
 
 ///////////////////////////////////////// PLAYER ACTIONS /////////////////////////////////////////
@@ -1202,5 +1179,3 @@ const resizeObserver = new ResizeObserver(entries => {
     });
 });
 resizeObserver.observe(mainBlock);
-
-
