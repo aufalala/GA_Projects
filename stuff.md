@@ -9,7 +9,7 @@ main page
   -settings
   -how to play
 
-do:  hang time, lineclear and place animation, countdown & message, apply settings function, music & sounds
+do:  hang time, lineclear and place animation, countdown & message, apply settings function, music & sounds, red warning alert effect
 
 
 !!!!!WATCH OUT FOR
