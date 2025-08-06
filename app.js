@@ -60,8 +60,12 @@ let dropInterval;
 let checkBottomInterval;
 let placeInterval;
 
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
+//timer
+let timerRunning = false;
+let startTime;
+let updateTime;
+let elapsed;
+
 
 ///////////////////////////////////////// CACHE /////////////////////////////////////////
 
@@ -100,31 +104,20 @@ const stat3Big = document.getElementById('stat-3-big');
 const stat3Small = document.getElementById('stat-3-small');
 
 
-let timerRunning = false;
-let startTime;
-let updateTime;
-let elapsed;
+// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
+// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 
-
-// homePage.classList.remove("hide");
+//initial show page and button
 setTimeout(() => {
     homePage.classList.add("show");
 }, 700);
-
-///////////////// INITIAL SHOW BUTTONS
-// setTimeout(() => {
-//     homeButtons.forEach((button) => {
-//         button.classList.remove("button-hide");
-//     });
-// }, 500);
-
 setTimeout(() => {
     homeButtons.forEach((button) => {
         button.classList.add("button-show");
     });
 }, 1000);
 
-///////////////// BUTTON CLICK HANDLER
+///////////////////////////////////////// BUTTON CLICK HANDLERS /////////////////////////////////////////
 playButton.addEventListener("click", playClickHandler)
 settingsButton.addEventListener("click", settingsClickHandler)
 tutButton.addEventListener("click", tutorialClickHandler)
@@ -154,40 +147,32 @@ function playClickHandler() {
             }); 
         });
 
-        //show play child back
-        // setTimeout(() => {
-            playChildBackButton.classList.remove("hide");
-            requestAnimationFrame(() => {
-                playChildBackButton.classList.add("show");
-            });
-        // }, 500)
+        //show play-child-back-button
+        playChildBackButton.classList.remove("hide");
+        setTimeout(() => {
+            playChildBackButton.classList.add("show");
+        }, 500);
 
     }, 200)
 }
 
 function fortyClickHandler() {
-    //hide play child buttons
-    playChildButtons.forEach((button) => {
-        button.classList.remove("button-show");
-        setTimeout(() => {
-            button.classList.add("button-hide");  
-        }, 200)
-    });
-
-    //hide homePage
-    // setTimeout(() => {
-    homePage.classList.remove("show");
-    setTimeout(() => {
-        homePage.classList.add("hide");    
-    }, 200)
-    // }, 200)
-
-    game.mode = "forty"
-
-    initGame(game.mode);
+    game.mode = "forty";
+    hideNavToInitGame();
 }
 
 function marathonClickHandler() {
+    game.mode = "marathon";
+    hideNavToInitGame();
+}
+
+function hideNavToInitGame() {
+    hidePlayChild();
+    hideHomePage();
+    initGame();
+}
+
+function hidePlayChild() {
     //hide play child buttons
     playChildButtons.forEach((button) => {
         button.classList.remove("button-show");
@@ -195,32 +180,27 @@ function marathonClickHandler() {
             button.classList.add("button-hide")    
         }, 200)
     });
+    //hide play child back button
+    playChildBackButton.classList.remove("show");
+    setTimeout(() => {
+        playChildBackButton.classList.add("hide");
+    }, 400);
+}
 
+function hideHomePage() {
     //hide homePage
     homePage.classList.remove("show");
     setTimeout(() => {
         homePage.classList.add("hide");    
     }, 200)
-
-    game.mode = "marathon"
-    initGame(game.mode);
 }
 
 function playChildBackHandler() {
-    //hide play child buttons
-    playChildButtons.forEach((button) => {
-        button.classList.remove("button-show");
-        setTimeout(() => {
-            button.classList.add("button-hide");  
-        }, 200)
-    });
-    
-    playChildBackButton.classList.remove("show");
-    setTimeout(() => {
-        playChildBackButton.classList.add("hide");
-    }, 500);
+    hidePlayChild();
+    showHome();
+}
 
-
+function showHome() {
     //show home buttons
     setTimeout(() => {
         homeButtons.forEach((button) => {
@@ -231,8 +211,7 @@ function playChildBackHandler() {
         homeButtons.forEach((button) => {
             button.classList.add("button-show");
         });
-    }, 500);
-
+    }, 300);
 }
 
 function settingsClickHandler() {
@@ -251,7 +230,7 @@ function tutorialClickHandler() {
 
 ///////////////////////////////////////// INITIALISE GAME LOAD /////////////////////////////////////////
 
-function initGame(mode) {
+function initGame() {
 
     setTimeout(() => {
         generateBoxes();
@@ -264,12 +243,11 @@ function initGame(mode) {
         body.classList.add("body-main-show");
         mainBlock.classList.add("show-main")
         
-
-        
-        if (mode === "forty") {
-            modeForty()
-        } else if (mode ==="marathon") {
-            modeMarathon()
+        let gameModeMessage;
+        if (game.mode === "forty") {
+            gameModeMessage = "CLEAR 40 LINES";
+        } else if (game.mode === "marathon") {
+            gameModeMessage = "LET'S SEE HOW FAR YOU CAN GO";
         }
         //insert message countdown here
 
@@ -281,17 +259,15 @@ function initGame(mode) {
             startCheckBottomInterval();
             startDropInterval();
             startPlaceInterval();
-        }, 1000)
+        }, 5000)
 
     }, 1000);
 }
 
 function modeForty() {
-
 }
 
 function modeMarathon() {
-
 }
 
 
