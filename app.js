@@ -774,11 +774,6 @@ function clearLines() { // from checkLineClear()
                 game.dropRate -= 25;
             }
         }
-        if (game.mode === "forty") {
-            if (game.linesCleared >= 40) {
-                gameWin(); 
-            }
-        }
         //add 1 row (10) for each line to clear below
         for (i=line-10; i>20; i-= 10) {
             if (!game.linesToMove[i]) {
@@ -797,6 +792,13 @@ function clearLines() { // from checkLineClear()
     game.linesToClear.length = 0; //reset lineToClear
     if (game.linesToMove) {
         moveLines(); //move lines down to fill up cleared rows
+    }
+    
+    if (game.mode === "forty") {
+        if (game.linesCleared >= 40) {
+            gameWin();
+            return;
+        }
     }
 }
 
