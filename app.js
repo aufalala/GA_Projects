@@ -25,6 +25,8 @@ const player = {
 const game = { 
     mode: "",
     dropRate: 300,
+    initialDropRate: 300,
+    holdAntiSpam: false,
     place: false,
     linesToCheck: [],
     linesToClear: [],
@@ -73,35 +75,37 @@ const body = document.querySelector("body");
 
 
 ///////////////// HOME PAGE
-const homePage = document.querySelector("#home-page");
+const homePage = document.getElementById("home-page");
 
 const homeButtons = document.querySelectorAll(".home-buttons");
-const playButton = document.querySelector("#play-button");
-const settingsButton = document.querySelector("#settings-button");
-const tutButton = document.querySelector("#tutorial-button");
+const playButton = document.getElementById("play-button");
+const settingsButton = document.getElementById("settings-button");
+const tutButton = document.getElementById("tutorial-button");
 
 const playChildButtons = document.querySelectorAll(".play-child-buttons");
-const fortyButton = document.querySelector("#forty-button");
-const marathonButton = document.querySelector("#marathon-button");
-const playChildBackButton = document.querySelector("#play-child-back");
+const fortyButton = document.getElementById("forty-button");
+const marathonButton = document.getElementById("marathon-button");
+const playChildBackButton = document.getElementById("play-child-back");
 
 // const playMode = document.querySelector("#play-mode");
 
 ///////////////// PLAY PAGE
-const mainBlock = document.querySelector("#main-block");
-const playPage = document.querySelector("#play-page");
-const endScreen = document.querySelector("#end-screen");
-
+const mainBlock = document.getElementById("main-block");
+const playPage = document.getElementById("play-page");
 //white ui
 const whitePartsDiv = document.querySelectorAll(".white-parts-div");
 const whitePartsText = document.querySelectorAll(".white-parts-text");
-
 //stats
-const stat1Big = document.getElementById('stat-1-big');
-const stat1Small = document.getElementById('stat-1-small');
-const stat2Big = document.getElementById('stat-2-big');
-const stat3Big = document.getElementById('stat-3-big');
-const stat3Small = document.getElementById('stat-3-small');
+const stat1Big = document.getElementById("stat-1-big");
+const stat1Small = document.getElementById("stat-1-small");
+const stat2Big = document.getElementById("stat-2-big");
+const stat3Big = document.getElementById("stat-3-big");
+const stat3Small = document.getElementById("stat-3-small");
+//end screen
+const endScreen = document.getElementById("end-screen");
+//end buttons
+const endReturn = document.getElementById("end-return")
+const endAnother = document.getElementById("end-another")
 
 
 // HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
@@ -118,6 +122,8 @@ setTimeout(() => {
 }, 1000);
 
 ///////////////////////////////////////// BUTTON CLICK HANDLERS /////////////////////////////////////////
+
+///////////////// HOME PAGE
 playButton.addEventListener("click", playClickHandler)
 settingsButton.addEventListener("click", settingsClickHandler)
 tutButton.addEventListener("click", tutorialClickHandler)
@@ -126,17 +132,21 @@ fortyButton.addEventListener("click", fortyClickHandler)
 marathonButton.addEventListener("click", marathonClickHandler)
 playChildBackButton.addEventListener("click", playChildBackHandler)
 
+endReturn.addEventListener("click", endReturnHandler)
+endAnother.addEventListener("click", endAnotherHandler)
+
+///////////////////////////////////////// CLICK HANDLERS FUNCTIONS /////////////////////////////////////////
+
 function playClickHandler() {
     //hide home buttons
     homeButtons.forEach((button) => {
         button.classList.remove("button-show");
         setTimeout(() => {
             button.classList.add("button-hide");   
-        }, 200)
+        }, 200);
     });
-
+    //show play child
     setTimeout(() => {
-            
         //show play child buttons
         playChildButtons.forEach((button) => {
             button.classList.remove("button-hide");
@@ -146,14 +156,13 @@ function playClickHandler() {
                 button.classList.add("button-show");
             }); 
         });
-
         //show play-child-back-button
         playChildBackButton.classList.remove("hide");
         setTimeout(() => {
             playChildBackButton.classList.add("show");
         }, 500);
 
-    }, 200)
+    }, 200);
 }
 
 function fortyClickHandler() {
@@ -166,13 +175,84 @@ function marathonClickHandler() {
     hideNavToInitGame();
 }
 
+
+function playChildBackHandler() {
+    hidePlayChildButtons();
+    showHomeButtons();
+}
+
+
+function settingsClickHandler() {
+    // playMode.classList.remove("hide");
+    // requestAnimationFrame(() => {
+    //     playMode.classList.add("show");
+    // });
+    // homePage.classList.add("stun")
+}
+
+function tutorialClickHandler() {
+}
+
+
+
+function endReturnHandler() {
+    
+    endScreen.classList.add("hide-end-screen-zoom-out")
+    setTimeout(() => {
+        endScreen.classList.add("hide");
+        endScreen.classList.remove("hide-end-screen-zoom-out")
+        endScreen.classList.remove("show-end-screen");
+        
+
+        setTimeout(() => {            
+            body.classList.remove("body-main-show");
+            mainBlock.classList.remove("show-main");
+
+            homePage.classList.remove("hide");
+            requestAnimationFrame(() => {
+                homePage.classList.add("show");    
+            })
+
+            showHomeButtons();    
+        }, 500);
+    
+    
+    
+    
+    }, 500);
+
+    resetGameBoard();
+
+
+}
+function endAnotherHandler() {
+
+
+    endScreen.classList.add("hide-end-screen-zoom-in")
+    setTimeout(() => {
+        endScreen.classList.add("hide");
+        endScreen.classList.remove("hide-end-screen-zoom-in")
+        endScreen.classList.remove("show-end-screen");
+    }, 2000);
+    
+
+    resetGameBoard();
+
+
+    initGame();
+
+}
+
+
+///////////////////////////////////////// NAV PAGES/BUTTONS VISIBILITY /////////////////////////////////////////
+
 function hideNavToInitGame() {
-    hidePlayChild();
+    hidePlayChildButtons();
     hideHomePage();
     initGame();
 }
 
-function hidePlayChild() {
+function hidePlayChildButtons() {
     //hide play child buttons
     playChildButtons.forEach((button) => {
         button.classList.remove("button-show");
@@ -192,15 +272,11 @@ function hideHomePage() {
     homePage.classList.remove("show");
     setTimeout(() => {
         homePage.classList.add("hide");    
-    }, 200)
+    }, 200);
 }
 
-function playChildBackHandler() {
-    hidePlayChild();
-    showHome();
-}
 
-function showHome() {
+function showHomeButtons() {
     //show home buttons
     setTimeout(() => {
         homeButtons.forEach((button) => {
@@ -214,23 +290,63 @@ function showHome() {
     }, 300);
 }
 
-function settingsClickHandler() {
-    // playMode.classList.remove("hide");
-    // requestAnimationFrame(() => {
-    //     playMode.classList.add("show");
-    // });
-    // homePage.classList.add("stun")
-}
 
-function tutorialClickHandler() {
-}
 
 // PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
 // PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
 
 ///////////////////////////////////////// INITIALISE GAME LOAD /////////////////////////////////////////
+function resetGameData() {
+    player.pieceName = "";
+    player.piece = "";
+    player.color = "";
+    player.pos = 3;
+
+    // mode: "",
+    game.dropRate = game.initialDropRate;
+    game.holdAntiSpam = false;
+    game.place = false;
+    game.linesToCheck = [];
+    game.linesToClear = [];
+    game.linesToMove = {};
+    game.gameOver = false;
+    game.linesCleared = 0;
+    game.piecesPlaced = 0;
+
+    holdP.pieceName = "";
+    holdP.piece = "";
+    holdP.color = "";
+
+    ghostPiece.pos = "";
+
+    lineUpQty = 5;
+    nextLineUp.length = 0;
+
+    timerRunning = false;
+    startTime = "";
+    updateTime = "";
+    elapsed = "";
+}
+
+function resetGameBoard() {
+    playPage.classList.remove("play-page-fall");
+    setTimeout(() => {
+        playPage.classList.add("show");
+    }, 2000);
+
+    whitePartsDiv.forEach((part) => {
+        part.classList.remove("white-parts-div-red");
+    });
+    whitePartsText.forEach((part) => {
+        part.classList.remove("white-parts-text-red");
+    });
+    
+    playPage.classList.remove("play-page-scale");
+}
 
 function initGame() {
+
+    // applySettings();
 
     setTimeout(() => {
         generateBoxes();
@@ -239,9 +355,10 @@ function initGame() {
         createLineUpList();
         generateLineUp();
         spawnLineUp();
+        resetStats();
 
         body.classList.add("body-main-show");
-        mainBlock.classList.add("show-main")
+        mainBlock.classList.add("show-main");
         
         let gameModeMessage;
         if (game.mode === "forty") {
@@ -259,7 +376,7 @@ function initGame() {
             startCheckBottomInterval();
             startDropInterval();
             startPlaceInterval();
-        }, 5000)
+        }, 5000);
 
     }, 1000);
 }
@@ -316,6 +433,7 @@ function stopTimer() {
 ///////////////// GENERATE 240 BOXES (play grid)
 function generateBoxes() {
     const gameArea = document.getElementById("game-area")
+    gameArea.innerHTML = "";
     for (let i = 0; i < 240; i++) {
         const div = document.createElement("div");
         div.classList.add("box");
@@ -415,6 +533,19 @@ function spawnLineUp() {
 
 ///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
 
+function resetStats() {
+    stat3Big.textContent = game.piecesPlaced;
+    stat2Big.textContent = game.linesCleared;
+    stat1Big.textContent = "0:00";
+    stat1Small.textContent = ".000";
+    stat3Small.textContent = " (0.00/s)";
+
+}
+
+
+
+///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
+
 ///////////////// ASSIGN NEXT PIECE FROM LINEUP
 function assignNextPiece() {    
     player.pieceName = nextLineUp[0].pieceName;
@@ -429,30 +560,27 @@ function assignNextPiece() {
 
 ///////////////// HOLD PIECE SWAP/STORE
 function holdPiece() {
-    if (holdP.color) {
+    if (!game.holdAntiSpam) {
+        if (holdP.color) {
+            [player.pieceName, holdP.pieceName] = [holdP.pieceName, player.pieceName];
+            [player.color, holdP.color] = [holdP.color, player.color];
+            player.piece = pieces[player.pieceName].piece;
+            holdP.piece = pieces[holdP.pieceName].piece;
+            player.pos = 3;
+            spawn(player.pos);
+        } else {
+            holdP.pieceName = player.pieceName;
+            holdP.piece = pieces[holdP.pieceName].piece;
+            holdP.color = pieces[holdP.pieceName].color;
+            respawn();
+        }
+        game.holdAntiSpam = true;
         game.place = false;
-        [player.pieceName, holdP.pieceName] = [holdP.pieceName, player.pieceName];
-        [player.color, holdP.color] = [holdP.color, player.color];
-        player.piece = pieces[player.pieceName].piece;
-        holdP.piece = pieces[holdP.pieceName].piece;
-        player.pos = 3;
-        despawn();
-        spawn(player.pos);
-        // setTimeout(moveDown3, 10);
         startCheckBottomInterval();
         startDropInterval();
         startPlaceInterval();
-    } else {
-        game.place = false;
-        holdP.pieceName = player.pieceName;
-        holdP.piece = pieces[holdP.pieceName].piece;
-        holdP.color = pieces[holdP.pieceName].color;
-        respawn();
-        startCheckBottomInterval();
-        startDropInterval();
-        startPlaceInterval();
+        spawnHold();
     }
-    spawnHold();
 }
 ///////////////// DISPLAY HOLD PIECE
 function spawnHold() {
@@ -512,14 +640,13 @@ function despawn() {
         }
     });
 }
-///////////////// SPAWN PLAYER AT TOP(used by place & hold)
+///////////////// SPAWN PLAYER AT TOP (used by place & first hold) (assigns next piece)
 function respawn() {
-    despawn();
     assignNextPiece();
     player.pos = 3;
     spawn(player.pos);
 }
-///////////////// SPAWN PLAYER WITH POS
+///////////////// SPAWN PLAYER WITH POS (used by move, rotate, hold)
 function spawn(pos) {
     despawn();
     despawnGhost();
@@ -581,9 +708,10 @@ function place() {
         fill();
         checkGameOver();
         if (!game.gameOver) {
-            game.place = false;
             respawn();
         }
+        game.place = false;
+        game.holdAntiSpam = false;
     }
 }
 ///////////////// FILL
@@ -734,23 +862,31 @@ function moveLines() {
 }
 
 ///////////////////////////////////////// GAME END /////////////////////////////////////////
-function gameEnd() {
+function freezeTime() {
     stopTimer();
     clearInterval(dropInterval);
     clearInterval(checkBottomInterval);
     clearInterval(placeInterval);
+}
 
+function gameEnd() {
+    resetGameData();
     setTimeout(() => {
         endScreen.classList.remove("hide")
         requestAnimationFrame(() => {
             endScreen.classList.add("show-end-screen");
         })
-        
-    });
+    }, 500);
+
+       
 }
 
 function gameLose() {
+    freezeTime();
     playPage.classList.add("play-page-fall");
+    setTimeout(() => {
+        playPage.classList.remove("show");
+    }, 500);
     whitePartsDiv.forEach((part) => {
         part.classList.add("white-parts-div-red");
     })
@@ -761,7 +897,11 @@ function gameLose() {
 }
 
 function gameWin() {
+    freezeTime();
     playPage.classList.add("play-page-scale");
+    setTimeout(() => {
+        playPage.classList.remove("show");
+    }, 500);
     gameEnd();
 
 }

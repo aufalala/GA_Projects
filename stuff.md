@@ -9,7 +9,7 @@ main page
   -settings
   -how to play
 
-do:  hang time, hold antispam function, lineclear and place animation, countdown & message, game win, game over, game end reset, music & sounds
+do:  hang time, lineclear and place animation, countdown & message, game win, game over, game end reset, music & sounds
 
 
 !!!!!WATCH OUT FOR
