@@ -108,6 +108,10 @@ const stat1Small = document.getElementById("stat-1-small");
 const stat2Big = document.getElementById("stat-2-big");
 const stat3Big = document.getElementById("stat-3-big");
 const stat3Small = document.getElementById("stat-3-small");
+//countdown
+const countdownScreen = document.getElementById("countdown-screen");
+const countdownMessageDiv = document.getElementById("countdown-message-div");
+const countdownMessage = document.getElementById("countdown-message");
 //end screen
 const endScreen = document.getElementById("end-screen");
 const endMessage = document.getElementById("game-result-message");
@@ -211,7 +215,7 @@ function endReturnHandler() {
         //hide mainblock
         setTimeout(() => {            
             body.classList.remove("body-main-show");
-            mainBlock.classList.remove("show-main");
+            mainBlock.classList.remove("show");
 
             //show homepage and buttons
             homePage.classList.remove("hide");
@@ -350,15 +354,50 @@ function initGame() {
         resetStats();
 
         body.classList.add("body-main-show");
-        mainBlock.classList.add("show-main");
+        mainBlock.classList.add("show");
         
-        let gameModeMessage;
         if (game.mode === "forty") {
-            gameModeMessage = "CLEAR 40 LINES";
+            countdownMessage.textContent = "CLEAR 40 LINES";
         } else if (game.mode === "marathon") {
-            gameModeMessage = "LET'S SEE HOW FAR YOU CAN GO";
+            countdownMessage.textContent = "LET'S SEE HOW FAR YOU CAN GO";
         }
-        //insert message and countdown here ---------------------------------------------
+
+        
+        setTimeout(() => {
+            countdownScreen.classList.remove("hide");
+            requestAnimationFrame(() => {
+                countdownScreen.classList.add("show");
+                countdownMessageDiv.classList.add("show");
+            })
+        }, 1000);
+
+
+
+        setTimeout(() => {
+            countdownMessageDiv.classList.remove("show");
+            setTimeout(() => {
+
+            });
+        }, 2000)
+
+        setTimeout(() => {
+            for (let i = 4; i > 0; i--) {
+                setTimeout(() => {
+                    if (i != 1) {
+                        countdownMessage.textContent = i-1;
+                    } else {
+                        countdownMessage.textContent = "GO";
+                    }
+
+                    countdownMessageDiv.classList.add("show");
+                    setTimeout(() => {
+                        countdownMessageDiv.classList.remove("show");
+                    }, 500);
+
+                }, (4 - i) * 800);
+            }
+        }, 2500);
+
 
         //round start
         setTimeout(() => {
@@ -367,7 +406,7 @@ function initGame() {
             startCheckBottomInterval();
             startDropInterval();
             startPlaceInterval();
-        }, 5000);
+        }, 5300);
 
     }, 1000);
 }

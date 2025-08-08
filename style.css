@@ -187,9 +187,9 @@ html, body {
     opacity: 0;
 }
 
-.show-main {
+/* .show-main {
     opacity: 1;
-}
+} */
 
 #play-page {
     width: 100%;
@@ -398,6 +398,31 @@ html, body {
   margin: 5%;
 }
 
+/* ////////////////////////////////////////////////////////////////////////////////////// */
+#countdown-screen {
+    /* background: darkslategray; */
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    text-align: center;
+    justify-items: center;
+    align-content: center;
+}
+.countdown-screen {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.5s ease, transform 1s ease;
+}
+#countdown-message-div {
+    transition: opacity 0.5s ease;
+}
+.countdown-message-div {
+    opacity: 0;
+}
+
 
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 #end-screen {
@@ -425,6 +450,7 @@ html, body {
 .hide-end-screen-zoom-in {
     opacity: 0;
     transform: translate(-50%, -50%) scale(20);
+    transition: opacity 1s ease, transform 1s ease;
 }
 .hide-end-screen-zoom-out {
     opacity: 0;
