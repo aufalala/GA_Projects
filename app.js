@@ -94,7 +94,9 @@ const playChildButtons = document.querySelectorAll(".play-child-buttons");
 const fortyButton = document.getElementById("forty-button");
 const marathonButton = document.getElementById("marathon-button");
 const playChildBackButton = document.getElementById("play-child-back");
-
+//tutorial
+const tutScreen = document.getElementById("tutorial-screen");
+const tutBackButton = document.getElementById("tutorial-back")
 // const playMode = document.querySelector("#play-mode");
 
 ///////////////// PLAY PAGE
@@ -139,31 +141,26 @@ setTimeout(() => {
 ///////////////////////////////////////// BUTTON CLICK HANDLERS /////////////////////////////////////////
 
 ///////////////// HOME PAGE
-playButton.addEventListener("click", playClickHandler)
-settingsButton.addEventListener("click", settingsClickHandler)
-tutButton.addEventListener("click", tutorialClickHandler)
+playButton.addEventListener("click", playClickHandler);
+settingsButton.addEventListener("click", settingsClickHandler);
+tutButton.addEventListener("click", tutorialClickHandler);
 
-fortyButton.addEventListener("click", fortyClickHandler)
-marathonButton.addEventListener("click", marathonClickHandler)
-playChildBackButton.addEventListener("click", playChildBackHandler)
+fortyButton.addEventListener("click", fortyClickHandler);
+marathonButton.addEventListener("click", marathonClickHandler);
+playChildBackButton.addEventListener("click", playChildBackHandler);
 
+tutBackButton.addEventListener("click", tutorialBackHandler);
 
 ///////////////// PLAY PAGE
-endReturn.addEventListener("click", endReturnHandler)
-endAnother.addEventListener("click", endAnotherHandler)
+endReturn.addEventListener("click", endReturnHandler);
+endAnother.addEventListener("click", endAnotherHandler);
 
 ///////////////////////////////////////// CLICK HANDLER FUNCTIONS /////////////////////////////////////////
 
 
 ///////////////// HOME PAGE
 function playClickHandler() {
-    //hide home buttons
-    homeButtons.forEach((button) => {
-        button.classList.remove("button-show");
-        setTimeout(() => {
-            button.classList.add("button-hide");   
-        }, 200);
-    });
+    hideHomeButtons();
     //show play child
     setTimeout(() => {
         //show play child buttons
@@ -201,7 +198,36 @@ function settingsClickHandler() { //--------------------------------------------
     // });
     // homePage.classList.add("stun")
 }
-function tutorialClickHandler() { //------------------------------------------------
+function tutorialClickHandler() {
+    hideHomeButtons();
+    
+    tutScreen.classList.remove("hide");
+    setTimeout(() => {
+        tutScreen.classList.add("show");
+    }, 500)
+
+    
+    //show tutorial-back-button
+    tutBackButton.classList.remove("hide");
+    setTimeout(() => {
+        tutBackButton.classList.add("show");
+    }, 1000);
+}
+
+function tutorialBackHandler() {
+    //hide tut screen
+    tutScreen.classList.remove("show");
+    setTimeout(() => {
+        tutScreen.classList.add("hide")    
+    }, 200);
+
+    //hide tut back button
+    tutBackButton.classList.remove("show");
+    setTimeout(() => {
+        tutBackButton.classList.add("hide");
+    }, 400);
+
+    showHomeButtons();
 }
 
 ///////////////// PLAY PAGE
@@ -284,6 +310,15 @@ function showHomeButtons() {
             button.classList.add("button-show");
         });
     }, 300);
+}
+function hideHomeButtons() {
+    //hide home buttons
+    homeButtons.forEach((button) => {
+        button.classList.remove("button-show");
+        setTimeout(() => {
+            button.classList.add("button-hide");   
+        }, 200);
+    });
 }
 
 
