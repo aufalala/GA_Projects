@@ -24,6 +24,7 @@ const player = {
 //game
 const game = { 
     mode: "",
+    running: false,
     dropRate: 300,
     initialDropRate: 300,
     holdAntiSpam: false,
@@ -297,6 +298,7 @@ function resetGameData() {
     player.color = "";
     player.pos = 3;
 
+    game.running = false;
     game.dropRate = game.initialDropRate;
     game.holdAntiSpam = false;
     game.place = false;
@@ -407,6 +409,7 @@ function initGame() {
 
         //round start
         setTimeout(() => {
+            game.running = true;
             respawn();
             startTimer();
             startCheckBottomInterval();
@@ -563,13 +566,14 @@ function resetStats() {
 ///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
 
 ///////////////// ASSIGN NEXT PIECE FROM LINEUP
-function assignNextPiece() {    
-    player.pieceName = nextLineUp[0].pieceName;
-    player.piece = nextLineUp[0].piece;
-    player.color = nextLineUp[0].color;
-    nextLineUp.shift();
-    generateNewPiece();
-    // setTimeout(moveDown3, 10);
+function assignNextPiece() {
+    if (!game.gameOver) {
+        player.pieceName = nextLineUp[0].pieceName;
+        player.piece = nextLineUp[0].piece;
+        player.color = nextLineUp[0].color;
+        nextLineUp.shift();
+        generateNewPiece();
+    }
 }
 
 ///////////////////////////////////////// HOLD /////////////////////////////////////////
@@ -752,7 +756,6 @@ function checkGameOver() {
     topBoxes.forEach((box) => {
         if (allBoxes[parseInt(box.id.slice(5))-1].classList.contains("top") &&
             allBoxes[parseInt(box.id.slice(5))-1].classList.contains("filled")) {
-            console.log("GAME OVER");
             game.gameOver = true;
             return;
         }
@@ -1129,8 +1132,9 @@ function rotateLeft() {
 ///////////////////////////////////////// KEYBIND EVENTLISTENER /////////////////////////////////////////
 let keyIntervals = {};
 document.addEventListener("keydown", (event) => {
-    if (!game.gameOver) {
+    if (!game.gameOver && game.running) {
         if (keyIntervals[event.key]) return;
+        // if (!game.running) return;
         switch (event.key) {
             case "ArrowDown":
                 moveDown3();
@@ -1152,8 +1156,6 @@ document.addEventListener("keydown", (event) => {
                 break;
 
             case "ArrowUp":
-            case "v":
-            case "V":
                 rotateRight2();
                 break;
 
