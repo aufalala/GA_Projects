@@ -392,6 +392,12 @@ function initGame() {
                     countdownMessageDiv.classList.add("show");
                     setTimeout(() => {
                         countdownMessageDiv.classList.remove("show");
+                        if (i === 1) {
+                            countdownScreen.classList.remove("show")
+                            setTimeout(() => {
+                                countdownScreen.classList.add("hide")
+                            }, 200);
+                        }
                     }, 500);
 
                 }, (4 - i) * 800);
