@@ -314,6 +314,14 @@ html, body {
     height: 12.8%;
 }
 
+.filled, .play-piece, .line-up-piece-filled {
+    box-shadow: inset 5px 5px 5px 1px rgba(199, 199, 199, 0.3);
+}
+
+.ghost-piece {
+    box-shadow: inset 0px 0px 10px 5px rgba(255, 255, 255, 0.5)
+}
+
 
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 #left-block {

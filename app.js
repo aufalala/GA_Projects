@@ -709,7 +709,7 @@ function spawn(pos) {
         row.forEach((value, x) => {
             if (value !== 0) {
                 allBoxes[(x+pos)+(y*10)].classList.add("play-piece"); 
-                allBoxes[(x+pos)+(y*10)].classList.add("ghost-piece");
+                allBoxes[(x+pos)+(y*10)].classList.add("pre-ghost-piece");
                 allBoxes[(x+pos)+(y*10)].style.background = player.color;
                 allBoxes[(x+pos)+(y*10)].style.border = `1px solid ${player.color}`;
             }
@@ -725,16 +725,21 @@ function despawnGhost() {
     const ghostPiece = document.querySelectorAll(".ghost-piece");
     ghostPiece.forEach((box) => {
         box.classList.remove("ghost-piece");
-        box.style.boxShadow = "";
+        // box.style.boxShadow = "";
+    });    
+    const preGhostPiece = document.querySelectorAll(".pre-ghost-piece");
+    preGhostPiece.forEach((box) => {
+        box.classList.remove("pre-ghost-piece");
+        // box.style.boxShadow = "";
     });            
 }
 ///////////////// SPAWN GHOST  
 function spawnGhost() {
-    const ghostPieces = document.querySelectorAll(".ghost-piece");
+    const preGhostPieces = document.querySelectorAll(".pre-ghost-piece");
     let showGhost = false;
     let count = 0;
     while (!showGhost) {
-        ghostPieces.forEach((box) => {
+        preGhostPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
                     count -= 10;
@@ -743,7 +748,7 @@ function spawnGhost() {
                         row.forEach((value, x) => {
                             if (value !== 0) {
                                 allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghost-piece");            
-                                allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
+                                // allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
                             }
                         });
                     });

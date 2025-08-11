@@ -2,14 +2,8 @@ can try using em for fonts. see if relative to parent div.
 
 fallback for fonts, body
 
-main page
-  -play
-    -40 clear
-    -marathon
-  -settings
-  -how to play
 
-do:  hang time, lineclear and place animation, countdown & message, apply settings function, music & sounds, red warning alert effect
+do:  hang time, lineclear and place animation, apply settings function, music & sounds, red warning alert effect
 
 
 !!!!!WATCH OUT FOR
