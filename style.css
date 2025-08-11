@@ -5,17 +5,21 @@
 }
 
 html, body {
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  /* display: flex;
-  flex-direction: column; */
-  align-items: center;
-  justify-content: center;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  color: white;
-  position: relative;
-  background-color: rgb(48, 49, 51);
+    font-family: "Saira", sans-serif;
+    /* font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings: "wdth" 100; */
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    /* display: flex;
+    flex-direction: column; */
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    background-color: rgb(48, 49, 51);
 }
 .body-main-show {
     display: flex;
@@ -57,17 +61,31 @@ html, body {
     display: flex;
     flex-direction: column;   
     justify-content: center;
-    overflow: hidden;
+    /* overflow: hidden; */
     z-index: 1;
+}
+#play-button {
+    background: linear-gradient(45deg,rgb(39, 195, 0), black);
+}
+#settings-button {
+    background: linear-gradient(45deg,rgb(132, 0, 193), black);
+}
+#tutorial-button {
+    background: linear-gradient(45deg,rgb(0, 146, 179), black);
+}
+#forty-button {
+    background: linear-gradient(45deg,rgb(210, 0, 0), black);
+}
+#marathon-button {
+    background: linear-gradient(45deg,rgb(179, 128, 0), black);
 }
 
 .home-buttons {
     cursor: pointer;
-    background: linear-gradient(45deg,aqua, white);
     background-size: 200%;
     background-position: 100% 0;
     border: 1px solid white;
-    box-shadow: 10px 5px 10px #999, inset 3px 5px 3px #fff;
+    box-shadow: 10px 5px 10px #000000, inset 5px 2px 3px #fff;
     width: 100%;
     /* height: 200%; */
     margin: 1%;
@@ -76,13 +94,15 @@ html, body {
     text-align: left;
     transform: translateX(100%);
     opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out;
-    filter: brightness(.90);
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out, box-shadow 0.5s ease;
+    filter: brightness(.80);
 }
 .home-buttons:hover {
     transform: translateX(-4%);
     filter: brightness(1);
+    box-shadow: 60px 20px 20px #000000, inset 2px 1px 1px #fff;
 }
+
 
 
 #play-child-buttons-divs {
@@ -93,17 +113,16 @@ html, body {
     display: flex;
     flex-direction: column;   
     justify-content: center;
-    overflow: hidden;
+    /* overflow: hidden; */
     z-index: 1;
 }
 
 .play-child-buttons {
     cursor: pointer;
-    background: linear-gradient(45deg,aqua, white);
     background-size: 200%;
     background-position: 100% 0;
     border: 1px solid white;
-    box-shadow: 10px 5px 10px #999, inset 3px 5px 3px #fff;
+    box-shadow: 10px 5px 10px #000000, inset 5px 2px 3px #fff;
     width: 100%;
     /* height: 200%; */
     margin: 1%;
@@ -112,12 +131,13 @@ html, body {
     text-align: left;
     transform: translateX(100%);
     opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out;
-    filter: brightness(.90);
+    transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out, box-shadow 0.5s ease;
+    filter: brightness(.80);
 }
 .play-child-buttons:hover {
     transform: translateX(-4%);
     filter: brightness(1);
+    box-shadow: 60px 20px 20px #000000, inset 2px 1px 1px #fff;
 }
 #play-child-back {
     cursor: pointer;
@@ -132,10 +152,14 @@ html, body {
     padding: 1%;
     bottom: 10%;
     left: 10%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.5s ease, background 0.5s ease, color 0.5s ease;
+    box-shadow: 10px 5px 10px #000000;
 }
 #play-child-back:hover {
     transform: scale(1.1);
+    background: white;
+    color: black;
+    box-shadow: 15px 10px 20px #000000;
 }
 .play-child-back {
     opacity: 0;
@@ -209,10 +233,14 @@ html, body {
     padding: 1%;
     bottom: 10%;
     left: 10%;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.5s ease, background 0.5s ease, color 0.5s ease;
+    box-shadow: 10px 5px 10px #000000;
 }
 #tutorial-back:hover {
     transform: scale(1.1);
+    background: white;
+    color: black;
+    box-shadow: 15px 10px 20px #000000;
 }
 .tutorial-back {
     opacity: 0;
@@ -308,6 +336,7 @@ html, body {
 
 .gameboard-text {
     padding-left: 2%;
+    line-height: 100%;
 }
 
 .gap {
@@ -319,9 +348,20 @@ html, body {
 }
 
 .ghost-piece {
-    box-shadow: inset 0px 0px 10px 5px rgba(255, 255, 255, 0.5)
+    box-shadow: inset 0px 0px 10px 5px rgba(255, 255, 255, 0.5);
 }
-
+.ghost-piece-place {
+    filter: brightness(0) invert(0.9);
+    transition: filter 0.5s ease;
+}
+.ghost-piece-place-fast {
+    filter: brightness(0) invert(0.9);
+    transition: filter 0.1s ease;
+}
+.ghost-piece-place-fast-line-clear {
+    filter: none;
+    transition: filter 0s;
+}
 
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 #left-block {
@@ -384,10 +424,16 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    text-align: right;
-    align-items: flex-end;
+    /* text-align: right; */
+    /* align-items: flex-end; */
+}
+#stat-1-stat, #stat-2-stat, #stat-3-stat {
+    line-height: 70%;
 }
 
+#stat-1-small, #stat-3-small {
+    line-height: 10%;
+}
 
 /* ////////////////////////////////////////////////////////////////////////////////////// */
 #mid-block {
@@ -577,9 +623,11 @@ html, body {
     background: black;
     padding: 5%;
     width: 100%;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out, background 0.5s ease, color 0.5s ease;
 }
 .end-screen-buttons:hover {
+    background: white;
+    color: black;
     transform: scale(1.1);
 }
 

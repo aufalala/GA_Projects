@@ -3,7 +3,7 @@ can try using em for fonts. see if relative to parent div.
 fallback for fonts, body
 
 
-do:  hang time, lineclear and place animation, apply settings function, music & sounds, red warning alert effect
+do:  hang time, settings screen & apply settings function, music & sounds, red warning alert effect
 
 
 !!!!!WATCH OUT FOR

@@ -724,6 +724,7 @@ function spawn(pos) {
 function despawnGhost() {
     const ghostPiece = document.querySelectorAll(".ghost-piece");
     ghostPiece.forEach((box) => {
+        box.classList.remove("ghost-piece-place");
         box.classList.remove("ghost-piece");
         // box.style.boxShadow = "";
     });    
@@ -764,14 +765,28 @@ function spawnGhost() {
 
 ///////////////// PLACE BLOCK 
 function place() {
+    // clearInterval(placeInterval);
+    const ghostPiece = document.querySelectorAll(".ghost-piece");
+            
     if (game.place){
         fill();
-        checkGameOver();
-        if (!game.gameOver) {
-            respawn();
-        }
-        game.place = false;
-        game.holdAntiSpam = false;
+        ghostPiece.forEach((ghost) => {
+            ghost.classList.add("ghost-piece-place-fast");
+        });
+        setTimeout(() => {
+            ghostPiece.forEach((ghost) => {
+                ghost.classList.remove("ghost-piece-place-fast");
+            }); 
+        }, 100)
+            
+        // setTimeout(() => {
+            if (!checkGameOver()) {
+                respawn();
+            }
+            game.place = false;
+            game.holdAntiSpam = false;
+        // }, 10)
+        // startPlaceInterval();
     }
 }
 ///////////////// FILL
@@ -802,6 +817,7 @@ function checkGameOver() {
     });
     if (game.gameOver) {
         gameLose();
+        return true;
     }
 
 }
@@ -836,15 +852,22 @@ function checkLineCLear() {
 
     //if linesToClear truthy, proceed to clearLines()
     if (game.linesToClear.length > 0) {
-        clearLines();    
+
+
+        clearLines();
     }
 }
 /////////////////CHECK BOTTOM (if block below player obstructed)
 function checkBottom() {
     const playPieces = document.querySelectorAll(".play-piece");
+    const ghostPiece = document.querySelectorAll(".ghost-piece");
     playPieces.forEach((box) => {
         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
             allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
+                
+        ghostPiece.forEach((ghost) => {
+            ghost.classList.add("ghost-piece-place");
+        });
             game.place = true;       
         }
     });
@@ -854,6 +877,12 @@ function checkBottom() {
 
 ///////////////// CLEAR LINES
 function clearLines() { // from checkLineClear()
+    
+    const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece");
+    ghostPiecePlaceFastLineClear.forEach((box) => {
+        box.classList.add("ghost-piece-place-fast-line-clear");
+    }); 
+
     game.linesToClear.forEach((line) => {
         game.linesCleared++;
         stat2Big.textContent = game.linesCleared;
@@ -872,14 +901,23 @@ function clearLines() { // from checkLineClear()
         //clear the line
         for (i=0; i<10; i++) {
             const boxIndex = line + i;
-            allBoxes[boxIndex].classList.remove("filled");  
-            allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
-            allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
+            allBoxes[boxIndex].classList.remove("filled");
+            
+              
+            allBoxes[boxIndex].style.backgroundColor = "white"; //todo: add to game data
+            allBoxes[boxIndex].style.border = "white";
+            setTimeout(() => {        
+                allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
+                allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
+        
+            }, 20);
         }
     });
     game.linesToClear.length = 0; //reset lineToClear
     if (game.linesToMove) {
-        moveLines(); //move lines down to fill up cleared rows
+        setTimeout(() => {
+            moveLines(); //move lines down to fill up cleared rows
+        }, 30);
     }
     
     if (game.mode === "forty") {
@@ -1057,11 +1095,21 @@ function moveLeft() {
     }
 }
 
-function hardDrop() {
+function hardDrop() {   
     player.pos = ghostPiece.pos;
     spawn(player.pos);
+    
     game.place = true;
     place();
+    
+
+    setTimeout(() => {
+    const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece-place-fast-line-clear");
+    ghostPiecePlaceFastLineClear.forEach((box) => {
+        box.classList.remove("ghost-piece-place-fast-line-clear");
+    });    
+    
+    }, 500)
 }
 
 function rotateRight2() {
@@ -1178,15 +1226,15 @@ document.addEventListener("keydown", (event) => {
         switch (event.key) {
             case "ArrowDown":
                 moveDown3();
-                keyIntervals.ArrowDown = setInterval(moveDown3, 100);
+                keyIntervals.ArrowDown = setInterval(moveDown3, 70);
                 break;
             case "ArrowRight":
                 moveRight();
-                keyIntervals.ArrowRight = setInterval(moveRight, 100);
+                keyIntervals.ArrowRight = setInterval(moveRight, 110);
                 break;
             case "ArrowLeft":
                 moveLeft();
-                keyIntervals.ArrowLeft = setInterval(moveLeft, 100);
+                keyIntervals.ArrowLeft = setInterval(moveLeft, 110);
                 break;
 
             case " ":
