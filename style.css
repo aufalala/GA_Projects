@@ -3,42 +3,46 @@
   padding: 0;
   box-sizing: border-box;
 }
-
-html, body {
+html {
+  height: 100%;
+}
+body {
     font-family: "Saira", sans-serif;
-    /* font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-    font-variation-settings: "wdth" 100; */
     height: 100%;
     width: 100%;
     overflow: hidden;
-    /* display: flex;
-    flex-direction: column; */
-    align-items: center;
-    justify-content: center;
-    color: white;
-    position: relative;
-    background-color: rgb(48, 49, 51);
-}
-.body-main-show {
     display: flex;
     flex-direction: column;
+    color: white;
+    position: absolute;
+    background-color: rgb(48, 49, 51);
+    background: radial-gradient(
+        ellipse at center,
+        rgb(67, 67, 67) 0%,
+        rgba(0, 0, 0, 1) 100%
+    );
+}
+#big-div {
+    width: 100%;
+    height: 100%;
+    top: -50%;
+    left: -50%;
+    transform: translate(50%, 50%);
+    position: relative;
+    transition: opacity 2s ease;
+}
+.big-div-show {
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    justify-items: center;
 }
 
-
-
-
-/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* ////////////////////////////////////// HOME PAGE //////////////////////////////////////////// */
 #home-page {
-    /* background-color: orange; */
     width: 100%;
     aspect-ratio: 4/3;
-    /* height: 100%; */
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center; */
-    overflow: hidden;
     z-index: 1;
     transition: opacity 0.5s ease;
 }
@@ -47,21 +51,19 @@ html, body {
 }
 
 #game-title {
-    /* margin-bottom: 5%; */
     position: relative;
     top: 3%;
     left: 3%;
 }
 
+/* /////////////////// MAIN MENU BUTTONS */
 #button-divs {
-    /* margin-top: 5%; */
     position: relative;
     top: 10%;
     left: 0%;
     display: flex;
     flex-direction: column;   
     justify-content: center;
-    /* overflow: hidden; */
     z-index: 1;
 }
 #play-button {
@@ -73,13 +75,6 @@ html, body {
 #tutorial-button {
     background: linear-gradient(45deg,rgb(0, 146, 179), black);
 }
-#forty-button {
-    background: linear-gradient(45deg,rgb(210, 0, 0), black);
-}
-#marathon-button {
-    background: linear-gradient(45deg,rgb(179, 128, 0), black);
-}
-
 .home-buttons {
     cursor: pointer;
     background-size: 200%;
@@ -87,7 +82,6 @@ html, body {
     border: 1px solid white;
     box-shadow: 10px 5px 10px #000000, inset 5px 2px 3px #fff;
     width: 100%;
-    /* height: 200%; */
     margin: 1%;
     margin-left: 20%;
     padding: 2%;
@@ -103,20 +97,22 @@ html, body {
     box-shadow: 60px 20px 20px #000000, inset 2px 1px 1px #fff;
 }
 
-
-
+/* /////////////////// PLAY CHILD BUTTONS */
 #play-child-buttons-divs {
-    /* margin-top: 5%; */
     position: relative;
     top: 10%;
     left: 0%;
     display: flex;
     flex-direction: column;   
     justify-content: center;
-    /* overflow: hidden; */
     z-index: 1;
 }
-
+#forty-button {
+    background: linear-gradient(45deg,rgb(210, 0, 0), black);
+}
+#marathon-button {
+    background: linear-gradient(45deg,rgb(179, 128, 0), black);
+}
 .play-child-buttons {
     cursor: pointer;
     background-size: 200%;
@@ -124,7 +120,6 @@ html, body {
     border: 1px solid white;
     box-shadow: 10px 5px 10px #000000, inset 5px 2px 3px #fff;
     width: 100%;
-    /* height: 200%; */
     margin: 1%;
     margin-left: 20%;
     padding: 2%;
@@ -147,13 +142,12 @@ html, body {
     position: fixed;
     text-align: center;
     align-content: center;
-    /* width: 10%; */
-    /* height: 5%; */
     padding: 1%;
     bottom: 10%;
     left: 10%;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.5s ease, background 0.5s ease, color 0.5s ease;
     box-shadow: 10px 5px 10px #000000;
+    z-index: 3;
 }
 #play-child-back:hover {
     transform: scale(1.1);
@@ -165,60 +159,60 @@ html, body {
     opacity: 0;
 }
 
-
+/* /////////////////// TUTORIAL SCREEN */
 #tutorial-screen {
-    background: rgb(67, 82, 82);
+    background: radial-gradient(
+        ellipse, 
+        rgb(0, 79, 189, 0.5) 0%, 
+        rgba(0, 0, 0, 0) 70%
+    );
     border-radius: 15%;
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 50%;
-    aspect-ratio: 4/3;
     z-index: 3;
     align-content: center;
     transition: opacity 0.5s ease;
-
-        aspect-ratio:4/3;
-    max-height: 90vh;
-    max-width: 90vh;
-    width: 50%;
-    height: auto;
-    /* position: relative; */
+    aspect-ratio:5/3;
+    max-height: 72vh;
+    max-width: 120vh;
+    width: 95%;
 }
 .tutorial-screen {
     transform: translate(-50%, -50%);
     opacity: 0;
+}
+#tutorial-block {
+    width: 100%;
+    height: 100%;
 }
 #key-main-div {
     display: flex;
     flex-direction: column;
     justify-items: center;
     align-items: center;    
-    /* width: 100%;  */
+    width: 100%; 
 
 }
 .key-sub-div {
     display: flex;
     flex-direction: row;
-    padding: 1%;
-    width: 50%;
+    margin: 1%;
+    width: 40%;
     align-items: center;
-    /* justify-content: center; */
     gap: 5%;
-    margin-left: 20%;
+    margin-left: 15%;
 }
 .key {
     background: rgb(74, 74, 71);
+    box-shadow: inset 0 -2px 3px #8a8a8a, 0px 0px 5px #2e2e2e;
+    border: 2px solid rgb(55, 55, 55);
+    border-radius: 6px;
     color: white;
-    width: 20%;
-    /* padding: 5%; */
+    width: 16%;
     aspect-ratio: 1/1;
     place-content: center;
     text-align: center;
-    
-    border: 2px solid rgb(55, 55, 55);
-    border-radius: 6px;
-    box-shadow: inset 0 -2px 3px #8a8a8a, 0px 0px 5px #2e2e2e;
 }
 #tutorial-back {
     cursor: pointer;
@@ -228,13 +222,12 @@ html, body {
     position: fixed;
     text-align: center;
     align-content: center;
-    /* width: 10%; */
-    /* height: 5%; */
     padding: 1%;
     bottom: 10%;
     left: 10%;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.5s ease, background 0.5s ease, color 0.5s ease;
     box-shadow: 10px 5px 10px #000000;
+    z-index: 3;
 }
 #tutorial-back:hover {
     transform: scale(1.1);
@@ -246,78 +239,50 @@ html, body {
     opacity: 0;
 }
 
-/* #overlay {
-    background: black;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-}
-.overlay {
-    opacity: 0;
-}
-
-#play-mode {
-    background: gray;
-    position: fixed;
-    z-index: 3;
-    width: 50%;
-    height: 50%;
-    aspect-ratio: 4/3;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.2s ease-in-out;
-}
-.play-mode {
-    opacity: 0;
-} */
-
-
-/* ////////////////////////////////////////////////////////////////////////////////////// */
-#main-block {
-    /* background-color: slategray; */
+/* ////////////////////////////////////// PLAY PAGE //////////////////////////////////////////// */
+#play-page {
     padding: 3vh;
     margin: 2vh;
     aspect-ratio:4/3;
     max-height: 100vh;
     max-width: 120vh;
     width: 95%;
-    height: auto;
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-items: center;
     box-sizing: border-box;
     transition: opacity 2s ease;
 }
-.main-block {
+.play-page {
     opacity: 0;
 }
 
-/* .show-main {
-    opacity: 1;
-} */
-
-#play-page {
+/* /////////////////// MAIN BLOCK*/
+#main-block {
     width: 100%;
     height: 100%;
     justify-content: center;
     transition: transform 2s ease-in, opacity 1s ease-in;
 }
-.play-page {
-    
+.main-block {
     display: flex;
     opacity: 0;
 }
-.play-page-fall {
+.main-block-fall {
     transform: translateX(-50%) rotate(-20deg) translateY(200%);
     opacity: 0;
 }
-.play-page-scale {
+.main-block-scale {
     transform: scale(4);
     opacity: 0;
 }
 
+/* /////////////////// SPACER GAP DIV*/
+.gap {
+    height: 12.8%;
+}
+
+/* /////////////////// WHITE PARTS*/
 .white-parts-div {
     background-color: white;
     transition: background-color 0.3s ease-in-out;
@@ -339,14 +304,11 @@ html, body {
     line-height: 100%;
 }
 
-.gap {
-    height: 12.8%;
-}
 
+/* /////////////////// MAIN BLOCK*/
 .filled, .play-piece, .line-up-piece-filled {
     box-shadow: inset 5px 5px 5px 1px rgba(199, 199, 199, 0.3);
 }
-
 .ghost-piece {
     box-shadow: inset 0px 0px 10px 5px rgba(255, 255, 255, 0.5);
 }
@@ -363,20 +325,16 @@ html, body {
     transition: filter 0s;
 }
 
-/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////// LEFT BLOCK*/
 #left-block {
-    /* background-color: red; */
     width: 20%;
     height: 93%;
     display: flex;
     flex-direction: column;
     position: relative;
 }
-
 #hold-block {
-    /* background-color: white; */
     width: 100%;
-    /* height: 20%; */
     aspect-ratio: 10/7;
     display: flex;
     flex-direction: column;
@@ -386,15 +344,8 @@ html, body {
     0 0,
     100% 0,
     100% 100%
-    );
-    
+    );   
 }
-
-#hold-text {
-    /* background-color: white; */
-    color: black;
-}
-
 #hold-area {
     background-color: black;
     margin: 0 0 2% 2%;
@@ -409,68 +360,42 @@ html, body {
     100% 100%
   );
 }
-
+#hold-text {
+    color: black;
+}
 .hold-indi {
   display: grid;
   margin: 5%;
 }
 
+/* /////////////////// STATS*/
 #stats-block {
-    /* background-color: lawngreen; */
     width: 100%;
     aspect-ratio: 1/2;
     position: absolute;
-    bottom: 0;
+    bottom: 1%;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    /* text-align: right; */
-    /* align-items: flex-end; */
 }
 #stat-1-stat, #stat-2-stat, #stat-3-stat {
     line-height: 70%;
 }
-
 #stat-1-small, #stat-3-small {
     line-height: 10%;
 }
 
-/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////// MID BLOCK*/
 #mid-block {
-    /* background-color: white; */
     width: 30%;
     display: flex;
     flex-direction: column;
     position: relative;
-    /* z-index: 2; */
 }
-
-#game-area {
-    /* background-color: black; */
-    margin: 0 .8% .8% .8%;
-    /* flex-grow: 1; */
-    display: flex;
-    flex-wrap: wrap;
-    /* position: absolute; */
-}
-
-.box {
-    /* width: 10px; */
-    width: 10%;
-    /* height: 3.36vh; */
-    text-align: center;
-    /* padding: 10px; */
-    box-sizing: border-box;
-    aspect-ratio: 1/1;
-    z-index: 2;
-}
-
-
 #mid-block-background {
     position: absolute;
     height: 100%;
     width: 100%;
-    /* top: 11.9%; */
     right: .01%;
     z-index: 1;
     clip-path: polygon(
@@ -481,23 +406,32 @@ html, body {
     100% 100%
     );
 }
+#game-grid {
+    margin: 0 .8% .8% .8%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.box {
+    width: 10%;
+    text-align: center;
+    box-sizing: border-box;
+    aspect-ratio: 1/1;
+    z-index: 2;
+}
 
-/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////// RIGHT BLOCK*/
 #right-block {
-    /* background-color: blue; */
     width: 20%;
     height: 93%;
     display: flex;
     flex-direction: column;
     position: relative;
 }
-
 #next-block {
     width: 100%;
     height: 70%;
     display: flex;
     flex-direction: column;
-
     clip-path: polygon(
     85% 100%,
     0 100%,
@@ -506,19 +440,14 @@ html, body {
     100% 95%
   );
 }
-
-#next-text {
-    color: black
-}
-
 #next-area {
     background-color: black;
     margin: 0 2% 2% 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-evenly;
     flex-grow: 1;
-    gap: 3%;  
     clip-path: polygon(
     86% 100%,
     0 100%,
@@ -527,15 +456,16 @@ html, body {
     100% 95%
   );
 }
-
+#next-text {
+    color: black
+}
 .line-up-indi {
   display: grid;
   margin: 5%;
 }
 
-/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////// COUNTDOWN*/
 #countdown-screen {
-    /* background: darkslategray; */
     position: absolute;
     height: 100%;
     width: 100%;
@@ -553,7 +483,6 @@ html, body {
     transition: opacity 0.5s ease, transform 1s ease;
 }
 #countdown-message-div {
-    /* background-color: aqua; */
     background: radial-gradient(
         circle, 
         rgba(0, 0, 0, 1) 20%, 
@@ -567,19 +496,17 @@ html, body {
 }
 
 
-/* ////////////////////////////////////////////////////////////////////////////////////// */
+/* /////////////////// END SCREEN*/
 #end-screen {
     background: gray;
     position: absolute;
-    height: 100%;
+    height: 90%;
     width: 100%;
     top: 50%;
     left: 50%;
     z-index: 3;
     text-align: center;
-    /* place-content: center; */
     justify-items: center;
-    /* transition: opacity 2s ease, transform 1s ease-out;    */
 }
 .end-screen {
     opacity: 0;
@@ -600,22 +527,18 @@ html, body {
     transform: translate(-50%, -50%) scale(0.5);
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
-
 #end-result {
     margin-top: 10%;
 }
 .end-line {
     margin: 3%;
 }
-
 #end-screen-buttons-div {
     display: flex;
     flex-direction: row;
     justify-content: center;
     width: 60%;
     gap: 5%;
-    /* width: 10%;
-    height: 10%; */
     margin-top: 10%;
 }
 .end-screen-buttons {
@@ -631,18 +554,13 @@ html, body {
     transform: scale(1.1);
 }
 
-
-
-
-/* ////////////////////////////////////////////////////////////////////////////////////// */
-
+/* /////////////////// GLOBAL ANIMATION CLASSES*/
 .show {
     opacity: 1;
 }
 .hide {
     display: none;
 }
-
 .button-show {
     opacity: 1;
     transform: translateX(0);
@@ -651,9 +569,3 @@ html, body {
     transform: translateX(100%);
     display: none;
 }
-
-
-.stun {
-    pointer-events: none;
-}
-

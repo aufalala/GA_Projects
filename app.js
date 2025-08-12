@@ -80,7 +80,7 @@ let elapsed;
 ///////////////////////////////////////// CACHE /////////////////////////////////////////
 
 const body = document.querySelector("body");
-
+const bigDiv = document.getElementById("big-div");
 
 ///////////////// HOME PAGE
 const homePage = document.getElementById("home-page");
@@ -100,8 +100,8 @@ const tutBackButton = document.getElementById("tutorial-back")
 // const playMode = document.querySelector("#play-mode");
 
 ///////////////// PLAY PAGE
-const mainBlock = document.getElementById("main-block");
 const playPage = document.getElementById("play-page");
+const mainBlock = document.getElementById("main-block");
 //white ui
 const whitePartsDiv = document.querySelectorAll(".white-parts-div");
 const whitePartsText = document.querySelectorAll(".white-parts-text");
@@ -192,11 +192,6 @@ function playChildBackHandler() {
     showHomeButtons();
 }
 function settingsClickHandler() { //------------------------------------------------
-    // playMode.classList.remove("hide");
-    // requestAnimationFrame(() => {
-    //     playMode.classList.add("show");
-    // });
-    // homePage.classList.add("stun")
 }
 function tutorialClickHandler() {
     hideHomeButtons();
@@ -239,10 +234,10 @@ function endReturnHandler() {
         endScreen.classList.remove("hide-end-screen-zoom-out")
         endScreen.classList.remove("show-end-screen");
         
-        //hide mainblock
+        //hide playPage
         setTimeout(() => {            
-            body.classList.remove("body-main-show");
-            mainBlock.classList.remove("show");
+            bigDiv.classList.remove("big-div-show");
+            playPage.classList.remove("show");
 
             //show homepage and buttons
             homePage.classList.remove("hide");
@@ -363,9 +358,9 @@ function resetGameData() {
     elapsed = "";
 }
 function resetGameBoardUI() {
-    playPage.classList.remove("play-page-fall");
+    mainBlock.classList.remove("main-block-fall");
     setTimeout(() => {
-        playPage.classList.add("show");
+        mainBlock.classList.add("show");
     }, 2000);
 
     whitePartsDiv.forEach((part) => {
@@ -375,7 +370,7 @@ function resetGameBoardUI() {
         part.classList.remove("white-parts-text-red");
     });
     
-    playPage.classList.remove("play-page-scale");
+    mainBlock.classList.remove("main-block-scale");
 }
 function initGame() {
     // applySettings(); ------------------------------------------
@@ -390,8 +385,8 @@ function initGame() {
         spawnHold();
         resetStats();
 
-        body.classList.add("body-main-show");
-        mainBlock.classList.add("show");
+        bigDiv.classList.add("big-div-show");
+        playPage.classList.add("show");
         
         if (game.mode === "forty") {
             countdownMessage.textContent = "CLEAR 40 LINES";
@@ -491,15 +486,15 @@ function stopTimer() {
 
 ///////////////// GENERATE 240 BOXES (play grid)
 function generateBoxes() {
-    const gameArea = document.getElementById("game-area")
-    gameArea.innerHTML = "";
+    const gameGrid = document.getElementById("game-grid")
+    gameGrid.innerHTML = "";
     for (let i = 0; i < 240; i++) {
         const div = document.createElement("div");
         div.classList.add("box");
         div.id = `boxID${i+1}`;
         div.style.background = boxColor;
         div.style.border = boxBorder;
-        gameArea.appendChild(div);
+        gameGrid.appendChild(div);
     }
 }
 ///////////////// CACHE allboxes
@@ -726,12 +721,10 @@ function despawnGhost() {
     ghostPiece.forEach((box) => {
         box.classList.remove("ghost-piece-place");
         box.classList.remove("ghost-piece");
-        // box.style.boxShadow = "";
     });    
     const preGhostPiece = document.querySelectorAll(".pre-ghost-piece");
     preGhostPiece.forEach((box) => {
         box.classList.remove("pre-ghost-piece");
-        // box.style.boxShadow = "";
     });            
 }
 ///////////////// SPAWN GHOST  
@@ -743,18 +736,17 @@ function spawnGhost() {
         preGhostPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
-                    count -= 10;
-                    ghostPiece.pos = count + player.pos;
-                    player.piece.forEach((row, y) => {
-                        row.forEach((value, x) => {
-                            if (value !== 0) {
-                                allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghost-piece");            
-                                // allBoxes[(x+player.pos)+(y*10)+count].style.boxShadow = "inset 0 0 5px 10px rgba(255, 255, 255, 0.5)";
-                            }
-                        });
+                count -= 10;
+                ghostPiece.pos = count + player.pos;
+                player.piece.forEach((row, y) => {
+                    row.forEach((value, x) => {
+                        if (value !== 0) {
+                            allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghost-piece");
+                        }
                     });
-                    showGhost = true;
-                    return;      
+                });
+                showGhost = true;
+                return;      
             }
         });
         count += 10;
@@ -770,6 +762,7 @@ function place() {
             
     if (game.place){
         fill();
+
         ghostPiece.forEach((ghost) => {
             ghost.classList.add("ghost-piece-place-fast");
         });
@@ -779,14 +772,11 @@ function place() {
             }); 
         }, 100)
             
-        // setTimeout(() => {
-            if (!checkGameOver()) {
-                respawn();
-            }
-            game.place = false;
-            game.holdAntiSpam = false;
-        // }, 10)
-        // startPlaceInterval();
+        if (!checkGameOver()) {
+            respawn();
+        }
+        game.place = false;
+        game.holdAntiSpam = false;
     }
 }
 ///////////////// FILL
@@ -852,8 +842,6 @@ function checkLineCLear() {
 
     //if linesToClear truthy, proceed to clearLines()
     if (game.linesToClear.length > 0) {
-
-
         clearLines();
     }
 }
@@ -865,8 +853,8 @@ function checkBottom() {
         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
             allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
                 
-        ghostPiece.forEach((ghost) => {
-            ghost.classList.add("ghost-piece-place");
+            ghostPiece.forEach((ghost) => {
+                ghost.classList.add("ghost-piece-place");
         });
             game.place = true;       
         }
@@ -876,8 +864,7 @@ function checkBottom() {
 ///////////////////////////////////////// LINE CLEAR AND MOVE /////////////////////////////////////////
 
 ///////////////// CLEAR LINES
-function clearLines() { // from checkLineClear()
-    
+function clearLines() {
     const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece");
     ghostPiecePlaceFastLineClear.forEach((box) => {
         box.classList.add("ghost-piece-place-fast-line-clear");
@@ -988,9 +975,9 @@ function gameEnd() {
 function gameLose() {
     freezeTime();
     end.message = "GAME OVER!"
-    playPage.classList.add("play-page-fall");
+    mainBlock.classList.add("main-block-fall");
     setTimeout(() => {
-        playPage.classList.remove("show");
+        mainBlock.classList.remove("show");
     }, 500);
     whitePartsDiv.forEach((part) => {
         part.classList.add("white-parts-div-red");
@@ -1004,9 +991,9 @@ function gameLose() {
 function gameWin() {
     freezeTime();
     end.message = "You did it?! Wow. Grape.";
-    playPage.classList.add("play-page-scale");
+    mainBlock.classList.add("main-block-scale");
     setTimeout(() => {
-        playPage.classList.remove("show");
+        mainBlock.classList.remove("show");
     }, 500);
     gameEnd();
 }
@@ -1159,7 +1146,6 @@ const oldMatrix = player.piece;
     }
     game.place = false;
     spawn(player.pos);
-    // startDropInterval();
     startCheckBottomInterval();
     startPlaceInterval();
 }
@@ -1212,7 +1198,6 @@ function rotateLeft() {
     }
     game.place = false;
     spawn(player.pos);
-    // startDropInterval();
     startCheckBottomInterval();
     startPlaceInterval();
 }
@@ -1221,8 +1206,9 @@ function rotateLeft() {
 let keyIntervals = {};
 document.addEventListener("keydown", (event) => {
     if (!game.gameOver && game.running) {
-        if (keyIntervals[event.key]) return;
-        // if (!game.running) return;
+        if (keyIntervals[event.key]) {
+            return;
+        }
         switch (event.key) {
             case "ArrowDown":
                 moveDown3();
@@ -1273,12 +1259,10 @@ function startDropInterval() {
     clearInterval(dropInterval);
     dropInterval = setInterval(moveDown3, game.dropRate);
 }
-
 function startCheckBottomInterval() {
     clearInterval(checkBottomInterval);
     checkBottomInterval = setInterval(checkBottom, 100);
 }
-
 function startPlaceInterval() {
     clearInterval(placeInterval);
     placeInterval = setInterval(place, 500);
@@ -1293,6 +1277,7 @@ const resizeObserver = new ResizeObserver(entries => {
     const h2 = document.querySelectorAll("h2");
     const h3 = document.querySelectorAll("h3");
     const h4 = document.querySelectorAll("h4");
+    const h5 = document.querySelectorAll("h5");
     const p = document.querySelectorAll("p");
     const statSmall = document.querySelectorAll(".stat-small");
     const width = entries[0].contentRect.width;
@@ -1308,6 +1293,9 @@ const resizeObserver = new ResizeObserver(entries => {
     h4.forEach(el => {
         el.style.fontSize = (width / 40) + "px";
     });
+    h5.forEach(el => {
+        el.style.fontSize = (width / 50) + "px";
+    });
     p.forEach(el => {
         el.style.fontSize = (width / 50) + "px";
     });
@@ -1315,4 +1303,4 @@ const resizeObserver = new ResizeObserver(entries => {
         el.style.fontSize = (width / 50) + "px";
     });
 });
-resizeObserver.observe(mainBlock);
+resizeObserver.observe(playPage);

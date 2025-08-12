@@ -1,9 +1,7 @@
-can try using em for fonts. see if relative to parent div.
-
-fallback for fonts, body
-
 
 do:  hang time, settings screen & apply settings function, music & sounds, red warning alert effect
+
+init for first start up
 
 
 !!!!!WATCH OUT FOR

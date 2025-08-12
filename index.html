@@ -13,131 +13,156 @@
 
 </head>
 <body>
-    <!-- /////////////////////////////////////////// HOME PAGE-->
-    <div id="home-page" class="home-page">
-        <h2 id="game-title">WHERE DO I PUT THIS?!?!</h2>
+    
+    <div id="big-div">
 
-        <div id="button-divs" class="button-divs">
-            <div id="play-button" class="home-buttons "><h3>PLAY</h3></div>
-            <div id="settings-button" class="home-buttons "><h3>SETTINGS</h3></div>
-            <div id="tutorial-button" class="home-buttons "><h3>HOW TO PLAY</h3></div>
-        </div>
-        <div id="play-child-buttons-divs" class="play-child-buttons-divs">
-            <div id="forty-button" class="play-child-buttons button-hide"><h3>40 LINE CLEAR</h3></div>
-            <div id="marathon-button" class="play-child-buttons button-hide"><h3>MARATHON</h3></div>
-        </div>
-        <div id="play-child-back" class="play-child-back hide">
-            <h3>BACK</h3>
-        </div>
+        <!-- -------------------------------------------------------- HOME PAGE ---------------------------------------------------------- -->
+        <div id="home-page" class="home-page">
 
-        <div id="tutorial-screen" class="tutorial-screen hide">
-            <div id="key-main-div">
-                            
-                            <div class="key-sub-div">
-                                <div class="key"><h4>←</h4></div>
-                                <div class="tutorial-text"><h4>MOVE LEFT</h4></div>
-                            </div>
+            
+            <!-- /////////////////////////////////////////// MAIN MENU-->
+            <h2 id="game-title">WHERE DO I PUT THIS?!?!</h2>
 
-                            <div class="key-sub-div">
-                                <div class="key"><h4>→</h4></div>
-                                <div class="tutorial-text"><h4>MOVE RIGHT</h4></div>
-                            </div>
+            <div id="button-divs" class="button-divs">
+                <div id="play-button" class="home-buttons "><h3>PLAY</h3></div>
+                <div id="settings-button" class="home-buttons "><h3>SETTINGS</h3></div>
+                <div id="tutorial-button" class="home-buttons "><h3>HOW TO PLAY</h3></div>
+            </div>
 
-                            <div class="key-sub-div">
-                                <div class="key"><h4>↓</h4></div>
-                                <div class="tutorial-text"><h4>MOVE DOWN</h4></div>
-                            </div>
-                
-                            <div class="key-sub-div">
-                                <div class="key"><h4>SPACE</h4></div>
-                                <div class="tutorial-text"><h4>HARD DROP</h4></div>
-                            </div>
-                
-                            <div class="key-sub-div">
-                                <div class="key"><h4>↑</h4></div>
-                                <div class="tutorial-text"><h4>ROTATE RIGHT</h4></div>
-                            </div>
-                    
-                            <div class="key-sub-div">
-                                <div class="key"><h4>X</h4></div>
-                                <div class="tutorial-text"><h4>ROTATE LEFT</h4></div>
-                            </div>
-                        
-                            <div class="key-sub-div">
-                                <div class="key"><h4>C</h4></div>
-                                <div class="tutorial-text"><h4>HOLD CURRENT PIECE</h4></div>
-                            </div>
-                
+            <!-- /////////////////////////////////////////// PLAY SUB MENU-->
+            <div id="play-child-buttons-divs" class="play-child-buttons-divs">
+                <div id="forty-button" class="play-child-buttons button-hide"><h3>40 LINE CLEAR</h3></div>
+                <div id="marathon-button" class="play-child-buttons button-hide"><h3>MARATHON</h3></div>
+            </div>
+
+            <div id="play-child-back" class="play-child-back hide">
+                <h3>BACK</h3>
+            </div>
+
+            
+            <!-- /////////////////////////////////////////// SETTINGS SCREEN-->
+             <!-- TO BE ADDED -->
+
+            
+            <!-- /////////////////////////////////////////// TUTORIAL SCREEN-->
+            <div id="tutorial-screen" class="tutorial-screen hide">
+                <div id="tutorial-block">
+
+                    <div id="key-main-div">
+                        <div class="key-sub-div">
+                            <div class="key"><h4>←</h4></div>
+                            <div class="tutorial-text"><h4>MOVE LEFT</h4></div>
+                        </div>
+                        <div class="key-sub-div">
+                            <div class="key"><h4>→</h4></div>
+                            <div class="tutorial-text"><h4>MOVE RIGHT</h4></div>
+                        </div>
+                        <div class="key-sub-div">
+                            <div class="key"><h4>↓</h4></div>
+                            <div class="tutorial-text"><h4>MOVE DOWN</h4></div>
+                        </div>
+                        <div class="key-sub-div">
+                            <div class="key"><h5>SPACE</h5></div>
+                            <div class="tutorial-text"><h4>HARD DROP</h4></div>
+                        </div>
+                        <div class="key-sub-div">
+                            <div class="key"><h4>↑</h4></div>
+                            <div class="tutorial-text"><h4>ROTATE RIGHT</h4></div>
+                        </div>
+                        <div class="key-sub-div">
+                            <div class="key"><h4>X</h4></div>
+                            <div class="tutorial-text"><h4>ROTATE LEFT</h4></div>
+                        </div>
+                        <div class="key-sub-div">
+                            <div class="key"><h4>C</h4></div>
+                            <div class="tutorial-text"><h4>HOLD CURRENT PIECE</h4></div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             
-        </div>
-        
             <div id="tutorial-back" class="tutorial-back hide">
                 <h3>BACK</h3>
             </div>
 
-    </div>
-    
-    
-    <!-- /////////////////////////////////////////// PLAY PAGE-->
-    <div id="main-block" class="main-block">
-        <div id="play-page" class="play-page show">
-            <!-- /////////////////////////////////////////// HOLD AREA-->
-            <div id="left-block">
-                <div class="gap"></div>
-                <div id="hold-block" class="white-parts-div">
-                    <h3 id="hold-text" class="white-parts-div gameboard-text">HOLD</h3>
-                    <div id="hold-area"></div>
-                </div>
-
-                <div id="stats-block" class="white-parts-text">
-                    <section id="stat-3">
-                        <h4 id="stat-3-text">PIECES</h4>
-                        <h2 id="stat-3-stat"><span id="stat-3-big">0</span><span id="stat-3-small" class="stat-small"> (0.00/s)</span></h2>
-                    </section>
-                    <section id="stat-2">
-                        <h4 id="stat-2-text">LINES</h4>
-                        <h2 id="stat-2-stat"><span id="stat-2-big">0</span>
-                    </section>
-                    <section id="stat-1">
-                        <h4 id="stat-1-text">TIME</h4>
-                        <h2 id="stat-1-stat"><span id="stat-1-big">0:00</span><span id="stat-1-small" class="stat-small">.000</span></h2>
-                    </section>
-                </div>
-            </div>
-
-            <!-- /////////////////////////////////////////// GAME AREA-->
-            <div id="mid-block">
-                <div id="mid-block-background" class="white-parts-div"></div>
-                <div id="game-area"></div> 
-            </div>
-
-            <!-- /////////////////////////////////////////// NEXT AREA-->
-            <div id="right-block">
-                <div class="gap"></div>
-                <div id="next-block" class="white-parts-div">
-                    <h3 id="next-text" class="white-parts-div gameboard-text">NEXT</h3>
-                    <div id="next-area"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="countdown-screen" class="countdown-screen hide">
-            <div id="countdown-message-div" class="countdown-message-div"><h2 id="countdown-message"></h2></div>
-        </div>
-
+        </div><!-- END OF HOME PAGE -->
         
-        <!-- /////////////////////////////////////////// END SCREEN-->
-        <div id="end-screen" class="end-screen hide">
-            <h2 id="end-result" class="end-line"><span id="game-result-message"></span></h2>
-            <br>
-            <h3 id="end-time" class="end-line">TOTAL TIME: <span id="game-result-time"></span></h3>
-            <h3 id="end-lines" class="end-line">YOU CLEARED <span id="game-result-line"></span> LINES</h3>
-            <div id="end-screen-buttons-div">
-                <div id="end-return" class="end-screen-buttons"><h4>RETURN TO HOME</h4></div>
-                <div id="end-another" class="end-screen-buttons"><h4>ANOTHER ROUND</h4></div>
+        
+        <!-- -------------------------------------------------------- PLAY PAGE ---------------------------------------------------------- -->
+        <div id="play-page" class="play-page">
+
+            <!-- /////////////////////////////////////////// MAIN BLOCK-->
+            <div id="main-block" class="main-block show">
+
+                <!-- /////////////////////////////////////////// HOLD AREA-->
+                <div id="left-block">
+                    
+                    <div class="gap"></div>
+
+                    <div id="hold-block" class="white-parts-div">
+                        <h3 id="hold-text" class="white-parts-div gameboard-text">HOLD</h3>
+                        <div id="hold-area"></div>
+                    </div>
+
+                    <div id="stats-block" class="white-parts-text">
+                        <section id="stat-3">
+                            <h4 id="stat-3-text">PIECES</h4>
+                            <h2 id="stat-3-stat"><span id="stat-3-big">0</span><span id="stat-3-small" class="stat-small"> (0.00/s)</span></h2>
+                        </section>
+                        <section id="stat-2">
+                            <h4 id="stat-2-text">LINES</h4>
+                            <h2 id="stat-2-stat"><span id="stat-2-big">0</span>
+                        </section>
+                        <section id="stat-1">
+                            <h4 id="stat-1-text">TIME</h4>
+                            <h2 id="stat-1-stat"><span id="stat-1-big">0:00</span><span id="stat-1-small" class="stat-small">.000</span></h2>
+                        </section>
+                    </div>
+
+                </div>
+
+                <!-- /////////////////////////////////////////// GAME AREA-->
+                <div id="mid-block">
+                    <div id="mid-block-background" class="white-parts-div"></div>
+                    <div id="game-grid"></div> 
+                </div>
+
+                <!-- /////////////////////////////////////////// NEXT AREA-->
+                <div id="right-block">
+
+                    <div class="gap"></div>
+                    
+                    <div id="next-block" class="white-parts-div">
+                        <h3 id="next-text" class="white-parts-div gameboard-text">NEXT</h3>
+                        <div id="next-area"></div>
+                    </div>
+                
+                </div>
             </div>
-        </div>
+
+
+            <!-- /////////////////////////////////////////// COUNTDOWN-->
+            <div id="countdown-screen" class="countdown-screen hide">
+                <div id="countdown-message-div" class="countdown-message-div"><h2 id="countdown-message"></h2></div>
+            </div>
+
+            <!-- /////////////////////////////////////////// END SCREEN-->
+            <div id="end-screen" class="end-screen hide">
+            
+                <h2 id="end-result" class="end-line"><span id="game-result-message"></span></h2>
+                <br>
+                <h3 id="end-time" class="end-line">TOTAL TIME: <span id="game-result-time"></span></h3>
+                <h3 id="end-lines" class="end-line">YOU CLEARED <span id="game-result-line"></span> LINES</h3>
+
+                <div id="end-screen-buttons-div">
+                    <div id="end-return" class="end-screen-buttons"><h4>RETURN TO HOME</h4></div>
+                    <div id="end-another" class="end-screen-buttons"><h4>ANOTHER ROUND</h4></div>
+                </div>
+            
+            </div>
+
+        </div><!-- END OF PLAY PAGE -->
     </div>
 </body>
 </html>
