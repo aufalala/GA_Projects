@@ -86,7 +86,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out, box-shadow 0.5s ease;
-    filter: brightness(.80);
+    filter: brightness(0.65);
 }
 .home-buttons:hover {
     transform: translateX(-4%);
@@ -124,7 +124,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out, box-shadow 0.5s ease;
-    filter: brightness(.80);
+    filter: brightness(0.65);
 }
 .play-child-buttons:hover {
     transform: translateX(-4%);
@@ -134,8 +134,6 @@ body {
 #play-child-back {
     cursor: pointer;
     background-color: black;
-    font-size: 200%;
-    font-weight:700;
     position: fixed;
     text-align: center;
     align-content: center;
@@ -156,9 +154,95 @@ body {
     opacity: 0;
 }
 
+
+/* /////////////////// TUTORIAL SCREEN */
+#settings-screen {
+    /* background: gray; */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 3;
+    align-content: center;
+    transition: opacity 0.7s ease;
+    aspect-ratio:5/3;
+    max-height: 72vh;
+    max-width: 120vh;
+    width: 95%;
+}
+.settings-screen {
+    transform: translate(-50%, -50%);
+    opacity: 0;
+}
+#settings-block {
+    width: 100%;
+    /* height: 100%; */
+    justify-items: center;
+    align-content: center;
+}
+#settings-main-div {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-content: center;
+}
+.settings-sub-div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+.toggle-switch {
+    width: 9%;
+    aspect-ratio: 3/2;
+    align-content: center;
+    padding: 0 0.7%;
+    /* border: 0.3em solid rgb(108, 108, 108); */
+    border-radius: 100px;
+}
+.toggle-switch-circle {
+    background: white;
+    height: 80%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}
+.toggle-true {
+    background: rgb(108, 185, 120);
+    justify-items: right;
+}
+.toggle-false {
+    background: rgb(121, 121, 121);
+    justify-items: left;
+}
+
+#settings-back {
+    cursor: pointer;
+    background-color: black;
+    position: fixed;
+    text-align: center;
+    align-content: center;
+    padding: 1%;
+    bottom: 10%;
+    left: 10%;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, box-shadow 0.5s ease, background 0.5s ease, color 0.5s ease;
+    box-shadow: 10px 5px 10px #000000;
+    z-index: 3;
+}
+#settings-back:hover {
+    transform: scale(1.1);
+    background: white;
+    color: black;
+    box-shadow: 15px 10px 20px #000000;
+}
+.settings-back {
+    opacity: 0;
+}
+
+
 /* /////////////////// TUTORIAL SCREEN */
 #tutorial-screen {
-    border-radius: 15%;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -209,8 +293,6 @@ body {
 #tutorial-back {
     cursor: pointer;
     background-color: black;
-    font-size: 200%;
-    font-weight:700;
     position: fixed;
     text-align: center;
     align-content: center;

@@ -100,9 +100,12 @@ const playChildButtons = document.querySelectorAll(".play-child-buttons");
 const fortyButton = document.getElementById("forty-button");
 const marathonButton = document.getElementById("marathon-button");
 const playChildBackButton = document.getElementById("play-child-back");
+//settings
+const settingsScreen = document.getElementById("settings-screen");
+const settingsBackButton = document.getElementById("settings-back");
 //tutorial
 const tutScreen = document.getElementById("tutorial-screen");
-const tutBackButton = document.getElementById("tutorial-back")
+const tutBackButton = document.getElementById("tutorial-back");
 // const playMode = document.querySelector("#play-mode");
 
 ///////////////// PLAY PAGE
@@ -131,18 +134,6 @@ const endReturn = document.getElementById("end-return")
 const endAnother = document.getElementById("end-another")
 
 
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
-
-//initial show page and button ----------------------- MOVE THIS SOMEWHERE
-setTimeout(() => {
-    homePage.classList.add("show");
-}, 700);
-setTimeout(() => {
-    homeButtons.forEach((button) => {
-        button.classList.add("button-show");
-    });
-}, 1000);
 
 ///////////////////////////////////////// BUTTON CLICK HANDLERS /////////////////////////////////////////
 
@@ -155,6 +146,8 @@ fortyButton.addEventListener("click", fortyClickHandler);
 marathonButton.addEventListener("click", marathonClickHandler);
 playChildBackButton.addEventListener("click", playChildBackHandler);
 
+
+settingsBackButton.addEventListener("click", settingsBackHandler);
 tutBackButton.addEventListener("click", tutorialBackHandler);
 
 ///////////////// PLAY PAGE
@@ -197,11 +190,40 @@ function playChildBackHandler() {
     hidePlayChildButtons();
     showHomeButtons();
 }
-function settingsClickHandler() { //------------------------------------------------
+function settingsClickHandler() {
+    hideHomeButtons();
+    //show settings screen
+    settingsScreen.classList.remove("hide");
+    setTimeout(() => {
+        settingsScreen.classList.add("show");
+    }, 500)
+
+    
+    //show settings-back-button
+    settingsBackButton.classList.remove("hide");
+    setTimeout(() => {
+        settingsBackButton.classList.add("show");
+    }, 1000);
 }
+function settingsBackHandler() {
+    //hide settings screen
+    settingsScreen.classList.remove("show");
+    setTimeout(() => {
+        settingsScreen.classList.add("hide")    
+    }, 200);
+
+    //hide settings back button
+    settingsBackButton.classList.remove("show");
+    setTimeout(() => {
+        settingsBackButton.classList.add("hide");
+    }, 400);
+
+    showHomeButtons();
+}
+
 function tutorialClickHandler() {
     hideHomeButtons();
-    
+    //show tutorial screen
     tutScreen.classList.remove("hide");
     setTimeout(() => {
         tutScreen.classList.add("show");
@@ -271,7 +293,23 @@ function endAnotherHandler() {
 }
 
 
+
+// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
+// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
+
 ///////////////////////////////////////// NAV (PAGES/BUTTONS) VISIBILITY /////////////////////////////////////////
+
+function initHome() {
+setTimeout(() => {
+    homePage.classList.add("show");
+}, 700);
+setTimeout(() => {
+    homeButtons.forEach((button) => {
+        button.classList.add("button-show");
+    });
+}, 1000);
+}
+
 
 function hideNavToInitGame() {
     hidePlayChildButtons();
@@ -1235,16 +1273,28 @@ document.addEventListener("keydown", (event) => {
         }
         switch (event.key) {
             case "ArrowDown":
+            case "s":
+            case "S":
+            case "k":
+            case "K":
                 moveDown3();
-                keyIntervals.ArrowDown = setInterval(moveDown3, 70);
+                keyIntervals[event.key] = setInterval(moveDown3, 70);
                 break;
             case "ArrowRight":
+            case "d":
+            case "D":
+            case "l":
+            case "L":
                 moveRight();
-                keyIntervals.ArrowRight = setInterval(moveRight, 110);
+                keyIntervals[event.key] = setInterval(moveRight, 110);
                 break;
             case "ArrowLeft":
+            case "a":
+            case "A":
+            case "j":
+            case "J":
                 moveLeft();
-                keyIntervals.ArrowLeft = setInterval(moveLeft, 110);
+                keyIntervals[event.key] = setInterval(moveLeft, 110);
                 break;
 
             case " ":
@@ -1293,9 +1343,9 @@ function startPlaceInterval() {
 }
 
 // CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
+// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
 
 ///////////////////////////////////////// TEXT AUTO RESIZE /////////////////////////////////////////
-
 const resizeObserver = new ResizeObserver(entries => {
     const h1 = document.querySelectorAll("h1");
     const h2 = document.querySelectorAll("h2");
@@ -1304,7 +1354,11 @@ const resizeObserver = new ResizeObserver(entries => {
     const h5 = document.querySelectorAll("h5");
     const p = document.querySelectorAll("p");
     const statSmall = document.querySelectorAll(".stat-small");
+    
     const width = entries[0].contentRect.width;
+    
+    settingsScreen.style.fontSize = (width / 50) + "px";
+
     h1.forEach(el => {
         el.style.fontSize = (width / 10) + "px";
     });
@@ -1326,5 +1380,11 @@ const resizeObserver = new ResizeObserver(entries => {
     statSmall.forEach(el => {
         el.style.fontSize = (width / 50) + "px";
     });
+
 });
+
+
+// INITIALISE -------------------------------------- INITIALISE -------------------------------------- INITIALISE
+
 resizeObserver.observe(playPage);
+initHome();
