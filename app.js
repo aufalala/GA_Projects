@@ -763,6 +763,7 @@ function place() {
     if (game.place){
         fill();
 
+        //fill animation
         ghostPiece.forEach((ghost) => {
             ghost.classList.add("ghost-piece-place-fast");
         });
@@ -771,7 +772,18 @@ function place() {
                 ghost.classList.remove("ghost-piece-place-fast");
             }); 
         }, 100)
+
+        mainBlock.classList.add("main-block-shake");
+        setTimeout(() => {
+            mainBlock.classList.add("main-block-unshake");
+        }, 100)
+        setTimeout(() => {
+            mainBlock.classList.remove("main-block-shake");
+            mainBlock.classList.remove("main-block-unshake");
+        }, 200)
             
+        //respawn if not game over, else, end game
+        
         if (!checkGameOver()) {
             respawn();
         }
