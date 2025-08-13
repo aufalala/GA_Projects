@@ -14,13 +14,12 @@ body {
     display: flex;
     flex-direction: column;
     color: white;
-    position: absolute;
-    background-color: rgb(48, 49, 51);
-    background: radial-gradient(
-        ellipse at center,
-        rgb(67, 67, 67) 0%,
-        rgba(0, 0, 0, 1) 100%
-    );
+    position: absolute; 
+    background-image: url('./assets/gradient.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
 }
 #big-div {
     width: 100%;

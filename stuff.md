@@ -3,6 +3,8 @@ do:  hang time, settings screen & apply settings function, music & sounds, red w
 
 init for first start up
 
+DO READ ME
+
 
 !!!!!WATCH OUT FOR
 game.mode
