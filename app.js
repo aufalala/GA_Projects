@@ -13,6 +13,12 @@ const pieces = {
 }
 const pieceNames = Object.keys(pieces);
 
+//settings
+const settings = {
+    screenShake: true,
+    ghost: true,
+}
+
 //player
 const player = {
     pieceName: "",
@@ -720,6 +726,7 @@ function despawnGhost() {
     const ghostPiece = document.querySelectorAll(".ghost-piece");
     ghostPiece.forEach((box) => {
         box.classList.remove("ghost-piece-place");
+        box.classList.remove("ghost-piece-hidden");
         box.classList.remove("ghost-piece");
     });    
     const preGhostPiece = document.querySelectorAll(".pre-ghost-piece");
@@ -730,9 +737,9 @@ function despawnGhost() {
 ///////////////// SPAWN GHOST  
 function spawnGhost() {
     const preGhostPieces = document.querySelectorAll(".pre-ghost-piece");
-    let showGhost = false;
+    let ghostCollision = false;
     let count = 0;
-    while (!showGhost) {
+    while (!ghostCollision) {
         preGhostPieces.forEach((box) => {
             if (allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("bottom") ||
                 allBoxes[parseInt(box.id.slice(5))+count-1].classList.contains("filled")) {
@@ -742,10 +749,13 @@ function spawnGhost() {
                     row.forEach((value, x) => {
                         if (value !== 0) {
                             allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghost-piece");
+                            if (!settings.ghost) {
+                                allBoxes[(x+player.pos)+(y*10)+count].classList.add("ghost-piece-hidden");
+                            }
                         }
                     });
                 });
-                showGhost = true;
+                ghostCollision = true;
                 return;      
             }
         });
@@ -773,15 +783,17 @@ function place() {
             }); 
         }, 100)
 
-        mainBlock.classList.add("main-block-shake");
-        setTimeout(() => {
-            mainBlock.classList.add("main-block-unshake");
-        }, 100)
-        setTimeout(() => {
-            mainBlock.classList.remove("main-block-shake");
-            mainBlock.classList.remove("main-block-unshake");
-        }, 200)
-            
+        if (settings.screenShake) {
+            mainBlock.classList.add("main-block-shake");
+            setTimeout(() => {
+                mainBlock.classList.add("main-block-unshake");
+            }, 100)
+            setTimeout(() => {
+                mainBlock.classList.remove("main-block-shake");
+                mainBlock.classList.remove("main-block-unshake");
+            }, 200)
+        }
+
         //respawn if not game over, else, end game
         
         if (!checkGameOver()) {

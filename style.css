@@ -312,6 +312,9 @@ body {
 .ghost-piece {
     box-shadow: inset 0px 0px 10px 5px rgba(255, 255, 255, 0.5);
 }
+.ghost-piece-hidden {
+    box-shadow: none;
+}
 .ghost-piece-place {
     filter: brightness(0) invert(0.9);
     transition: filter 0.5s ease;
