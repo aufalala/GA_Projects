@@ -1108,10 +1108,6 @@ function clearLines() {
             gameWin();
         }
     }
-    //respawn if not game over, else, end game
-    if (!checkGameOver()) {
-        respawn();
-    }    
 }
 
 ///////////////// MOVE LINES
@@ -1145,6 +1141,10 @@ function moveLines() {
         }
     });
     game.linesToMove = {};
+    //respawn if not game over, else, end game
+    if (!checkGameOver()) {
+        respawn();
+    }    
 }
 
 ///////////////////////////////////////// GAME END /////////////////////////////////////////
