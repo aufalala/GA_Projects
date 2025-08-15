@@ -9,7 +9,7 @@
 
 # THE GAME
 **WHERE_DO_I_PUT_THIS_-TETRIS-**  
-*A recreation of Tetris, for my educational journey into Software Development.*
+*A recreation of Tetris, for an educational journey into Software Development.*
 
 In 1984, a Russian legend, Alexey Pajitnov, created Tetris.  
 *(just realised that that's more than 40 years ago as of 2025).*  
@@ -41,14 +41,27 @@ https://aufalala.github.io/WHERE_DO_I_PUT_THIS_-tetris-/
 
 
 # ATTRIBUTIONS
-**Music and Sounds**  
-*maplestory login theme  
-https://www.youtube.com/watch?v=0qj4hgJeSe4&list=RD0qj4hgJeSe4&start_radio=1  
-(remixed - home page music)*
+**Font**  
+Saira  
+https://fonts.google.com/specimen/Saira?query=saira  
 
+**Music and Sounds**  
 *tetris techno remix  
 https://www.youtube.com/watch?v=9x9Md8mSKik&list=RD9x9Md8mSKik&start_radio=1  
 (remixed - play page music & game lose sound)*
+
+
+*https://freesound.org/people/Kastenfrosch/sounds/162478/ - PassagierAbsetzen.mp3 by Kastenfrosch  
+https://freesound.org/people/DominikBraun/sounds/483510/ - Teleportation Beam Me Up by DominikBraun  
+https://freesound.org/people/igroglaz/sounds/632336/ - magic-spell-06.wav by igroglaz  
+https://freesound.org/people/LilMati/sounds/659595/ - Magic Spell 09, Remastered 01.wav by LilMati  
+https://freesound.org/people/lulyc/sounds/346116/ - Retro game heal sound by lulus  
+https://freesound.org/people/Swedger/sounds/268694/ - Game Bleeps 3 by Swedger  
+https://freesound.org/people/tim.kahn/sounds/61677/ - tx81z_bassdrum05.wav by tim.kahn  
+https://freesound.org/people/soundslikewillem/sounds/264346/ - Beep.wav by soundslikewillem  
+https://freesound.org/people/xtrgamr/sounds/441641/ - ELECKICK.wav by xtrgamr  
+https://freesound.org/people/IENBA/sounds/762132/ - UI Buttons by IENBA  
+https://freesound.org/people/BaggoNotes/sounds/721503/ - Button_Click2 by BaggoNotes*  
 
 **Development Inspirations**  
 *Code Tetris: Javascript Tutorial for Beginners - freeCodeCamp.org  
@@ -60,8 +73,7 @@ https://www.youtube.com/watch?v=H2aW5V46khA*
 *https://tetr.io/*  
 
 # TECHNOLOGIES USED
-HTML, CSS, Javascript
-
+HTML, CSS, Javascript  
 
 # NEXT STEPS
 More settings options (UI colors, pieces themes/skins, movement speed tuning).  
@@ -69,5 +81,7 @@ More music options.
 Better tutorial screen, with animations perhaps?  
 Online highscore system for 40 clear line.  
 UI and controls for IOS  
-Refactor some repeating code
-Full SRS
+Refactor some repeating code  
+Full SRS  
+Audio controls  
+Combo stacker / 4 row clear, animations  

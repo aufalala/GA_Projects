@@ -155,9 +155,8 @@ body {
 }
 
 
-/* /////////////////// TUTORIAL SCREEN */
+/* /////////////////// SETTINGS SCREEN */
 #settings-screen {
-    /* background: gray; */
     position: absolute;
     top: 50%;
     left: 50%;
@@ -175,7 +174,6 @@ body {
 }
 #settings-block {
     width: 100%;
-    /* height: 100%; */
     justify-items: center;
     align-content: center;
 }
@@ -199,7 +197,6 @@ body {
     aspect-ratio: 3/2;
     align-content: center;
     padding: 0 0.7%;
-    /* border: 0.3em solid rgb(108, 108, 108); */
     border-radius: 100px;
     transition: transform 0.3s ease;
 }
@@ -283,8 +280,6 @@ body {
     width: 60%;
     align-items: center;
     justify-content: space-between;
-    /* gap: %; */
-    /* margin-left: 15%; */
 }
 .key-multi-div {
     display: flex;
@@ -306,6 +301,7 @@ body {
 .key-multi {
     width: 33%;
 }
+
 #tutorial-back {
     cursor: pointer;
     background-color: black;
@@ -375,6 +371,7 @@ body {
     transform: translateX(0) translateY(0);
     transition: transform 0.1s;
 }
+
 /* /////////////////// SPACER GAP DIV*/
 .gap {
     height: 12.8%;
@@ -383,11 +380,9 @@ body {
 /* /////////////////// WHITE PARTS*/
 .white-parts-div {
     background-color: white;
-    /* transition: background-color 0.3s ease-in-out; */
 }
 .white-parts-text {
     color: white;
-    transition: color 0.3s ease-in-out;
 }
 
 .white-parts-div-red {
@@ -396,7 +391,6 @@ body {
 .white-parts-text-red {
     color: red;
 }
-
 .gameboard-text {
     padding-left: 2%;
     line-height: 100%;

@@ -14,7 +14,6 @@ const sounds = {
     warning: new Audio('assets/audio/warning.mp3'),
     rotate: new Audio('assets/audio/rotate.mp3'),
     win: new Audio('assets/audio/win.mp3'),
-
 }
 
 //pieces
@@ -87,7 +86,7 @@ let allBoxes;
 
 //lineup
 let lineUpQty = 5;
-const nextLineUp = [];
+const nextLineUps = [];
 
 //intervals
 let dropInterval;
@@ -128,7 +127,6 @@ const warningToggle = document.getElementById("warning-toggle");
 //tutorial
 const tutScreen = document.getElementById("tutorial-screen");
 const tutBackButton = document.getElementById("tutorial-back");
-// const playMode = document.querySelector("#play-mode");
 
 ///////////////// PLAY PAGE
 const playPage = document.getElementById("play-page");
@@ -204,6 +202,8 @@ function playClickHandler() {
         }, 500);
     }, 200);
 }
+
+///////////////// PLAY CHILD
 function fortyClickHandler() {
     playSound("play");
     game.mode = "forty";
@@ -211,6 +211,7 @@ function fortyClickHandler() {
 }
 function marathonClickHandler() {
     playSound("play");
+    game.mode = "marathon";
     hideNavToInitGame();
 }
 function playChildBackHandler() {
@@ -218,6 +219,8 @@ function playChildBackHandler() {
     hidePlayChildButtons();
     showHomeButtons();
 }
+
+///////////////// SETTINGS SCREEN
 function settingsClickHandler() {
     playSound("select");
     hideHomeButtons();
@@ -233,16 +236,6 @@ function settingsClickHandler() {
         settingsBackButton.classList.add("show");
     }, 1000);
 }
-
-function applySettings() {
-    ghostToggle.classList.add(`toggle-${settings.ghost}-div`);
-    shakeToggle.classList.add(`toggle-${settings.screenShake}-div`);
-    warningToggle.classList.add(`toggle-${settings.warning}-div`);
-    ghostToggle.firstElementChild.classList.add(`toggle-${settings.ghost}-circle`);
-    shakeToggle.firstElementChild.classList.add(`toggle-${settings.screenShake}-circle`);
-    warningToggle.firstElementChild.classList.add(`toggle-${settings.warning}-circle`);
-}
-
 function ghostToggleHandler() {
     settings.ghost = !settings.ghost;
     ghostToggle.classList.toggle("toggle-true-div");
@@ -250,7 +243,6 @@ function ghostToggleHandler() {
     ghostToggle.firstElementChild.classList.toggle("toggle-true-circle");
     ghostToggle.firstElementChild.classList.toggle("toggle-false-circle");
 }
-
 function shakeToggleHandler() {
     settings.screenShake = !settings.screenShake;
     shakeToggle.classList.toggle("toggle-true-div");
@@ -258,8 +250,6 @@ function shakeToggleHandler() {
     shakeToggle.firstElementChild.classList.toggle("toggle-true-circle");
     shakeToggle.firstElementChild.classList.toggle("toggle-false-circle");
 }
-
-
 function warningToggleHandler() {
     settings.warning = !settings.warning;
     warningToggle.classList.toggle("toggle-true-div");
@@ -267,8 +257,6 @@ function warningToggleHandler() {
     warningToggle.firstElementChild.classList.toggle("toggle-true-circle");
     warningToggle.firstElementChild.classList.toggle("toggle-false-circle");
 }
-
-
 function settingsBackHandler() {
     playSound("back");
     //hide settings screen
@@ -286,6 +274,8 @@ function settingsBackHandler() {
     showHomeButtons();
 }
 
+
+///////////////// TUTORIAL SCREEN
 function tutorialClickHandler() {
     playSound("select");
     hideHomeButtons();
@@ -296,13 +286,12 @@ function tutorialClickHandler() {
     }, 500)
 
     
-    //show tutorial-back-button
+    //show tutorial back button
     tutBackButton.classList.remove("hide");
     setTimeout(() => {
         tutBackButton.classList.add("show");
     }, 1000);
 }
-
 function tutorialBackHandler() {
     playSound("back");
     //hide tut screen
@@ -330,8 +319,8 @@ function endReturnHandler() {
         endScreen.classList.remove("hide-end-screen-zoom-out")
         endScreen.classList.remove("show-end-screen");
         
-        //hide playPage
-        setTimeout(() => {            
+        setTimeout(() => {
+            //hide playPage            
             bigDiv.classList.remove("big-div-show");
             playPage.classList.remove("show");
 
@@ -341,7 +330,6 @@ function endReturnHandler() {
                 homePage.classList.add("show");    
             });
             showHomeButtons();
-
         }, 500);
     }, 500);
 
@@ -361,13 +349,9 @@ function endAnotherHandler() {
     initGame();
 }
 
-
-
-// HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 // HOME PAGE -------------------------------------- HOME PAGE -------------------------------------- HOME PAGE
 
 ///////////////////////////////////////// NAV (PAGES/BUTTONS) VISIBILITY /////////////////////////////////////////
-
 function initHome() {
     setTimeout(() => {
         homePage.classList.add("show");
@@ -380,7 +364,6 @@ function initHome() {
 
     applySettings();
 }
-
 
 function hideNavToInitGame() {
     hidePlayChildButtons();
@@ -432,6 +415,15 @@ function hideHomeButtons() {
 }
 
 
+///////////////////////////////////////// APPLY SETTINGS /////////////////////////////////////////
+function applySettings() {
+    ghostToggle.classList.add(`toggle-${settings.ghost}-div`);
+    shakeToggle.classList.add(`toggle-${settings.screenShake}-div`);
+    warningToggle.classList.add(`toggle-${settings.warning}-div`);
+    ghostToggle.firstElementChild.classList.add(`toggle-${settings.ghost}-circle`);
+    shakeToggle.firstElementChild.classList.add(`toggle-${settings.screenShake}-circle`);
+    warningToggle.firstElementChild.classList.add(`toggle-${settings.warning}-circle`);
+}
 
 // PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
 // PLAY PAGE -------------------------------------- PLAY PAGE -------------------------------------- PLAY PAGE
@@ -466,7 +458,7 @@ function resetGameData() {
     ghostPiece.pos = "";
 
     lineUpQty = 5;
-    nextLineUp.length = 0;
+    nextLineUps.length = 0;
 
     timerRunning = false;
     startTime = "";
@@ -484,8 +476,6 @@ function resetGameBoardUI() {
     mainBlock.classList.remove("main-block-scale");
 }
 function initGame() {
-    // applySettings(); ------------------------------------------
-
     setTimeout(() => {
         generateBoxes();
         cacheAllBoxes();
@@ -501,16 +491,18 @@ function initGame() {
         spawnHold();
         resetStats();
 
+        //UI adjustments to accomodate play page
         bigDiv.classList.add("big-div-show");
         playPage.classList.add("show");
         
+        //set gamemode
         if (game.mode === "forty") {
             countdownMessage.textContent = "CLEAR 40 LINES";
         } else if (game.mode === "marathon") {
             countdownMessage.textContent = "LET'S SEE HOW FAR YOU CAN GO";
         }
 
-        
+        //show countdown message
         setTimeout(() => {
             countdownScreen.classList.remove("hide");
             requestAnimationFrame(() => {
@@ -518,27 +510,27 @@ function initGame() {
                 countdownMessageDiv.classList.add("show");
             })
         }, 1000);
-
+        //hide countdown message
         setTimeout(() => {
             countdownMessageDiv.classList.remove("show");
             setTimeout(() => {
 
             });
         }, 2000)
-
+        //begin countdown
         setTimeout(() => {
             for (let i = 4; i > 0; i--) {
-
                 setTimeout(() => {
                     if (i != 1) {
                         countdownMessage.textContent = i-1;
                     } else {
                         countdownMessage.textContent = "GO";
                     }
+                    //play song at second 2
                     if (i === 3) {
                         playSoundLoop("main");
                     }
-
+                    //show countdown 321go
                     countdownMessageDiv.classList.add("show");
                     setTimeout(() => {
                         countdownMessageDiv.classList.remove("show");
@@ -582,7 +574,7 @@ function startTimer() {
     if (timerRunning) return;
     timerRunning = true;
     startTime = performance.now();
-
+    //loop time update
     function update() {
         elapsed = performance.now() - startTime;
 
@@ -592,6 +584,7 @@ function startTimer() {
 
         updateTime = requestAnimationFrame(update);
     }
+    //start time update loop
     updateTime = requestAnimationFrame(update);
 }
 function stopTimer() {
@@ -615,11 +608,11 @@ function generateBoxes() {
         gameGrid.appendChild(div);
     }
 }
-///////////////// CACHE allboxes
+///////////////// CACHE to global allboxes
 function cacheAllBoxes() {
     allBoxes = document.querySelectorAll(".box");
 }
-///////////////// HIDE FIRST 30 BOXES (spawn area)
+///////////////// HIDE FIRST 30 BOXES (spawn area, no grid)
 ///////////////// HIDE LAST 10 BOXES (bottom row, invisible)
 function hideBoxes() {   
     for (let i = 0; i < 30; i++) {
@@ -639,31 +632,31 @@ function hideBoxes() {
 ///////////////// CREATE LINE UP LIST ACCORDING TO LINE UP QTY
 function createLineUpList() {
     for (i=0; i<lineUpQty; i++) {
-        nextLineUp.push({});
-        nextLineUp[i].pieceName = "";
-        nextLineUp[i].piece = "";
-        nextLineUp[i].color = "";
+        nextLineUps.push({});
+        nextLineUps[i].pieceName = "";
+        nextLineUps[i].piece = "";
+        nextLineUps[i].color = "";
     }
 }
 ///////////////// GENERATE LINE UP PIECE (all)
 function generateLineUp() {
     for (i=0; i<lineUpQty; i++) {
-        nextLineUp[i] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
+        nextLineUps[i] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
     }
     spawnLineUp();
 }
 ///////////////// GENERATE LINE UP PIECE (one)
 function generateNewPiece() {
-    nextLineUp.push({})
-    nextLineUp[lineUpQty-1] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
+    nextLineUps.push({})
+    nextLineUps[lineUpQty-1] = pieces[pieceNames[Math.floor(Math.random()*pieceNames.length)]];
     spawnLineUp();
 }
 ///////////////// DISPLAY LINEUP
 function spawnLineUp() {
     const nextArea = document.getElementById("next-area");
     nextArea.innerHTML = "";  
-  
-    nextLineUp.forEach((nextPiece, index) => {
+    //create div to store pieces
+    nextLineUps.forEach((nextPiece, index) => {
         const div = document.createElement("div");
         div.classList.add("line-up-indi");
         const pieceSize = nextPiece.piece.length;
@@ -680,8 +673,9 @@ function spawnLineUp() {
                 div.style.gridTemplateColumns = "repeat(2, 1fr)";
                 div.style.width = "27%";
                 break;
-        }        
-        nextLineUp[index].piece.forEach((row) => {
+        }
+        //spawn lineup pieces
+        nextLineUps[index].piece.forEach((row) => {
             if (row.includes(1)) {
                 row.forEach((value) => {
                     const box = document.createElement("div");
@@ -708,7 +702,6 @@ function resetStats() {
     stat1Big.textContent = "0:00";
     stat1Small.textContent = ".000";
     stat3Small.textContent = " (0.00/s)";
-
 }
 
 ///////////////////////////////////////// ASSIGN NEXT PIECE /////////////////////////////////////////
@@ -716,10 +709,10 @@ function resetStats() {
 ///////////////// ASSIGN NEXT PIECE FROM LINEUP
 function assignNextPiece() {
     if (!game.gameOver) {
-        player.pieceName = nextLineUp[0].pieceName;
-        player.piece = nextLineUp[0].piece;
-        player.color = nextLineUp[0].color;
-        nextLineUp.shift();
+        player.pieceName = nextLineUps[0].pieceName;
+        player.piece = nextLineUps[0].piece;
+        player.color = nextLineUps[0].color;
+        nextLineUps.shift();
         generateNewPiece();
     }
 }
@@ -730,14 +723,14 @@ function assignNextPiece() {
 function holdPiece() {
     if (!game.holdAntiSpam) {
         playSound("hold");
-        if (holdP.color) {
+        if (holdP.color) { //if hold piece exists, swap
             [player.pieceName, holdP.pieceName] = [holdP.pieceName, player.pieceName];
             [player.color, holdP.color] = [holdP.color, player.color];
             player.piece = pieces[player.pieceName].piece;
             holdP.piece = pieces[holdP.pieceName].piece;
             player.pos = 3;
             spawn(player.pos);
-        } else {
+        } else { //if no hold piece, store and assign next and spawn
             holdP.pieceName = player.pieceName;
             holdP.piece = pieces[holdP.pieceName].piece;
             holdP.color = pieces[holdP.pieceName].color;
@@ -756,6 +749,7 @@ function spawnHold() {
     const holdArea = document.getElementById("hold-area");
     holdArea.innerHTML = "";  
     if (holdP.color) {
+        //create div to store hold piece
         const div = document.createElement("div");
         div.classList.add("hold-indi")
         const pieceSize = holdP.piece.length;
@@ -773,6 +767,7 @@ function spawnHold() {
                 div.style.width = "27%";
                 break;
         }
+        //spawn hold piece
         holdP.piece.forEach((row) => {
             if (row.includes(1)) {
                 row.forEach((value) => {
@@ -814,6 +809,7 @@ function respawn() {
     assignNextPiece();
     player.pos = 3;
     spawn(player.pos);
+    checkWarning();
 }
 ///////////////// SPAWN PLAYER WITH POS (used by move, rotate, hold)
 function spawn(pos) {
@@ -830,7 +826,6 @@ function spawn(pos) {
         });
     });
     spawnGhost();
-    checkWarning();
 }
 
 ///////////////////////////////////////// GHOST SPAWN /////////////////////////////////////////
@@ -881,13 +876,10 @@ function spawnGhost() {
 
 ///////////////// PLACE BLOCK 
 function place() {
-    // clearInterval(placeInterval);
     const ghostPiece = document.querySelectorAll(".ghost-piece");
-            
     if (game.place){
         playSound("place");
         fill();
-
         //fill animation
         ghostPiece.forEach((ghost) => {
             ghost.classList.add("ghost-piece-place-fast");
@@ -897,7 +889,7 @@ function place() {
                 ghost.classList.remove("ghost-piece-place-fast");
             }); 
         }, 100)
-
+        //screenshake animation
         if (settings.screenShake) {
             mainBlock.classList.add("main-block-shake");
             setTimeout(() => {
@@ -908,9 +900,7 @@ function place() {
                 mainBlock.classList.remove("main-block-unshake");
             }, 200)
         }
-
         //respawn if not game over, else, end game
-        
         if (!checkGameOver()) {
             respawn();
         }
@@ -928,13 +918,13 @@ function fill() {
         boxToFill.style.background = `${player.color}`;
         boxToFill.classList.remove("play-piece");
     });
+    //for stats
     game.piecesPlaced++;
     stat3Big.textContent = game.piecesPlaced;
     checkLineCLear();
 }
 
 ///////////////////////////////////////// CHECKS /////////////////////////////////////////
-
 ///////////////// CHECK GAMEOVER (if placed in spawn area)
 function checkGameOver() {
     const topBoxes = document.querySelectorAll(".top");
@@ -949,11 +939,9 @@ function checkGameOver() {
         gameLose();
         return true;
     }
-
 }
-///////////////// CHECK LINE CLEAR
+///////////////// CHECK LINE CLEAR (if row fully filled)
 function checkLineCLear() {
-    
     const checkPieces = document.querySelectorAll(".check-line-clear");
 
     //add (uniquely) each line start number to linesToCheck array after filled
@@ -980,8 +968,7 @@ function checkLineCLear() {
     });
     game.linesToCheck.length = 0;
 
-    //if linesToClear truthy, proceed to clearLines()
-    
+    //if linesToClear > 0, proceed to clearLines()
     if (game.linesToClear.length === 4) {
         playSound("fullclear");
     }
@@ -999,11 +986,11 @@ function checkBottom() {
     playPieces.forEach((box) => {
         if (allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("bottom") ||
             allBoxes[parseInt(box.id.slice(5))+10-1].classList.contains("filled")) {
-                
             ghostPiece.forEach((ghost) => {
+                //for animation
                 ghost.classList.add("ghost-piece-place");
         });
-            game.place = true;       
+        game.place = true;       
         }
     });
 }
@@ -1019,6 +1006,7 @@ function checkWarning() {
                 break;
             }
         }
+        //reset and stop warning
         if (noWarning) {
             game.warning = false;
             stopWarning();
@@ -1026,9 +1014,11 @@ function checkWarning() {
     }
 }
 
+///////////////////////////////////////// WARNING /////////////////////////////////////////
 function startWarning() {
     if (game.warning && !warningInterval) {
         playSoundLoop("warning");
+        //loop ui flash red and white
         warningInterval = setInterval(() => {
             uiRed()
             setTimeout(() => {
@@ -1046,6 +1036,7 @@ function stopWarning() {
     }
 }
 
+///////////////////////////////////////// UI FLASH RED AND WHITE /////////////////////////////////////////
 function uiRed() {
     whitePartsDiv.forEach((part) => {
         part.classList.add("white-parts-div-red");
@@ -1054,7 +1045,6 @@ function uiRed() {
         part.classList.add("white-parts-text-red");
     });
 }
-
 function uiWhite() {
     whitePartsDiv.forEach((part) => {
         part.classList.remove("white-parts-div-red");
@@ -1064,10 +1054,7 @@ function uiWhite() {
     });
 }
 
-
-
 ///////////////////////////////////////// LINE CLEAR AND MOVE /////////////////////////////////////////
-
 ///////////////// CLEAR LINES
 function clearLines() {
     const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece");
@@ -1083,46 +1070,50 @@ function clearLines() {
                 game.dropRate -= 25;
             }
         }
-        //add 1 row (10) for each line to clear below
+        //add 1 row (10 as per row length) for each line to clear below
         for (i=line-10; i>20; i-= 10) {
             if (!game.linesToMove[i]) {
+                //if line row doesnt exist, create object key
                 game.linesToMove[i] = {toMove: 0}; 
             }
+            //add row
             game.linesToMove[i].toMove += 10;
         }
         //clear the line
         for (i=0; i<10; i++) {
             const boxIndex = line + i;
             allBoxes[boxIndex].classList.remove("filled");
-            
-              
-            allBoxes[boxIndex].style.backgroundColor = "white"; //todo: add to game data
+            //animation
+            allBoxes[boxIndex].style.backgroundColor = "white"; 
             allBoxes[boxIndex].style.border = "white";
             setTimeout(() => {        
-                allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
-                allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
-        
+                //set style to default
+                allBoxes[boxIndex].style.backgroundColor = boxColor; 
+                allBoxes[boxIndex].style.border = boxBorder; 
             }, 20);
         }
     });
-    game.linesToClear.length = 0; //reset lineToClear
+    //reset lineToClear
+    game.linesToClear.length = 0;
+    //move lines down to fill up cleared rows
     if (game.linesToMove) {
         setTimeout(() => {
-            moveLines(); //move lines down to fill up cleared rows
+            moveLines(); 
         }, 30);
     }
-    
+    //check win for 40 lines mode
     if (game.mode === "forty") {
         if (game.linesCleared >= 40) {
             gameWin();
-            return;
         }
     }
 }
 
 ///////////////// MOVE LINES
 function moveLines() {
+    //sort row number highest to lowest (to start from bottom row to top) (object entries to respect order of sequence)
     const sorted = Object.entries(game.linesToMove).sort(([a], [b]) => Number(b) - Number(a));
+    //move line down
     Object.entries(sorted).forEach(([line, value]) => {
         const toMoveValue = value[1].toMove;
         for (i=0; i<10; i++) {
@@ -1134,13 +1125,13 @@ function moveLines() {
             const wasFilled = allBoxes[boxIndex].classList.contains("filled");
             //despawn rows to move
             allBoxes[boxIndex].classList.remove("filled");
-            allBoxes[boxIndex].style.backgroundColor = boxColor; //todo: add to game data
-            allBoxes[boxIndex].style.border = boxBorder; //todo: add to game data
+            allBoxes[boxIndex].style.backgroundColor = boxColor; 
+            allBoxes[boxIndex].style.border = boxBorder; 
             //move rows down
             //may not need the if loop
             if (!wasFilled) {
-                allBoxes[newBoxIndex].style.backgroundColor = boxColor; //todo: add to game data
-                allBoxes[newBoxIndex].style.border = boxBorder; //todo: add to game data
+                allBoxes[newBoxIndex].style.backgroundColor = boxColor; 
+                allBoxes[newBoxIndex].style.border = boxBorder; 
             } else {
                 allBoxes[newBoxIndex].classList.add("filled");
                 allBoxes[newBoxIndex].style.backgroundColor = backgroundColor;
@@ -1162,7 +1153,6 @@ function freezeTime() {
     end.time = stat1Big.textContent+stat1Small.textContent;
     end.lines = stat2Big.textContent;
 }
-
 function gameEnd() {
     endMessage.textContent = end.message
     endLines.textContent = end.lines
@@ -1174,10 +1164,8 @@ function gameEnd() {
             endScreen.classList.add("show-end-screen");
         })
     }, 500);
-
     resetGameData();       
 }
-
 function gameLose() {
     freezeTime();
     playSound("lose");
@@ -1190,10 +1178,9 @@ function gameLose() {
     uiRed();
     gameEnd();
 }
-
 function gameWin() {
     freezeTime();
-    for (i=0; i<3; i++) {
+    for (i=0; i<2; i++) {
         setTimeout(() => {
             playSound("win");
         }, i*2000);
@@ -1208,7 +1195,6 @@ function gameWin() {
 }
 
 ///////////////////////////////////////// PLAYER ACTIONS /////////////////////////////////////////
-
 function moveDown3() {
     const playPieces = document.querySelectorAll(".play-piece");
     playPieces.forEach((box) => {
@@ -1228,7 +1214,6 @@ function moveDown3() {
         return;
     }
 }
-
 function moveRight() {
     const playPiece = document.querySelectorAll(".play-piece");
     
@@ -1259,11 +1244,9 @@ function moveRight() {
         startCheckBottomInterval();
     }
 }
-
 function moveLeft() {
     let blocked = false;
     const playPiece = document.querySelectorAll(".play-piece");
-    
     //check if piece @ leftmost border
     playPiece.forEach((box) => {
         if ((parseInt(box.id.slice(5))-1)%10 == 0 ||
@@ -1294,21 +1277,18 @@ function moveLeft() {
 function hardDrop() {   
     player.pos = ghostPiece.pos;
     spawn(player.pos);
-    
     game.place = true;
     place();
-    
-
+    //fast place animation
     setTimeout(() => {
-    const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece-place-fast-line-clear");
-    ghostPiecePlaceFastLineClear.forEach((box) => {
-        box.classList.remove("ghost-piece-place-fast-line-clear");
-    });    
-    
+        const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece-place-fast-line-clear");
+        ghostPiecePlaceFastLineClear.forEach((box) => {
+            box.classList.remove("ghost-piece-place-fast-line-clear");
+        });    
     }, 500)
 }
 
-function rotateRight2() {
+function rotateRight() {
 const oldMatrix = player.piece;
     const rotated = oldMatrix[0].map((_, colIndex) => oldMatrix.map(row => row[colIndex])).map(row => row.reverse());
     const kicks = [ 
@@ -1359,7 +1339,6 @@ const oldMatrix = player.piece;
     startCheckBottomInterval();
     startPlaceInterval();
 }
-
 function rotateLeft() {
     const oldMatrix = player.piece;
     const rotated = oldMatrix[0].map((_, colIndex) => 
@@ -1453,7 +1432,7 @@ document.addEventListener("keydown", (event) => {
                 break;
 
             case "ArrowUp":
-                rotateRight2();
+                rotateRight();
                 break;
 
             case "x":
@@ -1468,7 +1447,6 @@ document.addEventListener("keydown", (event) => {
         }
     }
 });
-
 document.addEventListener("keyup", (event) => {
     if (keyIntervals[event.key]) {
         clearInterval(keyIntervals[event.key]);
@@ -1477,7 +1455,6 @@ document.addEventListener("keyup", (event) => {
 });
 
 ///////////////////////////////////////// INTERVALS /////////////////////////////////////////
-
 function startDropInterval() {
     clearInterval(dropInterval);
     dropInterval = setInterval(moveDown3, game.dropRate);
@@ -1491,10 +1468,7 @@ function startPlaceInterval() {
     placeInterval = setInterval(place, 500);
 }
 
-// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
-// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
-
-///////////////////////////////////////// TEXT AUTO RESIZE /////////////////////////////////////////
+// AUTO TEXT SIZE -------------------------------------- AUTO TEXT SIZE -------------------------------------- AUTO TEXT SIZE
 const resizeObserver = new ResizeObserver(entries => {
     const h1 = document.querySelectorAll("h1");
     const h2 = document.querySelectorAll("h2");
@@ -1532,12 +1506,7 @@ const resizeObserver = new ResizeObserver(entries => {
 
 });
 
-
-// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
-// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
-
-///////////////////////////////////////// TEXT AUTO RESIZE /////////////////////////////////////////
-
+// SOUNDS -------------------------------------- SOUNDS -------------------------------------- SOUNDS
 function playSound(name) {
     const sound = sounds[name];
     sound.currentTime = 0;
@@ -1555,8 +1524,8 @@ function stopSoundLoop(name) {
     sound.currentTime = 0;
     sound.loop = false;
 }
-// INITIALISE -------------------------------------- INITIALISE -------------------------------------- INITIALISE
 
+// INITIALISE -------------------------------------- INITIALISE -------------------------------------- INITIALISE
 sounds.preload = "auto";
 resizeObserver.observe(playPage);
 initHome();
