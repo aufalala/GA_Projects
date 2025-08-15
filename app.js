@@ -900,10 +900,6 @@ function place() {
                 mainBlock.classList.remove("main-block-unshake");
             }, 200)
         }
-        //respawn if not game over, else, end game
-        if (!checkGameOver()) {
-            respawn();
-        }
         game.place = false;
         game.holdAntiSpam = false;
     }
@@ -977,6 +973,11 @@ function checkLineCLear() {
     }
     if (game.linesToClear.length > 0) {
         clearLines();
+    } else {
+        //respawn if not game over, else, end game
+        if (!checkGameOver()) {
+            respawn();
+        }
     }
 }
 /////////////////CHECK BOTTOM (if block below player obstructed)
@@ -1107,6 +1108,10 @@ function clearLines() {
             gameWin();
         }
     }
+    //respawn if not game over, else, end game
+    if (!checkGameOver()) {
+        respawn();
+    }    
 }
 
 ///////////////// MOVE LINES
