@@ -3,13 +3,13 @@
 
 //pieces
 const pieces = {
-    o: { pieceName: "o", color: "yellow",   piece:[ [1, 1], [1, 1], ],                                         },
+    o: { pieceName: "o", color: "rgba(168, 168, 0, 1)",   piece:[ [1, 1], [1, 1], ],                                         },
     t: { pieceName: "t", color: "purple",   piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],                        },
     j: { pieceName: "j", color: "blue",     piece:[ [1, 0, 0], [1, 1, 1], [0, 0, 0], ],                        },
     l: { pieceName: "l", color: "orange",   piece:[ [0, 0, 1], [1, 1, 1], [0, 0, 0], ],                        }, 
     z: { pieceName: "z", color: "red",      piece:[ [1, 1, 0], [0, 1, 1], [0, 0, 0], ],                        },
     s: { pieceName: "s", color: "green",    piece:[ [0, 1, 1], [1, 1, 0], [0, 0, 0], ],                        },
-    i: { pieceName: "i", color: "cyan",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
+    i: { pieceName: "i", color: "rgba(0, 170, 170, 1)",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
 }
 const pieceNames = Object.keys(pieces);
 

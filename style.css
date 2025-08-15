@@ -388,7 +388,7 @@ body {
 
 
 /* /////////////////// MAIN BLOCK*/
-.filled, .play-piece, .line-up-piece-filled {
+.filled, .play-piece, .line-up-piece-filled, .hold-piece-filled {
     box-shadow: inset 5px 5px 5px 1px rgba(199, 199, 199, 0.3);
 }
 .ghost-piece {
