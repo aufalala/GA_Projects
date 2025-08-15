@@ -1,14 +1,30 @@
 
 ///////////////////////////////////////// DATA / STATUSES /////////////////////////////////////////
+//audio
+const sounds = {
+    back: new Audio('assets/audio/back.mp3'),
+    fullclear: new Audio('assets/audio/fullclear.mp3'),
+    hold: new Audio('assets/audio/hold.mp3'),
+    miniclear: new Audio('assets/audio/miniclear.mp3'),
+    place: new Audio('assets/audio/place.mp3'),
+    play: new Audio('assets/audio/play.mp3'),
+    select: new Audio('assets/audio/select.mp3'),
+    lose: new Audio('assets/audio/lose.mp3'),
+    main: new Audio('assets/audio/main.mp3'),
+    warning: new Audio('assets/audio/warning.mp3'),
+    rotate: new Audio('assets/audio/rotate.mp3'),
+    win: new Audio('assets/audio/win.mp3'),
+
+}
 
 //pieces
 const pieces = {
-    o: { pieceName: "o", color: "rgba(168, 168, 0, 1)",   piece:[ [1, 1], [1, 1], ],                                         },
-    t: { pieceName: "t", color: "purple",   piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],                        },
-    j: { pieceName: "j", color: "blue",     piece:[ [1, 0, 0], [1, 1, 1], [0, 0, 0], ],                        },
-    l: { pieceName: "l", color: "orange",   piece:[ [0, 0, 1], [1, 1, 1], [0, 0, 0], ],                        }, 
-    z: { pieceName: "z", color: "red",      piece:[ [1, 1, 0], [0, 1, 1], [0, 0, 0], ],                        },
-    s: { pieceName: "s", color: "green",    piece:[ [0, 1, 1], [1, 1, 0], [0, 0, 0], ],                        },
+    o: { pieceName: "o", color: "rgba(168, 168, 0, 1)",     piece:[ [1, 1], [1, 1],  ],},
+    t: { pieceName: "t", color: "purple",                     piece:[ [0, 1, 0], [1, 1, 1], [0, 0, 0], ],},
+    j: { pieceName: "j", color: "blue",                       piece:[ [1, 0, 0], [1, 1, 1], [0, 0, 0], ],},
+    l: { pieceName: "l", color: "orange",                     piece:[ [0, 0, 1], [1, 1, 1], [0, 0, 0], ],}, 
+    z: { pieceName: "z", color: "red",                        piece:[ [1, 1, 0], [0, 1, 1], [0, 0, 0], ],},
+    s: { pieceName: "s", color: "green",                      piece:[ [0, 1, 1], [1, 1, 0], [0, 0, 0], ],},
     i: { pieceName: "i", color: "rgba(0, 170, 170, 1)",     piece:[ [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0], ], },
 }
 const pieceNames = Object.keys(pieces);
@@ -168,6 +184,7 @@ endAnother.addEventListener("click", endAnotherHandler);
 
 ///////////////// HOME PAGE
 function playClickHandler() {
+    playSound("select");
     hideHomeButtons();
     //show play child
     setTimeout(() => {
@@ -188,18 +205,21 @@ function playClickHandler() {
     }, 200);
 }
 function fortyClickHandler() {
+    playSound("play");
     game.mode = "forty";
     hideNavToInitGame();
 }
 function marathonClickHandler() {
-    game.mode = "marathon";
+    playSound("play");
     hideNavToInitGame();
 }
 function playChildBackHandler() {
+    playSound("back");
     hidePlayChildButtons();
     showHomeButtons();
 }
 function settingsClickHandler() {
+    playSound("select");
     hideHomeButtons();
     //show settings screen
     settingsScreen.classList.remove("hide");
@@ -250,6 +270,7 @@ function warningToggleHandler() {
 
 
 function settingsBackHandler() {
+    playSound("back");
     //hide settings screen
     settingsScreen.classList.remove("show");
     setTimeout(() => {
@@ -266,6 +287,7 @@ function settingsBackHandler() {
 }
 
 function tutorialClickHandler() {
+    playSound("select");
     hideHomeButtons();
     //show tutorial screen
     tutScreen.classList.remove("hide");
@@ -282,6 +304,7 @@ function tutorialClickHandler() {
 }
 
 function tutorialBackHandler() {
+    playSound("back");
     //hide tut screen
     tutScreen.classList.remove("show");
     setTimeout(() => {
@@ -299,6 +322,7 @@ function tutorialBackHandler() {
 
 ///////////////// PLAY PAGE
 function endReturnHandler() {
+    playSound("back");
     endScreen.classList.add("hide-end-screen-zoom-out")
     setTimeout(() => {
         //hide end screen
@@ -324,6 +348,7 @@ function endReturnHandler() {
     resetGameBoardUI();
 }
 function endAnotherHandler() {
+    playSound("play");
     endScreen.classList.add("hide-end-screen-zoom-in")
     setTimeout(() => {
         //hide end screen
@@ -503,11 +528,15 @@ function initGame() {
 
         setTimeout(() => {
             for (let i = 4; i > 0; i--) {
+
                 setTimeout(() => {
                     if (i != 1) {
                         countdownMessage.textContent = i-1;
                     } else {
                         countdownMessage.textContent = "GO";
+                    }
+                    if (i === 3) {
+                        playSoundLoop("main");
                     }
 
                     countdownMessageDiv.classList.add("show");
@@ -700,6 +729,7 @@ function assignNextPiece() {
 ///////////////// HOLD PIECE SWAP/STORE
 function holdPiece() {
     if (!game.holdAntiSpam) {
+        playSound("hold");
         if (holdP.color) {
             [player.pieceName, holdP.pieceName] = [holdP.pieceName, player.pieceName];
             [player.color, holdP.color] = [holdP.color, player.color];
@@ -855,6 +885,7 @@ function place() {
     const ghostPiece = document.querySelectorAll(".ghost-piece");
             
     if (game.place){
+        playSound("place");
         fill();
 
         //fill animation
@@ -950,6 +981,13 @@ function checkLineCLear() {
     game.linesToCheck.length = 0;
 
     //if linesToClear truthy, proceed to clearLines()
+    
+    if (game.linesToClear.length === 4) {
+        playSound("fullclear");
+    }
+    if (game.linesToClear.length > 0 && game.linesToClear.length < 4) {
+        playSound("miniclear");
+    }
     if (game.linesToClear.length > 0) {
         clearLines();
     }
@@ -990,6 +1028,7 @@ function checkWarning() {
 
 function startWarning() {
     if (game.warning && !warningInterval) {
+        playSoundLoop("warning");
         warningInterval = setInterval(() => {
             uiRed()
             setTimeout(() => {
@@ -1001,6 +1040,7 @@ function startWarning() {
 
 function stopWarning() {
     if (warningInterval) {
+        stopSoundLoop("warning");
         clearInterval(warningInterval);
         warningInterval = null;
     }
@@ -1113,6 +1153,7 @@ function moveLines() {
 
 ///////////////////////////////////////// GAME END /////////////////////////////////////////
 function freezeTime() {
+    stopSoundLoop("main");
     stopTimer();
     stopWarning();
     clearInterval(dropInterval);
@@ -1139,6 +1180,7 @@ function gameEnd() {
 
 function gameLose() {
     freezeTime();
+    playSound("lose");
     end.message = "GAME OVER!"
     //UI fall animation
     mainBlock.classList.add("main-block-fall");
@@ -1151,6 +1193,11 @@ function gameLose() {
 
 function gameWin() {
     freezeTime();
+    for (i=0; i<3; i++) {
+        setTimeout(() => {
+            playSound("win");
+        }, i*2000);
+    }
     end.message = "You did it?! Wow. Grape.";
     //UI zoom animation
     mainBlock.classList.add("main-block-scale");
@@ -1301,6 +1348,7 @@ const oldMatrix = player.piece;
             }
         }
         if (open && !(left && right)) {
+            playSound("rotate");
             player.piece = rotated;
             player.pos += kick.x + (kick.y*10);
             break;
@@ -1353,6 +1401,7 @@ function rotateLeft() {
             }
         }
         if (open && !(left && right)) {
+            playSound("rotate");
             player.piece = rotated;
             player.pos += kick.x + (kick.y*10);
             break;
@@ -1484,7 +1533,30 @@ const resizeObserver = new ResizeObserver(entries => {
 });
 
 
+// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
+// CSS STYLINGS -------------------------------------- CSS STYLINGS -------------------------------------- CSS STYLINGS
+
+///////////////////////////////////////// TEXT AUTO RESIZE /////////////////////////////////////////
+
+function playSound(name) {
+    const sound = sounds[name];
+    sound.currentTime = 0;
+    sound.play();
+}
+function playSoundLoop(name) {
+    const sound = sounds[name];
+    sound.loop = true;
+    sound.currentTime = 0;
+    sound.play();
+}
+function stopSoundLoop(name) {
+    const sound = sounds[name];
+    sound.pause();
+    sound.currentTime = 0;
+    sound.loop = false;
+}
 // INITIALISE -------------------------------------- INITIALISE -------------------------------------- INITIALISE
 
+sounds.preload = "auto";
 resizeObserver.observe(playPage);
 initHome();
