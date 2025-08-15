@@ -86,7 +86,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out, box-shadow 0.5s ease;
-    filter: brightness(0.65);
+    filter: brightness(0.7);
 }
 .home-buttons:hover {
     transform: translateX(-4%);
@@ -124,7 +124,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease-in-out, box-shadow 0.5s ease;
-    filter: brightness(0.65);
+    filter: brightness(0.7);
 }
 .play-child-buttons:hover {
     transform: translateX(-4%);
@@ -201,20 +201,26 @@ body {
     padding: 0 0.7%;
     /* border: 0.3em solid rgb(108, 108, 108); */
     border-radius: 100px;
+    transition: transform 0.3s ease;
 }
 .toggle-switch-circle {
     background: white;
     height: 80%;
     aspect-ratio: 1/1;
     border-radius: 50%;
+    transition: transform 0.3s ease;
 }
-.toggle-true {
+.toggle-true-div {
     background: rgb(108, 185, 120);
-    justify-items: right;
 }
-.toggle-false {
+.toggle-false-div {
     background: rgb(121, 121, 121);
-    justify-items: left;
+}
+.toggle-true-circle {
+    transform: translateX(55%);
+}
+.toggle-false-circle {
+    transform: translateX(0%);
 }
 
 #settings-back {
@@ -274,10 +280,17 @@ body {
     display: flex;
     flex-direction: row;
     margin: 1%;
-    width: 40%;
+    width: 60%;
     align-items: center;
-    gap: 5%;
-    margin-left: 15%;
+    justify-content: space-between;
+    /* gap: %; */
+    /* margin-left: 15%; */
+}
+.key-multi-div {
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    width: 35.5%;
 }
 .key {
     background: rgb(74, 74, 71);
@@ -285,10 +298,13 @@ body {
     border: 2px solid rgb(55, 55, 55);
     border-radius: 6px;
     color: white;
-    width: 16%;
+    width: 11%;
     aspect-ratio: 1/1;
     place-content: center;
     text-align: center;
+}
+.key-multi {
+    width: 33%;
 }
 #tutorial-back {
     cursor: pointer;
@@ -367,7 +383,7 @@ body {
 /* /////////////////// WHITE PARTS*/
 .white-parts-div {
     background-color: white;
-    transition: background-color 0.3s ease-in-out;
+    /* transition: background-color 0.3s ease-in-out; */
 }
 .white-parts-text {
     color: white;

@@ -68,4 +68,6 @@ More settings options (UI colors, pieces themes/skins, movement speed tuning).
 More music options.  
 Better tutorial screen, with animations perhaps?  
 Online highscore system for 40 clear line.  
+UI and controls for IOS  
+Refactor some repeating code
 

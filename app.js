@@ -17,6 +17,7 @@ const pieceNames = Object.keys(pieces);
 const settings = {
     screenShake: true,
     ghost: true,
+    warning: true,
 }
 
 //player
@@ -41,6 +42,7 @@ const game = {
     gameOver: false,
     linesCleared: 0,
     piecesPlaced: 0,
+    warning: false,
 }
 
 //end screen
@@ -75,6 +77,7 @@ const nextLineUp = [];
 let dropInterval;
 let checkBottomInterval;
 let placeInterval;
+let warningInterval;
 
 //timer
 let timerRunning = false;
@@ -103,6 +106,9 @@ const playChildBackButton = document.getElementById("play-child-back");
 //settings
 const settingsScreen = document.getElementById("settings-screen");
 const settingsBackButton = document.getElementById("settings-back");
+const ghostToggle = document.getElementById("ghost-toggle");
+const shakeToggle = document.getElementById("shake-toggle");
+const warningToggle = document.getElementById("warning-toggle");
 //tutorial
 const tutScreen = document.getElementById("tutorial-screen");
 const tutBackButton = document.getElementById("tutorial-back");
@@ -146,8 +152,11 @@ fortyButton.addEventListener("click", fortyClickHandler);
 marathonButton.addEventListener("click", marathonClickHandler);
 playChildBackButton.addEventListener("click", playChildBackHandler);
 
-
+ghostToggle.addEventListener("click", ghostToggleHandler);
+shakeToggle.addEventListener("click", shakeToggleHandler);
+warningToggle.addEventListener("click", warningToggleHandler);
 settingsBackButton.addEventListener("click", settingsBackHandler);
+
 tutBackButton.addEventListener("click", tutorialBackHandler);
 
 ///////////////// PLAY PAGE
@@ -198,13 +207,48 @@ function settingsClickHandler() {
         settingsScreen.classList.add("show");
     }, 500)
 
-    
     //show settings-back-button
     settingsBackButton.classList.remove("hide");
     setTimeout(() => {
         settingsBackButton.classList.add("show");
     }, 1000);
 }
+
+function applySettings() {
+    ghostToggle.classList.add(`toggle-${settings.ghost}-div`);
+    shakeToggle.classList.add(`toggle-${settings.screenShake}-div`);
+    warningToggle.classList.add(`toggle-${settings.warning}-div`);
+    ghostToggle.firstElementChild.classList.add(`toggle-${settings.ghost}-circle`);
+    shakeToggle.firstElementChild.classList.add(`toggle-${settings.screenShake}-circle`);
+    warningToggle.firstElementChild.classList.add(`toggle-${settings.warning}-circle`);
+}
+
+function ghostToggleHandler() {
+    settings.ghost = !settings.ghost;
+    ghostToggle.classList.toggle("toggle-true-div");
+    ghostToggle.classList.toggle("toggle-false-div");
+    ghostToggle.firstElementChild.classList.toggle("toggle-true-circle");
+    ghostToggle.firstElementChild.classList.toggle("toggle-false-circle");
+}
+
+function shakeToggleHandler() {
+    settings.screenShake = !settings.screenShake;
+    shakeToggle.classList.toggle("toggle-true-div");
+    shakeToggle.classList.toggle("toggle-false-div");
+    shakeToggle.firstElementChild.classList.toggle("toggle-true-circle");
+    shakeToggle.firstElementChild.classList.toggle("toggle-false-circle");
+}
+
+
+function warningToggleHandler() {
+    settings.warning = !settings.warning;
+    warningToggle.classList.toggle("toggle-true-div");
+    warningToggle.classList.toggle("toggle-false-div");
+    warningToggle.firstElementChild.classList.toggle("toggle-true-circle");
+    warningToggle.firstElementChild.classList.toggle("toggle-false-circle");
+}
+
+
 function settingsBackHandler() {
     //hide settings screen
     settingsScreen.classList.remove("show");
@@ -300,14 +344,16 @@ function endAnotherHandler() {
 ///////////////////////////////////////// NAV (PAGES/BUTTONS) VISIBILITY /////////////////////////////////////////
 
 function initHome() {
-setTimeout(() => {
-    homePage.classList.add("show");
-}, 700);
-setTimeout(() => {
-    homeButtons.forEach((button) => {
-        button.classList.add("button-show");
-    });
-}, 1000);
+    setTimeout(() => {
+        homePage.classList.add("show");
+    }, 700);
+    setTimeout(() => {
+        homeButtons.forEach((button) => {
+            button.classList.add("button-show");
+        });
+    }, 1000);
+
+    applySettings();
 }
 
 
@@ -382,6 +428,7 @@ function resetGameData() {
     game.gameOver = false;
     game.linesCleared = 0;
     game.piecesPlaced = 0;
+    game.warning = false;
 
     end.message = "";
     end.lines = 0;
@@ -407,12 +454,7 @@ function resetGameBoardUI() {
         mainBlock.classList.add("show");
     }, 2000);
 
-    whitePartsDiv.forEach((part) => {
-        part.classList.remove("white-parts-div-red");
-    });
-    whitePartsText.forEach((part) => {
-        part.classList.remove("white-parts-text-red");
-    });
+    uiWhite();
     
     mainBlock.classList.remove("main-block-scale");
 }
@@ -424,8 +466,13 @@ function initGame() {
         cacheAllBoxes();
         hideBoxes();
         createLineUpList();
-        generateLineUp();
-        spawnLineUp();
+        setTimeout(() => {
+            generateLineUp();
+            setTimeout(() => {      
+                spawnLineUp();
+            }, 100);
+        }, 100);
+        
         spawnHold();
         resetStats();
 
@@ -446,8 +493,6 @@ function initGame() {
                 countdownMessageDiv.classList.add("show");
             })
         }, 1000);
-
-
 
         setTimeout(() => {
             countdownMessageDiv.classList.remove("show");
@@ -755,6 +800,7 @@ function spawn(pos) {
         });
     });
     spawnGhost();
+    checkWarning();
 }
 
 ///////////////////////////////////////// GHOST SPAWN /////////////////////////////////////////
@@ -840,6 +886,7 @@ function place() {
         game.place = false;
         game.holdAntiSpam = false;
     }
+    
 }
 ///////////////// FILL
 function fill() {
@@ -922,6 +969,62 @@ function checkBottom() {
         }
     });
 }
+/////////////////CHECK WARNING
+function checkWarning() {
+    if (settings.warning) {
+        let noWarning = true;
+        for (i=30; i<60; i++) {
+            if (allBoxes[i].classList.contains("filled")) {
+                game.warning = true;
+                noWarning = false;
+                startWarning();
+                break;
+            }
+        }
+        if (noWarning) {
+            game.warning = false;
+            stopWarning();
+        }
+    }
+}
+
+function startWarning() {
+    if (game.warning && !warningInterval) {
+        warningInterval = setInterval(() => {
+            uiRed()
+            setTimeout(() => {
+                uiWhite()
+            }, 250)
+        }, 500);
+    }
+}
+
+function stopWarning() {
+    if (warningInterval) {
+        clearInterval(warningInterval);
+        warningInterval = null;
+    }
+}
+
+function uiRed() {
+    whitePartsDiv.forEach((part) => {
+        part.classList.add("white-parts-div-red");
+    });
+    whitePartsText.forEach((part) => {
+        part.classList.add("white-parts-text-red");
+    });
+}
+
+function uiWhite() {
+    whitePartsDiv.forEach((part) => {
+        part.classList.remove("white-parts-div-red");
+    });
+    whitePartsText.forEach((part) => {
+        part.classList.remove("white-parts-text-red");
+    });
+}
+
+
 
 ///////////////////////////////////////// LINE CLEAR AND MOVE /////////////////////////////////////////
 
@@ -1011,19 +1114,19 @@ function moveLines() {
 ///////////////////////////////////////// GAME END /////////////////////////////////////////
 function freezeTime() {
     stopTimer();
-    end.time = stat1Big.textContent+stat1Small.textContent;
-    end.lines = stat2Big.textContent;
-
+    stopWarning();
     clearInterval(dropInterval);
     clearInterval(checkBottomInterval);
     clearInterval(placeInterval);
+    end.time = stat1Big.textContent+stat1Small.textContent;
+    end.lines = stat2Big.textContent;
 }
 
 function gameEnd() {
     endMessage.textContent = end.message
     endLines.textContent = end.lines
     endTime.textContent = end.time
-
+    //show end screen
     setTimeout(() => {
         endScreen.classList.remove("hide")
         requestAnimationFrame(() => {
@@ -1037,22 +1140,19 @@ function gameEnd() {
 function gameLose() {
     freezeTime();
     end.message = "GAME OVER!"
+    //UI fall animation
     mainBlock.classList.add("main-block-fall");
     setTimeout(() => {
         mainBlock.classList.remove("show");
     }, 500);
-    whitePartsDiv.forEach((part) => {
-        part.classList.add("white-parts-div-red");
-    });
-    whitePartsText.forEach((part) => {
-        part.classList.add("white-parts-text-red");
-    });
+    uiRed();
     gameEnd();
 }
 
 function gameWin() {
     freezeTime();
     end.message = "You did it?! Wow. Grape.";
+    //UI zoom animation
     mainBlock.classList.add("main-block-scale");
     setTimeout(() => {
         mainBlock.classList.remove("show");
