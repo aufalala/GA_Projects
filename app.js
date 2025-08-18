@@ -875,11 +875,11 @@ function spawnGhost() {
 ///////////////////////////////////////// PLACE PLAYER PIECE /////////////////////////////////////////
 
 ///////////////// PLACE BLOCK 
-function place() {
+async function place() {
     const ghostPiece = document.querySelectorAll(".ghost-piece");
     if (game.place){
         playSound("place");
-        fill();
+        await fill();
         //fill animation
         ghostPiece.forEach((ghost) => {
             ghost.classList.add("ghost-piece-place-fast");
@@ -910,7 +910,7 @@ function place() {
     
 }
 ///////////////// FILL
-function fill() {
+async function fill() {
     const playPieces = document.querySelectorAll(".play-piece");
     playPieces.forEach((boxToFill) => {
         boxToFill.classList.add("filled");
@@ -921,7 +921,7 @@ function fill() {
     //for stats
     game.piecesPlaced++;
     stat3Big.textContent = game.piecesPlaced;
-    checkLineCLear();
+    await checkLineCLear();
 }
 
 ///////////////////////////////////////// CHECKS /////////////////////////////////////////
@@ -941,7 +941,7 @@ function checkGameOver() {
     }
 }
 ///////////////// CHECK LINE CLEAR (if row fully filled)
-function checkLineCLear() {
+async function checkLineCLear() {
     const checkPieces = document.querySelectorAll(".check-line-clear");
 
     //add (uniquely) each line start number to linesToCheck array after filled
@@ -976,7 +976,7 @@ function checkLineCLear() {
         playSound("miniclear");
     }
     if (game.linesToClear.length > 0) {
-        clearLines();
+        await clearLines();
     }
 }
 /////////////////CHECK BOTTOM (if block below player obstructed)
@@ -1056,7 +1056,7 @@ function uiWhite() {
 
 ///////////////////////////////////////// LINE CLEAR AND MOVE /////////////////////////////////////////
 ///////////////// CLEAR LINES
-function clearLines() {
+async function clearLines() {
     const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece");
     ghostPiecePlaceFastLineClear.forEach((box) => {
         box.classList.add("ghost-piece-place-fast-line-clear");
@@ -1097,9 +1097,12 @@ function clearLines() {
     game.linesToClear.length = 0;
     //move lines down to fill up cleared rows
     if (game.linesToMove) {
-        setTimeout(() => {
-            moveLines(); 
-        }, 30);
+        await new Promise((resolve) => {
+            setTimeout(() => {
+                moveLines();
+                resolve();
+            }, 30);
+        });
     }
     //check win for 40 lines mode
     if (game.mode === "forty") {
@@ -1280,8 +1283,8 @@ function hardDrop() {
     game.place = true;
     place();
     //fast place animation
+    const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece-place-fast-line-clear");
     setTimeout(() => {
-        const ghostPiecePlaceFastLineClear = document.querySelectorAll(".ghost-piece-place-fast-line-clear");
         ghostPiecePlaceFastLineClear.forEach((box) => {
             box.classList.remove("ghost-piece-place-fast-line-clear");
         });    
